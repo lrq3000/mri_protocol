@@ -1,7 +1,7 @@
 # GIGA-Consciousness MRI Protocol
 A clinical and research 3T MRI protocol under 30 minutes, as presented at [CME2019](https://cme2019.ifado.de) in Dortmund.
 
-Version: 1.0.4 - 2019-09-26
+Version: 1.0.5 - 2019-09-26
 
 ## Description
 
@@ -50,7 +50,9 @@ We also strongly advise the use of a 3D head immobilizer, as to further reduce m
 
 ## Authors & citations
 
-This protocol was thought and programmed by Stephen Karl Larroque. Subjects were acquired by Manon Carrière, Charlotte Martial and Stephen Karl Larroque. The project was supervised by Steven Laureys. All authors are from the University of Liège, Belgium. Stephen Karl Larroque is a doctoral student with a F.R.S.-F.N.R.S. ASP grant, Steven Laureys a research director at F.R.S.-F.N.R.S. We are thankful to Jean-Marc Léonard from Siemens Healthineers for his precious support in programming adequately the machine, to Jean-Flory Tshibanda, Nathalie Maquet and the Radiodiagnostic team for their collaboration, and Pearltec for their partnership and providing us with a 3D head immobilizer (Multipad).
+This protocol was thought and programmed by Stephen Karl Larroque. Subjects were acquired by Manon Carrière, Charlotte Martial and Stephen Karl Larroque. The project was supervised by Steven Laureys. All authors are from the University of Liège, Belgium. Stephen Karl Larroque is a doctoral student with a F.R.S.-F.N.R.S. ASP grant, Steven Laureys a research director at F.R.S.-F.N.R.S.
+
+We are thankful to Jean-Marc Léonard from Siemens Healthineers and Gauthier Kempinaire for their precious support in programming adequately the machine, to Jean-Flory Tshibanda, Nathalie Maquet and the Radiodiagnostic team for their collaboration, and Pearltec for their partnership and providing us with a 3D head immobilizer (Multipad).
 
 If you find this work useful, please cite it as follows:
 
