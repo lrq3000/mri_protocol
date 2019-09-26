@@ -134,13 +134,20 @@ Explanation:
     - Chen, T., Zhan, Y., Zhang, S., & Dewan, M. (2011, September). Automatic alignment of brain MR scout scans using data-adaptive multi-structural model. In International Conference on Medical Image Computing and Computer-Assisted Intervention (pp. 574-581). Springer, Berlin, Heidelberg.
     - van der Kouwe, A. J., Benner, T., Fischl, B., Schmitt, F., Salat, D. H., Harder, M., ... & Dale, A. M. (2005). On-line automatic slice positioning for brain MR imaging. Neuroimage, 27(1), 222-230.
     - https://www.siemens-healthineers.com/magnetic-resonance-imaging/options-and-upgrades/clinical-applications/autoalign
+    
 * First we begin with a BOLD of 6min13 (500 volumes, TR 728ms). We do so to factor in that patient will tend to stress and move more as time passes, or to fall asleep. If possible, this is acquired without sedation (motion should NOT be a factor since the sequence is super fast, but if patient is moving too much for his own security then sedation is usually required...). Remember: motion is correctable with fmri, but NOT sedation. Prefer always to avoid sedation whenever possible.
+
 * A fieldmap is acquired (57s). From this step onward, patient might be sedated with no negligible impact on the acquisition, as it should have little to no influence on the subsequent structural sequences.
+
 * MP2RAGE FLAWS (structural) is acquired (5:02min). Experimental sequence that acquires 2 images simultaneously and perfectly coregistered: a MPRAGE (FLAWS_INV2) image, a GMnull (FLAWS_INV1) image and a white matter mask (FLAWS_UNI with GMnull and CSFnull) image. By computing min(i1, i2), we get the GM segmentation (ie, WMnull and CSFnull), which allow for perfect coregistration. An alternative to get better SNR is to use the original equation from MP2RAGE to combine INV1 and INV2 images by calculating in imcalc: i1 .* i2
+
 * 3shells DTI is acquired with b700, b1000 and b2000 (13:25min). Analysis can use only b1000 (exactly same sequence as before) or use all 3 b-vallues by using MRTRIX.
+
 * Clinical sequences are acquired (FLAIR, SWI) (6:12min).
+
 * Static high-resolution PC-ASL consisting of 4 images merged into a perfusion-weighted image (2:17min).
-Total: 46:16
+
+  Total acquisition time: 28:07 without PC-ASL ; 30:24 with PC-ASL.
 
 Optional sequences that can be added (available on the printout and the exar1 file):
 * T2 TSE
