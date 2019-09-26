@@ -1,7 +1,7 @@
 # GIGA-Consciousness MRI Protocol
 A clinical and research 3T MRI protocol under 30 minutes, as presented at [CME2019](https://cme2019.ifado.de) in Dortmund.
 
-Version: 1.0.2 - 2019-09-25
+Version: 1.0.3 - 2019-09-26
 
 ## Description
 
@@ -19,6 +19,12 @@ This repository contains the protocol of a 30 minutes 3T MRI for the Siemens Ma
 - Sub-second EPI BOLD (TR: 758 ms, voxel-size: 3mm³ isotropic)
 - Multi-shell DWI/DTI (3-shells: b700, b1000, b2000)
 - Clinical sequences: FLAIR, SWI, SWI/mIP, PCASL, T2
+
+The main innovations of this protocol are:
+
+* a curated combination of cutting-edge sequences (sub-second EPI BOLD, multi-shell DTI, T1 FLAWS) to cover most experimental and clinical needs.
+* speed optimizations with a good quality balance. Most sequences here are the fastest of all current 3T MRI literature (Multi-shell DTI at 13min, T1 FLAWS in 5min, FLAIR in 3min, SWI in 3min, etc).
+* reduced susceptibility to motion and metal/chemical artefacts.
 
 This protocol was designed over the span of 8 months and is now a standard protocol at the Hospital of Liège, Belgium. So far, 45 subjects (18 healthy volunteers, 17 disorders of consciousness patients, 10 subjects of other studies) have been acquired using this protocol.
 
@@ -52,9 +58,9 @@ If you find this work useful, please cite it as follows:
 
 ## Frequently Asked Questions
 
-### What is the target Dot Cockpit version?
+### What is the target version?
 
-The exar1 file should work with the software version introduced with the Siemens Vida, which is X...
+The exar1 file should work with the software version introduced with the Siemens Vida, which is VB30 (previous versions on the VIDA had issues with DTI reconstruction). The Dot Cockpit version used is a minor update from [syngo MR E11](http://cbbi.udel.edu/wp-content/uploads/2017/01/Dot_Cockpit.pdf).
 
 For other versions, the sequences can be reproduced using the printouts.
 
@@ -77,3 +83,23 @@ As far as we know, we are the rights owner for this protocol, which is herein di
 Technically, all sequences of our protocol stem from base sequences provided by Siemens and modified to fit our needs. This was necessary as we do not have access to the full parametrization of the machine, which is only allowed to trained specialists. For instance, the FLAWS sequence can be recreated by modifying the parameters of the base MP2RAGE sequence.
 
 As such, all sequences should be reproducible on any machine since we modified only "standard" parameters such as inversion time, bandwidth, flip angle, etc. and not any experimental parameter or developer console commands that would be accessible only to trained specialists.
+
+### How can I implement T1 FLAWS from the printout?
+
+To implement T1 FLAWS, you should start from the Siemens native MP2RAGE sequence, and then modify its TI1 and TI2 parameters to the values in the printout. If the TI1 and TI2 parameters can't be lowered enough, play with slice fourier interpolation and plane fourier interpolation. In our case, 7/8 was enough to attain 450 TI1 and 1350 TI2 (with slice fourier 6/8 we can go much lower).
+
+If your machine does not support MP2RAGE, an alternative to FLAWS is FLAIR(2), a combination of FLAIR and T2: FLAIR2 = 3D-FLAIR .* 3D-T2 ; Contrary to FLAWS the images are not necessarily coregistered but it offers CSF nullification and increased WM vs GM contrast compared to DIR (double inversion recovery): Wiggermann, V., Hernandez-Torres, E., Traboulsee, A., Li, D. K. B., & Rauscher, A. (2016). FLAIR2: a combination of FLAIR and T2 for improved MS lesion detection. *American Journal of Neuroradiology*, *37*(2), 259-265.
+
+### I need help with reconstructing the protocol from the printout
+
+Here are some resources that can help you:
+
+* [syngo MR E11 Dot Cockpit manual](http://cbbi.udel.edu/wp-content/uploads/2017/01/Dot_Cockpit.pdf) (in particular the Copy Reference option is described)
+
+* [syngo MR E11 System and data management](http://cbbi.udel.edu/wp-content/uploads/2017/01/Sys-DataManagement.pdf) which is a complementary manual to the Dot Cockpit.
+
+* [Harvard's Center for Brain Science - Operating the scanner FAQ](http://cbs.fas.harvard.edu/science/core-facilities/neuroimaging/information-investigators/scannerfaq) which explains how to operate the MRI machine (on an older syngo version but it's similar), and in particular how to check for errors in the console and how to save the log to send to Siemens Healthineers.
+
+* [syngo MR E11 Neuro operator manual](http://cbbi.udel.edu/wp-content/uploads/2017/01/Neuro.pdf)
+
+  
