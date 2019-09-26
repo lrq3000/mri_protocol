@@ -9,9 +9,9 @@ Current version 52 on 2019-09-20
 This protocol was designed according to the state-of-the-art scientific litterature by Stephen Karl Larroque with help from Jean-Marc Léonard (Siemens Healthineers) and the CHU Liège MRI department.
 
 ## Description
-This protocol was designed to offer the best quality and latest technologies (eg, MP2RAGE, FLAWS, 3shells DTI) while maintaining a low TA (Total Acquisition Time) of 46 minutes.
+This protocol was designed to offer the best quality and latest technologies (eg, MP2RAGE, FLAWS, 3shells DTI) while maintaining a low TA (Total Acquisition Time) below 30 minutes.
 
-All choices are supported by the litterature or specialized technical blog posts. All the references are mentioned below.
+All choices are supported by the literature or specialized technical blog posts. All the references are mentioned below.
 
 The protocol includes choices ("decisions" in Siemens terminology) to integrate additional information, such as whether the patient was sedated or not (the sequence name will be changed, and another localizer/scout will be done if necessary). As such, the protocol should never be modified during acquisition (except to redo a sequence), since all scenarios should already be integrated.
 
@@ -19,22 +19,23 @@ To ease the protocol application, the resting-state BOLD EPI is now done first, 
 
 The protocol should be adaptable to any other machine as long as it has the required addons. It can be transfered from dicoms or from the exar file, or redone manually from the pdf.
 
-This protocol was designed with a multi-domain approach in mind to reduce artifacts and manipulation time: the combination of a fmri BOLD fast enough to acquire even moving patients and the MRI head pillow immobilizer (Pearltec Multi-PAD Kit) allow to acquire most patients without sedation. If sedation is still required for very uncollaborative patients, it should happen only after BOLD sequences, since BOLD is virtually unaffected by motion, and structural sequences (after BOLD) are unaffected by sedation.
+This protocol was designed with a multi-domain approach in mind to reduce artifacts and manipulation time: the combination of a fmri BOLD fast enough to acquire even moving patients and the 3D MRI head pillow immobilizer (Pearltec Multi-PAD Kit) allow to acquire most patients without sedation. If sedation is still required for very uncollaborative patients, it should happen only after BOLD sequences, since BOLD is virtually unaffected by motion, and structural sequences (after BOLD) are unaffected by sedation.
 
 ## Requirements
 Simultaneous Multi-Slice addon (SMS, aka multiband in other manufacturers) for BOLD, DTI and SWI accelerations. Caipirinha for FLAIR acceleration. GRAPPA parallel imaging acceleration for all (but might be replaceable by SENSE if necessary).
 
 ## Bibliography
 	* slice order descending with distance factor for EPI (BOLD but NOT DTI): http://imaging.mrc-cbu.cam.ac.uk/imaging/CommonArtefacts#spinhistory and http://imaging.mrc-cbu.cam.ac.uk/imaging/TipsForDataAcquisition
-	* with distance factor 20%/25%: https://www.mccauslandcenter.sc.edu/crnl/tools/stc and http://imaging.mrc-cbu.cam.ac.uk/imaging/TipsForDataAcquisition
+	* with slice distance factor 20%/25%: https://www.mccauslandcenter.sc.edu/crnl/tools/stc and http://imaging.mrc-cbu.cam.ac.uk/imaging/TipsForDataAcquisition
 	* (Unused but working): optimized T1 MPRAGE for Siemens 3T machines (tested but not used, replaced by MP2RAGE): https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4039442/ and https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4039442/
-	* 3D distortion correction instead of 2D correction for DTI or none for bold (no need for ref, it's always better, Siemens guy source, probably better for coregistration and segmentation with T1. 2D distortion often enabled by default on default Siemens sequences and not 3D because most sequences are in 2D! Then we don't care about 3D correction. But in our case, where we do post-acquisition analysis, 3D correction is useful, and it's postprocessing, so it does not add any acquisition time nor SNR reduction). Also dynamic distortion correction for DTI = eddy correction, could be good but takes more time so disabled for now (can save both unfiltered images and corrected by checking the appropriate option).
+	* Enable 3D distortion correction: 3D distortion correction instead of 2D correction for DTI or none for bold (according to Siemens Healthineers this is always better than no correction, and probably better for coregistration and segmentation with T1. 2D distortion often enabled by default on default Siemens sequences and not 3D because most sequences are in 2D! Then we don't care about 3D correction. But in our case, where we do post-acquisition analysis, 3D correction is useful, and it's postprocessing, so it does not add any acquisition time nor SNR reduction). Also dynamic distortion correction for DTI = eddy correction, could be good but takes more time so disabled for now (can save both unfiltered images and corrected by checking the appropriate option).
 	* (Unused but working): DIR SPACE WM suppressed FIR, as mask for segmentation (similar but not exactly like this paper): https://med.nyu.edu/radiology_research/sites/default/files/radiology_research/01328.pdf
 	https://www.ncbi.nlm.nih.gov/pubmed/10232510
 	https://www.ncbi.nlm.nih.gov/pubmed/7874427
 	https://onlinelibrary.wiley.com/doi/abs/10.1002/mrm.22979
 	* (Unused but working): DIR SPACE GM suppressed (WM mask): https://www.ncbi.nlm.nih.gov/pubmed/25213883
 	* multiband s2p2 (factor x4) or s3p2 (factor 6) acceptable (for BOLD and DTI): https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4574400/ and https://practicalfmri.blogspot.com/2016/02/starting-points-for-sms-epi-at-3-t.html?m=1 and https://www.sciencedirect.com/science/article/pii/S1053811915007776?via%3Dihub and https://practicalfmri.blogspot.com/2016/12/use-of-split-slice-grappa-aka-leak.html
+	https://practicalfmri.blogspot.com/2013/04/multiband-aka-simultaneous-multislice.html
 	In fact we can go up to s4p2 with slight quality loss (but never go above GRAPPA p2 else too much Gibbs noise):
 	    - Preibisch, Plos One, 2015
 	    - Todd, NeuroImage, 2016
@@ -48,7 +49,7 @@ Simultaneous Multi-Slice addon (SMS, aka multiband in other manufacturers) for B
 	* Potential differences between a sub-second BOLD results and more conventional BOLD with TR >= 2s is to be expected (and we observed them). This might be partially explained by:
 	    - the HRF better estimated with a < 1.5s TR and thus having less influence on BOLD in this time resolution.
 	    - anti-correlated networks will appear differently, since some of the anti-correlations might be due to the TR: the dynamics are much more fine-grained at sub-second time resolution than at 2s, thus anti-correlations might disappear and be replaced by correlations or no correlation at all, but new correlations might appear that were not visible before since the time window was too big to catch them. In other words, sub-second BOLD might allow to reveal middle-men that are usually hidden by anti-correlations that would have implied an indirect connection: now we can visualize them directly.
-	* No PACE: http://imaging.mrc-cbu.cam.ac.uk/imaging/TipsForDataAcquisition among others
+	* No PACE (prospective motion correction), because it prevents retrospective motion correction in post-processing: http://imaging.mrc-cbu.cam.ac.uk/imaging/TipsForDataAcquisition among others
 	* Prescan Normalize important to increase contrast (and have way better coregistration, as proven by the paper on reducing flip angle/partial flip angle): https://practicalfmri.blogspot.com/2016/02/starting-points-for-sms-epi-at-3-t.html?m=1
 	https://neurostars.org/t/advice-for-optimizing-subcortical-signal-with-phased-array-head-coils/1504/4
 	https://practicalfmri.blogspot.com/2012/04/common-persistent-epi-artifacts-receive.html
@@ -88,6 +89,17 @@ Simultaneous Multi-Slice addon (SMS, aka multiband in other manufacturers) for B
 	* FLAIR with variable flip angle significantly increases SNR for white matter: https://onlinelibrary.wiley.com/doi/full/10.1002/jmri.24542
 	* In the current protocol, we removed MoCo (retrospective motion correction) from BOLD and mosaics from DTI as they were generating too many additional files that were overloading our PACS server. They also are not necessary and can be reproduced post-hoc via softwares. You can however enable them if you have a PACS server that can support this amount of data (and the network has enough bandwidth to transfer that much data regularly).
 	* Disable the spatial filter, which is simply a smoothing kernel, which can be applied post-hoc in any case. Indeed, this increases SNR at the expense of spatial resolution. If you still enable it, beware the filter value is in terms of frequency, so that 0.5 is a bigger smoothing kernel than 2.0.
+	* Without a specialized 3D head immobilizer cushion, if using only pads, most motion is anterior-posterior and is not corrected:
+	    - https://practicalfmri.blogspot.com/2012/05/common-intermittent-epi-artifacts.html#more
+	    - https://practicalfmri.blogspot.com/2016/10/respiratory-oscillations-in-epi-and-sms.html
+	    - https://twitter.com/practiCalfMRI/status/786312325963714560
+	* Recent studies on the practical impact of multiband on fMRI EPI BOLD analyses:
+	    - Smitha, K. A., Arun, K. M., Rajesh, P. G., Joel, S. E., Venkatesan, R., Thomas, B., & Kesavadas, C. (2018). Multiband fMRI as a plausible, time-saving technique for resting-state data acquisition: Study on functional connectivity mapping using graph theoretical measures. Magnetic resonance imaging, 53, 1-6.
+	    - Uji, M., Wilson, R., Francis, S. T., Mullinger, K. J., & Mayhew, S. D. (2018). Exploring the advantages of multiband fMRI with simultaneous EEG to investigate coupling between gamma frequency neural activity and the BOLD response in humans. Human brain mapping, 39(4), 1673-1687.
+	    - Risk, B. B., Kociuba, M. C., & Rowe, D. B. (2018). Impacts of simultaneous multislice acquisition on sensitivity and specificity in fMRI. NeuroImage, 172, 538-553.
+	    - Demetriou, L., Kowalczyk, O. S., Tyson, G., Bello, T., Newbould, R. D., & Wall, M. B. (2016). A comprehensive evaluation of multiband-accelerated sequences and their effects on statistical outcome measures in fMRI. BioRxiv, 076307.
+	    - Bhandari, R., Gazzola, V., & Keysers, C. (2019). Challenges in assessing voxel-wise single-subject level benefits of MB acceleration. bioRxiv, 756361.
+	* Multband + Parallel Imaging (here Sense, in our case GRAPPA): http://clinical.netforum.healthcare.philips.com/global/Explore/White-Papers/MRI/MultiBand-SENSE-widens-possibilities-for-fMRI-and-dMRI-in-brain
 
 ## FUTURE
     * Synthetic MRI as an extension of FLAWS: SyMRI software and QRAPMASTER sequence:
@@ -96,16 +108,19 @@ Simultaneous Multi-Slice addon (SMS, aka multiband in other manufacturers) for B
         - Available since August 2019 on Siemens machines: https://www.syntheticmr.com/archive/articles/symri-neuro-is-now-available-in-syngo-via-open-apps-from-siemens-healthineers-in-the-us/
         - Limitations: https://mriquestions.com/synthetic-mri.html
         - Siemens version: MR Fingerprinting, can overcome some of the limitations (eg, can acquire FLAIR) and has some additional advantages (less motion sensitive): https://static.healthcare.siemens.com/siemens_hwem-hwem_ssxa_websites-context-root/wcm/idc/groups/public/@global/@imaging/@mri/documents/download/mda2/mdky/~edisp/editorial_65-03045718.pdf and https://www.healthcare.siemens.com/magnetic-resonance-imaging/magnetom-world/hot-topics/mr-fingerprinting
-        * Artifial intelligence reconstruction, AUTOMAP: Zhu, B., Liu, J. Z., Cauley, S. F., Rosen, B. R., & Rosen, M. S. (2018). Image reconstruction by domain-transform manifold learning. Nature, 555(7697), 487. https://www.itnonline.com/content/artificial-intelligence-provides-faster-clearer-mri-scans
-        * Multi-Echo BOLD with ME-ICA for unsupervised noise correction of all confounds: Multi-Echo BOLD is the functional equivalent for denoising akin to FLAW for structural segmentation. Indeed, ME BOLD combined with ME-ICA technique can denoise neuronal components from non-neuronal components, in other word noise, in a totally unsupervised way using additional info from NMR relaxation. The combination of Multi-Echo BOLD with FLAW is a promising venue to significantly increase MRI analysis standardization (ref paper with hundreds of mri pipeline, basically each paper its own) and quality, by decreasing reliance on computer algorithms such as segmentation or denoising which can lead to very different results, but rather rely on additional physical tissues information from the MRI acquisition.
-        * TODO: Reverse phase encoding (FSL Eddy documentation webpage)
-        * Read-out segmented DTI and fMRI such as DTI Resolve:
+    * Artifial intelligence reconstruction, AUTOMAP: Zhu, B., Liu, J. Z., Cauley, S. F., Rosen, B. R., & Rosen, M. S. (2018). Image reconstruction by domain-transform manifold learning. Nature, 555(7697), 487. https://www.itnonline.com/content/artificial-intelligence-provides-faster-clearer-mri-scans
+    * Multi-Echo BOLD with ME-ICA for unsupervised noise correction of all confounds: Multi-Echo BOLD is the functional equivalent for denoising akin to FLAW for structural segmentation. Indeed, ME BOLD combined with ME-ICA technique can denoise neuronal components from non-neuronal components, in other word noise, in a totally unsupervised way using additional info from NMR relaxation. The combination of Multi-Echo BOLD with FLAW is a promising venue to significantly increase MRI analysis standardization (ref paper with hundreds of mri pipeline, basically each paper its own) and quality, by decreasing reliance on computer algorithms such as segmentation or denoising which can lead to very different results, but rather rely on additional physical tissues information from the MRI acquisition.
+    * Reverse phase encoding (FSL Eddy documentation webpage). Our protocol is too much time constrained to allow for both reverse phase encoding and multi-shell. Maybe by just reversing the phase of one of the shells?
+    * Read-out segmented DTI and fMRI such as DTI Resolve:
         - http://mriquestions.com/readout-segmented-dwi.html    
         - https://static.healthcare.siemens.com/siemens_hwem-hwem_ssxa_websites-context-root/wcm/idc/groups/public/@global/@imaging/@mri/documents/download/mdax/mzc0/~edisp/mr_app_resolve_final_121991554_1-00678917.pdf
         - https://onlinelibrary.wiley.com/doi/abs/10.1002/ima.22179
         - Wang, Y., Ma, X., Zhang, Z., Dai, E., Jeong, H. K., Xie, B., ... & Guo, H. (2018). A comparison of readout segmented EPI and interleaved EPI in high-resolution diffusion weighted imaging. Magnetic resonance imaging, 47, 39-47.
-        * future of fast acquisition: WAVE-CAIPI, EPTI = BOLD just 10x slower than EEG (~30ms) but volumetric still in work as of 2018, submilimeter DTI and gSlider-SMS for GM fibers analysis (U-Fibers connecting adjacent gyri make up more brain volume than long-range fibers! Schuez & Miller CRC 2003 + Song et al, Brain Connectivity, 2014) + explains why acceleration can reduce EPI distortion and blurring https://www.healthcare.siemens.com/magnetic-resonance-imaging/magnetom-world/clinical-corner/clinical-talks/advances-in-rapid-neuro-mri.html
-        * Alternative to FLAWS if you don't have MP2RAGE but have FLAIR and T2: FLAIR2 = 3D-FLAIR .* 3D-T2 ; Contrary to FLAWS the images are not necessarily coregistered but it offers CSF nullification and increased WM vs GM contrast compared to DIR (double inversion recovery): https://www.researchgate.net/publication/282702583_FLAIR2_A_combination_of_FLAIR_and_T2_for_improved_MS_lesion_detection
+        * future of fast acquisition: WAVE-CAIPI, EPTI = BOLD just 10x slower than EEG (~30ms) but volumetric still in work as of 2018, submilimeter DTI and gSlider-SMS for GM fibers analysis (U-Fibers connecting adjacent gyri make up more brain volume than long-range fibers! Schuez & Miller CRC 2003 + Song et al, Brain Connectivity, 2014).
+        * The following talk explains why acceleration can reduce EPI distortion and blurring: https://www.healthcare.siemens.com/magnetic-resonance-imaging/magnetom-world/clinical-corner/clinical-talks/advances-in-rapid-neuro-mri.html
+    * Alternative to FLAWS if you don't have MP2RAGE but have FLAIR and T2: FLAIR2 = 3D-FLAIR .* 3D-T2 ; Contrary to FLAWS the images are not necessarily coregistered but it offers CSF nullification and increased WM vs GM contrast compared to DIR (double inversion recovery): https://www.researchgate.net/publication/282702583_FLAIR2_A_combination_of_FLAIR_and_T2_for_improved_MS_lesion_detection
+    * Blipped Caipirinha, unavailable at the time the protocol was designed but very promising to reduce noise while still accelerating acquisition: https://static.healthcare.siemens.com/siemens_hwem-hwem_ssxa_websites-context-root/wcm/idc/groups/public/@global/@imaging/@mri/documents/download/mdaw/mtix/~edisp/controlled_aliasing_in_parallel_imaging_results_caipirinha-00124408.pdf
+    * Compressed sensing: https://www.youtube.com/watch?v=s0TDHYFDn68
 
 
 
@@ -123,11 +138,12 @@ No: ep2d_bold_repos_moco_s3_p2_long_sans_AG
 7. ep2d_diff_mddw_64_p2_s4_b2000_DO_NOT_READJUST
 8. t2_space_FLAIR_sag_p3_iso
 9. t2_swi_tra_p2s2_ir_2mm
-11. Decision: Patient intubed? (this can change oxygenation and thus must be accounted for in analyses)
-Yes: pcasl_3d_tra_p2_iso_3mm_highres_fast_withintub
-No: pcasl_3d_tra_p2_iso_3mm_highres_fast_nointub
-12. Optional: t2_tse_tra_512_p2
-13. Optional: t1_mp2rage_sag_p2_iso_fast
+10. Decision: Acquire PC-ASL?
+    - If yes, is patient intubed? (this can change oxygenation and thus must be accounted for in analyses):
+      Yes: pcasl_3d_tra_p2_iso_3mm_highres_fast_withintub
+      No: pcasl_3d_tra_p2_iso_3mm_highres_fast_nointub
+11. Optional: t2_tse_tra_512_p2
+12. Optional: t1_mp2rage_sag_p2_iso_fast
 
 Explanation:
 * A scout is acquired for the machine to orient the coils to the subject's head (14s). AAHead stands for automatical alignment:

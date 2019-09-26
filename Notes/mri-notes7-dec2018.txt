@@ -1,0 +1,51 @@
+https://github.com/nighres/nighres/issues/64
+BEST: MP2RAGE processing tools in Python: Processing tools for high-resolution neuroimaging http://nighres.readthedocs.io/en/latest/ (in python)
+BEST: https://github.com/Gilles86/pymp2rage to unify the two images!!! Try with FLAWS!
+Van Horn, J. D., Irimia, A., Torgerson, C. M., Chambers, M. C., Kikinis, R., & Toga, A. W. (2012). Mapping connectivity damage in the case of Phineas Gage. PloS one, 7(5), e37454. https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0037454
+
+
+
+MRI: T1+C - T1-precontrast = better vision of damaged tissues! https://qibawiki.rsna.org/images/d/d3/PINTAD_NBTS_StandardizedMRI_FEB15.pdf
+http://www.hitachimed.com/idc/groups/hitachimedical/documents/supportingdocumentpdf/poc_021900.pdf - similarly: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0016031
+BESTTUTO: nice schematic summary of basic pulse sequences (spin echo and gradient echo): https://books.google.be/books?id=p9tyAgAAQBAJ&pg=PA366&lpg=PA366&dq=siemens+fast+flair&source=bl&ots=rrcbZsF94l&sig=Jzi_BUT0m76bsyRtq7zfWqBMcE0&hl=fr&sa=X&ved=2ahUKEwjepZGl1-_eAhUIsqQKHVbJBo84ChDoATAEegQIBBAB#v=onepage&q=siemens%20fast%20flair&f=false
+BESTREF TOADD: 3D SPACE FLAIR is better, less artifacts in CSF (less CSF pulsation artifact), even for moving patients (focal epilepsy): http://www.ajnr.org/content/32/11/2054 and http://www.ajnr.org/content/ajnr/early/2017/02/02/ajnr.A5080.full.pdf and https://onlinelibrary.wiley.com/doi/full/10.1002/jmri.24542 (with multi-slab 3D)
+«Isotropic high resolution 3D FLAIR with adequate SNR still requires the use of a relatively long repetition time (~8s) to allow adequate signal recovery.» - the rest explains why using a lower TR mess up the usual equations, so we have to test by ourselves... https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4587400/
+https://radiopaedia.org/articles/trade-offs
+https://radiopaedia.org/articles/acquisition-time
+https://core.ac.uk/download/pdf/82190153.pdf
+BEST: FLAIR2: 3D-FLAIR .* 3D-T2 offers CSF nullification and better WM vs GM contrast! https://www.researchgate.net/publication/282702583_FLAIR2_A_combination_of_FLAIR_and_T2_for_improved_MS_lesion_detection
+DIR for multiple sclerosis, better than FLAIR and T2 (and FLAWS better than DIR!): https://www.sciencedirect.com/science/article/pii/S0378603X14001235
+BESTTUTO: concatenation for MRI: http://www.mrishark.com/number-of-acquisitions--concantentations.html
+Author of blipped SMS: https://www.nmr.mgh.harvard.edu/news/20150714/with-new-techniques-mri-faster-than-ever-before
+BESTTUTO: MRI reconstruction: https://www.ccppetmr.ac.uk/sites/www.ccppetmr.ac.uk/files/Prieto.pdf
+BESTTUTO: variable flip angle: Optimized three‐dimensional fast‐spin‐echo MRI, John P. Mugler PhD III https://onlinelibrary.wiley.com/doi/full/10.1002/jmri.24542
+6x speedup TSE using poisson mask: http://clinical-mri.com/wp-content/uploads/2016/04/Six_Fold_Acceleration_of_High_Spatial_Resolution.99240-2-fig-3-3DIW-right-2-images.pdf
+FLAIR + MTC reduces CSF motion artifacts: https://www.ncbi.nlm.nih.gov/pubmed/14523590
+«the advantages of a three-dimensional sequence such as higher signal-to-noise ratio (SNR) per unit time, thinner slices (giving reduced partial volume effect) and the ability to reformat the data in an arbitrary plane.» https://www.sciencedirect.com/science/article/pii/S0730725X98000848
+BESTTUTO: multiple parameters for FLAIR: suggest we need to increase! https://onlinelibrary.wiley.com/doi/full/10.1002/jmri.20356
+MRI for clinicians: https://gcpsfiesta2015.files.wordpress.com/2015/07/making-sense-of-mri-sequences-for-clinicians-aug-2012.pdf
+BEST: MP2RAGE calculation and MIP and SA2RANGE better explained: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3712929/
+4D-Flow MRI, evolution of MRA?: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3996243/ and https://www.ncbi.nlm.nih.gov/pubmed/30103237
+MRI and video contours? https://dl.acm.org/citation.cfm?doid=1179622.1179725
+
+
+MEMP2RAGE and FLAWS and T1-map in WIP Siemens + equation for uniform + denoising of background noise + division images +  free induction decay (FID) navigators
+https://cfn.upenn.edu/mri/wiki/lib/exe/fetch.php?media=lausannebrainimaging_wip900-vb17a_appguide.pdf
+activate phase corrected! If phase reconstruction is activated, the user can activate a phase correction method, which
+applies a homodyne filter on the phase images. The width of the filter window can be adjusted in
+the UI (see below, recommended value is 48 pixels). This should result in no or at least reduced
+phase wrapping. A very similar filter is used calculating SWI im
+
+ MP-RAGEL
+ linear rot can save time
+ Inversion time(s) for the one (two if 2nd GRE readout is on) MP2RAGE
+contrasts. The lower and upper limits are given by the chosen number of
+slices/partitions (without LIN/PAR swap in sequence special card) or the
+phase encoding steps (with LIN/PAR swap activated), as well as the other TI
+and the TR (confer Figure 1 for a schematic diagram).
+Sequence > Special to set T1
+mip of mp2rage = fgatir? then can get same as flaws grey matter segment?
+search flaws in siemens protocols
+ Decreasing the first inversion time TI1 (resulting in the need for phase sensitive
+reconstruction) and optimize tissue contrast using phase-sensitive reconstructed data
+http://mriquestions.com/flow-compensation.html

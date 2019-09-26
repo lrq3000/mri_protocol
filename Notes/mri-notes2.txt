@@ -1,0 +1,178 @@
+new protocol saves time, no need to redo bold two/three times if non sedated movement, we just do once and then go to sedated. Same protocol all the time, only possible change is a stop after 1st sequence (bold rest) to do sedation and then continue protocol.
+some patients move even under sedation, so a immobilizer would be useful in any case!
+
+* BEST: monopolar vs bipolar DTI: bipolar DTI (default for Siemens) already corrects for distortions so less benefits from topup. By default, most Philips and GE scanners use a monopolar Stejskal-Tanner sequence, while most Siemens use a bipolar twice-refocused spin echo sequence. The bipolar sequences show less distortion and are less sensitive to background gradients. The monopolar sequences are able to have more signal thanks to a shorter TE. Users of bipolar sequences will see less benefit of topup. Siemens users who want to use monopolar DTI can install the Multi-Band Accelerated Pulse Sequences (even if you do not use multiband features, these sequences allow you to choose between monopolar or bipolar). These sequences are really impressive, though you may want to tune the protocols for your scanner (centers with 32-channel headcoils may want to look at the protocols Multiband Imaging Test-Retest Pilot Dataset). Setting up DTI sequences is challenging, and may be specific for your scanners (e.g. for the Siemens Trio avoid echo spacing in the range of 0.59 ms to 0.70 ms to minimize harmonic vibrations).
+readOutTime = echoSpacing * ((matrixLines*partialFourier/accelerationFactor)-1)
+https://www.mccauslandcenter.sc.edu/crnl/tools/advanced-dti
+* https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/eddy#If_you_haven.27t_already_acquired_your_data
+* BEST: motion correction PEAS in Eddy 5.0.11 (see also user guide for --repol and slice movement correction): https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/eddy#What_is_new_in_5.0.11.3F
+* BEST: matlab code to see if DTI directions are well balanced (can also convert to Python): https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/eddy#eddy_--_a_tool_for_correcting_eddy_currents_and_movements_in_diffusion_data
+eddy allows to work with higher b-value data than has been possible with for example eddy_correct (previous FSL tool)
+
+
+MRI:
+* ask for slice timing in DICOM for EPI sequences (BOLD and DTI), else can't correct
+* DTI acquire reverse phase encoding b0 to estimate inhomogeneity field: https://mrtrix.readthedocs.io/en/latest/dwi_preprocessing/dwipreproc.html
+* DTI IDEA: acquire 2shells with b1200 and b2000, and then separate b700 with same parameters, so that we can always do 2shells multishell, but maybe bonus 3shells by combining with b700! Check if takes same time. b1200 and b2000 separately take 10min + b7000 12:24min, 2shells take 11:54min alone...
+* dti slice distance 30%: try to reduce to 10 or 20? check online if same 30% skipped or different slices at different directions.
+* BOLD: 200 vols c'est bien, ça converge, possible de laisser plus longtemps sans sedation? ca fera 73s en plus... impossible.
+s2 p1 or p2 no diff in denoising
+s3 p2 higher voxels worse denoising, like old bold
+s2p1 way better than old, clearer anticorrelations, and correlations are stronger. With 1 subject we can already see the anticorrelated external awareness network!
+Choose s2p1 1460ms: s2p2 is losing side connectivities from PC in the middle slice (temporal lobe connections), this is bad.
+INTERESSANT TOSEE: s3 plus resistant a motion que s2? non, moins de bruit car beaucoup plus de volumes, mais on fait que doubler df par rapport a s2! Plus de volumes préférables à moins?
+s3 2x2x3 OUT! too much noise
+Best is old bold for thalamus, less noise
+* next control: try bold without raw filter? just to test?
+* search Dot cockpit manual copy reference
+* Phoenix and phoenixzip stores the whole protocol info! But primary use is to transfer sequence config across machines, can be extracted from any dicom aed machine will adapt the gradient! Can be used for longitudinal to ensure similar quality! 
+* Expert-i remote access to whole mri suite
+* PACE issues with postprocessing motion correction (renders it impossible): http://imaging.mrc-cbu.cam.ac.uk/imaging/TipsForDataAcquisition
+* Avoid slice order ascending sequential, there is a possibility that blood flowing up the brain might be excitated! http://imaging.mrc-cbu.cam.ac.uk/imaging/TipsForDataAcquisition
+* BEST: Stripe artifacts (eg, in DTI) might be due to interleaved scheme producing spin history movement artefact! http://imaging.mrc-cbu.cam.ac.uk/imaging/CommonArtefacts#spinhistory and http://imaging.mrc-cbu.cam.ac.uk/imaging/TipsForDataAcquisition
+* BEST: list of common MRI artefacts: http://imaging.mrc-cbu.cam.ac.uk/imaging/CommonArtefacts#spinhistory
+BEST: and advices (eg, slice order interleaved vs sequential for movement etc): http://imaging.mrc-cbu.cam.ac.uk/imaging/TipsForDataAcquisition
+* BEST: explanation origin of structural and functional AC-PC reorientation: since SPM5! And in fact should be reoriented to MNI template!: http://imaging.mrc-cbu.cam.ac.uk/imaging/TipsForDataAcquisition
+The AC-PC reorientation was before for the Talairach template! https://afni.nimh.nih.gov/pub/dist/edu/2006_05_madison/afni08_talairach/afni08_talairach.pdf
+* BEST: «CMRR's parameter nomenclature offers a strong clue to the problem. In conventional EPI reconstruction we use a 2D Fourier transform (FT) which produces some amount of ringing. We also use slices that have some degree of cross-talk to neighboring slices, arising out of the limitations of frequency selectivity. So, while we think of voxels as perfect little rectangles or cubes, in reality they are blurry beasts that spread their signal into adjoining voxels because of a non-rectangular point-spread function (PSF). The dimensions we assign a voxel are entirely nominal. » https://practicalfmri.blogspot.com/2016/12/use-of-split-slice-grappa-aka-leak.html
+* BEST: SMS slice leakage explanation: https://practicalfmri.blogspot.com/2016/12/use-of-split-slice-grappa-aka-leak.html
+«With SMS we have a broader spatial problem than just non-cubic PSF. Separation of the simultaneous slices can leave signal in an incorrect position that is quite some distance from where it is supposed to be. It's a longer length scale error than the simple PSF of a voxel. Let's suppose we acquire four 2 mm slices simultaneously, 84 total slices. In one SMS acquisition we will have four slices separated by one quarter of the total slice dimension extent of 168 mm, or about 42 mm (assuming no additional inter-slice gap). Do a quick thought experiment. Imagine that in the first slice there is a very strong activation and nothing in the other three. If there is a large residual spatial error arising from poor SMS separation then we might start seeing this activation projected 4.2, 8.4 or even 12.6 cm from where it should be! And how would we know that the distant activation sites were erroneous?»
+* MRI Coil (pertinent for EPI and iPAT/GRAPPA): Two Basic Calibration Methods: Pre-scan vs Autocalibration: https://books.google.be/books?id=mnqJQGeLiOAC&pg=PA107&lpg=PA107&dq=siemens+auto-calibration+scan&source=bl&ots=EPe9rxzguD&sig=RNWfDhbbqn9TrrDc_VvpAgM3TF4&hl=fr&sa=X&ved=2ahUKEwj6xbL22OvcAhXCbFAKHf2ECmAQ6AEwC3oECAIQAQ#v=onepage&q=siemens%20auto-calibration%20scan&f=false
+* BEST: Ringing or Gibbs artifact, interacts with motion but should not be too worried, also it's ok to have some, and anyway there's smoothing for EPI, so no need for raw filter (which is used to reduce this artifact?): https://practicalfmri.blogspot.com/2011/12/common-static-epi-artifacts-gibbs.html
+* GRAPPA tSNR boost by increasing the regularization parameter: https://layerfmri.com/2018/06/27/grappa-regularization/
+* BEST: tSNR maps for various ACS schemes: FLASH is better than FLEET. FLEET is often better than single shot. And “segmented” is usually the worst. https://layerfmri.com/2017/11/27/how-to-deal-with-ghosts-in-high-res-epi/
+* T1 compare as reference to very high res like: https://www.nature.com/articles/sdata201732
+* BEST: T1 mprage 7T parameters (full printout in archive!): https://www.nature.com/articles/sdata201732
+* BEST: DIR reference to calculate: https://www.ncbi.nlm.nih.gov/pubmed/7874427
+* MP2RAGE segmentation for DWI: https://books.google.be/books?id=px1aCwAAQBAJ&pg=PA182&lpg=PA182&dq=mp2rage+motion&source=bl&ots=wYCMEJhGan&sig=5uVwJydgbey-oTgok45RBm7qrNs&hl=fr&sa=X&ved=2ahUKEwiNlszEou3cAhXOY1AKHdQFDRg4ChDoATAIegQIBxAB#v=onepage&q=mp2rage%20motion&f=false
+* patch-based segmentation for MP2RAGE: https://hal.archives-ouvertes.fr/hal-01290510/file/Naess-Schmidt_Segmentation-comparisons-Camera-Ready.pdf
+* TOSEE: http://volbrain.upv.es/instructions.php#lesionbrain_ppline
+* future of AAHead_scout: https://www.ncbi.nlm.nih.gov/pubmed/21995075
+* basis of AAHead_scout, only available in VIDA for now : https://www.ncbi.nlm.nih.gov/pubmed/15886023 and https://www.healthcare.siemens.com/magnetic-resonance-imaging/options-and-upgrades/clinical-applications/autoalign
+* Optimized TSE/FSE/SPACE: https://www.ncbi.nlm.nih.gov/pubmed/24399498 (use variable flip angle for optimized contrast)
+* Partial flip angles explained for TSE/FSE (explain the paper above on optimization): http://mriquestions.com/reduced-flip-angle-fse.html
+* Hyperechoes / Turbo SE for TSE/FSE/SPACE, available on Siemens: http://mriquestions.com/hyperechoes.html
+* GRE basis for most MRI sequences because faster than SE, but SE less susceptible to artifacts (but GRE is used to highlight inhomogeneities which can be illnesses): http://mriquestions.com/gre-vs-se.html
+* Quiet sequences are totally different and have a penalty of 10% SNR (not much) and reduce down noise from 110/120dB to 10dB from background noise (great!): http://mriquestions.com/whats-that-noise.html
+* BEST: self test quizzes on MRI: http://mriquestions.com/magnets--scanners-quiz.html
+* GOBrain+ is free!!! https://www.healthcare.siemens.com/magnetic-resonance-imaging/magnetom-world/clinical-corner/protocols/neurology-neurography/gobrain-protocols/gobrainplus-protocols and https://www.healthcare.siemens.com/magnetic-resonance-imaging/options-and-upgrades/clinical-applications/gobrain/features
+alternative fast parameters assessment: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4014876/
+* Free MRI protocols from Siemens World: https://www.healthcare.siemens.com/magnetic-resonance-imaging/magnetom-world/clinical-corner/protocols and Phoenix DICOM sequences for VIDA: https://www.healthcare.siemens.com/magnetic-resonance-imaging/magnetom-world/clinical-corner/protocols/dicom-images/phoenix-images-for-magnetom-vida-3t.html
+* Free Siemens syngo DICOM viewer: https://www.healthcare.siemens.com/medical-imaging-it/advanced-visualization-solutions/syngo-fastview
+* BEST TIP: increase distance (slice distance) factor and/or decrease number of slices to have faster TR! (and lower other TI parameters or other pulse parameters).
+* MTC and DWI? https://www.researchgate.net/publication/12014679_Magnetization_transfer_in_MRI_A_review and https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4277708/
+* SAR and scan-time optimized 3D whole-brain double inversion recovery (DIR) imaging at 7T. https://www.ncbi.nlm.nih.gov/m/pubmed/28905416/
+* BEST: DTI, what is the best brain mask: JD Tournier's answer: better include more (even the whole brain) than less, so white+grey is acceptable in fact: http://community.mrtrix.org/t/what-is-the-optimal-brain-mask/1815/2
+* BEST: Gibbs artifacts: http://mriquestions.com/gibbs-artifact.html
+* BESTTOSEE: Comparison of Filtering Methods for fMRI Datasets https://www.sciencedirect.com/science/article/pii/S1053811999904901 and (Multi-Echo fMRI and phase-based fMRI great) https://www.sciencedirect.com/science/article/pii/S1053811916307418
+* BESTTUTO: Multi-planar (MPR) reconstruction and planning: 3-D Reconstruction in Radiology By Reuven Shreiber, M.D. https://www.carestream.com/en/us/-/media/publicsite/resources/radiography-and-health-it/published-articles-and-white-papers/ris-pacs/pdf/3drecon_whitepaper.pdf and 3-D Visualization Techniques for Medical
+Images: A Comprehensive Study by Garima Singh, Neeraj Sharma
+
+
+CONCLUSION:
+=> BOLD & DTI go back to old sequence and rebuild multiband! See summary above! DTI J s2 and s3 (p2) were better than for Sepehr, but worse than old dti for Sepehr (so it's not prescan normalize!).
+=> BOLD NEXT CONTROL: do s1 old, s2p2 1230/1260ms, and s3p2 850ms, 5min each SAME TIME (different measurements).
+=> BOLD: do s3p2 850ms 270vols (or 300?? only 30s more) for short sequence NO AG (obligatory to have enough SNR, s2p1 too much noise including subcortical like thalamus in such short time), then either s3p2, s2p2 1260ms or s1 (old bold) for the long sequence. S2/S3 more future-proof (better HRF regression below 1.5s), but different results because shorter acq window (correlations over ~1s instead of 2s!), so not same correlations, we lose some, but stronger for those we have, and less noise (if same acq time). Si oui, utiliser s3p2 en non sedated, puis s2p2 en sedated (mais on pourra pas combiner...). ANGULAR GYRUS great for test! For the moment the best is the old sequence...
+=> BOLD IMPORTANT: disable raw filter, reduces results! and Position: isocenter, coil combination: adaptive combine, glm stats off
+=> DTI disable raw filter
+=> DTI: take the 3 separate DTI! Just make sure they use same TE! and adjustment linked!
+=> DTI: b2000 rename (miss the "b" before "2000")
+=> DTI: distance factor is a percentage of slice thickness. Avoids slices crosstalk and spin history effect (http://mriquestions.com/cross-talk.html and https://www.mccauslandcenter.sc.edu/crnl/tools/stc). 30% of 2mm is OK, but can try to reduce to 20% (was OK last time with less slices, no folding, should be fine with 20%).
+=> DTI: IMPORTANT: set slice order descending (not interleaved). Will reduce stripes!
+=> DTI: IMPORTANT: old sequence was way better in quality! Try to use exact same parameters (or even redo from it!), just change s3p2 and more distance factor and bvals
+=> Both dti phase encodings, also asl to speed up acq (according to siemens)
+=> T1 perfect!
+=> Prefer 64ch, except if necessitate sedation, then prefer 20ch if can avoid sedation. Else 64ch acquire if possible or if patient sedated.
+=> Add empty image named sedation (or very fast bold of 1 measurement), so that stored in dicom. If sedation happens any other time, just drag and drop it before next sequence.
+=> ASL try both for next control, but apriori keep fast (not 4mm), check perfusion
+=> DIR SPACE SAG 1.5mm (not 1.2mm) WE NEED!!! white matter hyperintensities detector! (but not really grey matter, we get both grey and white, but it's ok, can be used as exclusion/lesion mask? But includes CSF! Or can just substract directly from the GM segmentation everything that is on this image after projection into normalized)
+=> + do another DIR to keep grey matter and suppress csf and wm like this: http://mriquestions.com/double-ir.html
+=> Csg protocol setup enable archive so that does not get overwriten by software update with default siemens sequences. 
+=> B800 instead of b700? To better suppress other tissues according to Siemens
+=> DTI add in name: do not change slices nb! Repliement
+=> DTI was strict before, is it ok now? Seems so for me.
+
+CONCLUSIONS2:
+=> DELETE OLD SEQUENCES to clean up, they are useless anyway, and I think it produced a bug where more sequences were loaded than necessary (in printout it's all mixed up).
+=> TAKE BOLD new FROM MRAJ004 (based on old) s3p2. Don't modify (probably problem from autocoil or autoalign modified after that was buggy). Keep s2p2 and old as bonus. Disable "Wait for User to Start) and "Load Images to Stamp Segments" + check if not another thing to auto upload to PACS in property of sequence. Disable filter width in BOLD. Increase number of slices to 40 (to avoid folding).
+=> DTI BEST: reuse ones from FIRST Annen J sequence (s3p2) NOT MRAJ and reconfigure just to have 3shells + 3D motion correction + keep TE low around 89! Whatever TR!, don't change anything else (no raw filter!). At worst, Reuse ones from Sepehr. But probably was worse because of descending slice order instead of interleaved! Keep old as bonus (but not old-new).
+=> copy mp2rage sag de AJ004, et utiliser ca par défaut (garder MPRAGE en plus quelques temps?). MP2RAGE priority, but if possible also mprage for some time.
+=> FLAWS config en sag (ou reprendre de mp2rage sag et reconfig), mais CA MARCHE! calculate min(i1, i2) of both INV maps to get grey matter. https://www.ncbi.nlm.nih.gov/pubmed/22170818
+=> try new DIR from paper? (with TR set as fast as possible, should be quick to acquire) https://www.ncbi.nlm.nih.gov/pubmed/19018948 and https://med.nyu.edu/radiology_research/sites/default/files/radiology_research/01328.pdf
+=> T1 enable PACE! Enable PACE for all sequences that are not timeseries (3D not 4D)! https://www.nature.com/articles/sdata201732
+=> EPI CHECK if coil auto-calibration iPAT enabled, feature unique to Siemens, no prescan necessary: http://radiologie.pagesperso-orange.fr/DOCS%20SITE/DOCUS%20SIEMENS/Hot_Topics_Parallel_MR_Imaging_with_iPAT.pdf "Parallel MR Imaging with iPAT, More than Just Common SENSE" by Siemens MRI Hot Topics.
+=> Keep dir sag 1.5mm, rename en FGATIR_WMIR + copy reference with MP2RAGE + just after MP2RAGE
+=> dir sag 1.2mm rename en GMIR + move en bonus
+=> naming convention for all sequences (BOLD, DTI, etc): px sx, bxxx, etc
+=> IMPORTANT: do not send BOLD to pacs automatically: Sequence Properties > Image Management > Disable auto transfer to RIS/PACS. Limitation with AGFA PACS, which does not support Enhanced DICOMs as of 2019.
+=> how to copy from previous exam - just drag and drop dicom image or open exam in GSP and drag and drop from the GSP view http://cbbi.udel.edu/wp-content/uploads/2017/01/Dot_Cockpit.pdf
+=> CHECK TOTAL TIME SIMU + PHOTO
+
+=> Image Comment on AAHead_Scout 2 to say "sedated from here on"
+=> make choice for 1st bold: will write image comment "non sedated" or "sedated" OR write directly in sequence name! Even better!
+=> Set Decision type: "During workflow", not "in patient view" (else it will be made only before examination begins)
+=> library Coma Science Group protocol > Edit Properties > Visibility set to True (show irrespective of licensing)
+=> «if strategy changes during examination, all protocols of unfinished strategy branches are inserted in the queue» -> bonus sequences need to be put in different strategy! not after a decision!
+
+=> Check ACS (auto calibration scan), FLEET or FLASH and iPAT2 for GRAPPA in BOLD, DTI and T1.
+=> Guidance View addin to make small tutorial with images on how to place the box (can write to make sure to have ears) + Parameters View to say that we can modify the number of slices? Click on Addin Configurator
+
+=> Try mp2rage + FLAWS combination: can we make 3 and reconstruct with 2? No no: it's 4 different pulses. Better to keep 2 separate scans and coregister manually the structurals (in bonus we get a mprage!)
+=> TODO FUTURE SUBJECTS: check if bold still has top band in lower brightness, if yes then issue with config (maybe raw filter needed?)
+=> refs for multiband MB4 or MB6: https://practicalfmri.blogspot.com/2016/12/use-of-split-slice-grappa-aka-leak.html and https://www.sciencedirect.com/science/article/pii/S1053811915007776?via%3Dihub
+=> FUTURE: for multiband sequences (eg, BOLD but not DTI), enable blipped caipi or split slice grappa (leak block) when available to reduce aliasing due to grappa, reduces false positive rate!: https://www.samsi.info/wp-content/uploads/2016/03/BRisk_TransitionsWorkshop_05May2016.pdf and https://www.sciencedirect.com/science/article/pii/S1053811915007776?via%3Dihub
+«Note that adding more data does not improve reconstruction.
+With more time points, we actually increase the ability to
+detect signal leakage and incorrectly conclude activation»
+Split slice grappa great for motion correction! And sbref too! single-band external calibration scan: http://cni.stanford.edu/updates-for-multiband-reconstruction/
+Slice GRAPPA reconstruction might be sub-optimal for diffusion-weighted imaging (DWI), where a non-DW scan https://practicalfmri.blogspot.com/2016/12/use-of-split-slice-grappa-aka-leak.html
+Confirmation of between-slices artifacts increase when using GRAPPA with MB s4 or more: https://practicalfmri.blogspot.com/2016/12/use-of-split-slice-grappa-aka-leak.html
+=> T1 SPACE rejected because worst for VBM compared to MPRAGE, even though it's less susceptible to inhomogeneity in magnetic field: http://cds.ismrm.org/protected/11MProceedings/files/4250.pdf
+
+TODO:
+* Mrhistmatch, fsl directions and odf look and raw b700 dti and b1000 compare to b1200 and to old (with no raw filter)
+Notes:
+* raw image view good to assess big artefacts, but for quality and goodness for analysis, you need to analyze to know! Can't just choose the one with "least" artefacts, it's not necessarily the best! Just need to avoid big artefacts. So quick view on raw images, no need to dig very deep.
+FUTURE:
+* concentric rings GRAPPA non cartesian! Fast and needs fewer coils (and probably like propeller less sensitive to motion!) https://deepblue.lib.umich.edu/bitstream/handle/2027.42/134296/mrm26032_am.pdf?sequence=2&isAllowed=y
+* ACS FLEET on Siemens: next-gen iPAT GRAPPA with less motion sensitivity: https://practicalfmri.blogspot.com/2016/12/use-of-split-slice-grappa-aka-leak.html and https://www.ncbi.nlm.nih.gov/pubmed/25809559
+* EPI SMS-InI with 100ms TR and 5mm isotropic resolution: https://www.nature.com/articles/s41598-017-16976-0
+* Dual-polarity slice GRAPPA for ghost correction and slice leakage: https://onlinelibrary.wiley.com/doi/full/10.1002/mrm.27113
+* iPAT2, GRAPPA in 2 directions, already available in Siemens, super fast T1 acquisition: https://www.healthcare.siemens.com/magnetic-resonance-imaging/options-and-upgrades/clinical-applications/ipat-extensions/features
+* 7T DTI high res: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5139985/
+* 7T GRAPPA BOLD:  https://layerfmri.com/2017/11/27/how-to-deal-with-ghosts-in-high-res-epi/ and https://layerfmri.com/2018/06/27/grappa-regularization/
+* Compressed Sensing (CS) DIR for fast and high resolution grey matter extraction: https://www.ncbi.nlm.nih.gov/pubmed/20869829
+* MP2RAGE iPAT p3 to accelerate and reduce T1? But will give same results?
+* BEST: 3D FatNav retrospective motion correction via C2R, can be combined with MP2RAGE and any other sequence, also available for 3T and EPI and DWI: https://www.cibm.ch/page-117748-fr.html and https://infoscience.epfl.ch/record/207477/files/Gallichan_FatNavs_MRM_2016.pdf and https://github.com/dgallichan/retroMoCoBox and https://www.researchgate.net/publication/317067109_Prospective_Motion_Correction_of_DW_3D-MS_EPI_using_collapsed_FatNav_cFatNav and https://www.researchgate.net/publication/279299666_Collapsed_Fat_Navigators_for_Brain_3D_Rigid_Body_Motion
+* Try Propeller/Blade/StarVibe/Radial acquisition with FSE/TSE and SPACE (isotropic) to make it faster? http://mriquestions.com/what-is-fsetse.html and http://mriquestions.com/fse-parameters.html
+* increase AAHead_scout quality/contrast of grey/white matter (so can also use it for segmentation in case too much motion for mp2rage etc)
+* Fast MP2RAGE using sparse reconstruction (but error mostly in white matter): https://serval.unil.ch/resource/serval:BIB_F992634CBA20.P001/REF
+* Try to use fast SE/FSE/SPACE sequences instead of GRE to be less susceptible to artifacts? Less good for diagnosis but might be better for research: http://mriquestions.com/gre-vs-se.html
+* GOBrain+ super fast acquisition clinical protocol? https://www.healthcare.siemens.com/magnetic-resonance-imaging/magnetom-world/clinical-corner/protocols/neurology-neurography/gobrain-protocols/gobrainplus-protocols
+* MTC can be enabled on T1 MPRAGE to see better white matter merged with grey matter tissues: http://mriquestions.com/mt-imagingcontrast.html
+* Enable Show Inconsistent in Explorer view to see non-licensed sequences (so licenses that can be acquired!)
+* MPR Planning and MPR Assignment Addins, how it works? https://www.carestream.com/en/us/-/media/publicsite/resources/radiography-and-health-it/published-articles-and-white-papers/ris-pacs/pdf/3drecon_whitepaper.pdf
+* Auto coverage is an Add-In, Mode option defines strategy to avoid exceeding SAR limit, either TR or min flip angle, also can prevent FOV change
+GSP is the image viewer (sort of dicoms viewer)
+* Step Properties > Upgrade Info if an upgrade is available for the sequence (with infos about upgrade date and details)
+* IMPORTANT: discuss to Disable filter width in BOLD, will change results but it can be done in post processing, the opposite is unrecoverable
+* IMPORTANT: ask Siemens to reduce FLAIR time (half time possible?), 6:50 min currently, else remove ASL to keep time low enough.
+* redo 64ch with jm
+* TOSEE: https://www.nitrc.org/projects/wmls/ White Matter Lesion auto segmentation library using machine learning
+* Enhance DIR with theoreticaly calculation of TInulls values, contact authors of: https://www.ncbi.nlm.nih.gov/pubmed/28506023 and https://content.iospress.com/articles/journal-of-x-ray-science-and-technology/xst16243
+
+TODO2:
+* FLAIR not optimal: it's now SPACE TSE, so it should use another equation and TInull: 1653.1 (3rd eq) instead of 2400ms (2nd eq for SE) http://www.seichokai.or.jp/fuchu/dept1603.php
+* Try to reduce FLAIR space time of acquisition using multiband: use eq 3 on http://www.seichokai.or.jp/fuchu/dept1603.php (or eq2 to be like before, but normally should be eq3 - but in FGATIR paper the T2-FLAIR is defined with eq2 not eq3)
+* Use EQ2 for TI1null and TI2null for FLAWS
+* SE/CSE (spin echo/conventional spin echo) vs GRE (gradient echo) vs TSE/FSE (turbo/fast spin echo). GRE faster but more susceptible to chemical shifts and other artefacts, thus does not function well on inhomogenous magnetic fields. This is the difference between T1 MPRAGE and T1 SPACE.
+* MPRAGE optimized should be TInull 873.5 instead of 950ms according to http://www.seichokai.or.jp/fuchu/dept1603.php
+NO ITS NOT mprage optimized, it should be 9 flip angle!
+=> FLAWS should be 515 first TI then 950 to 1084 for 2nd TI (try 950 because should be lower than 950! Like 800-950!) - try to lower value for each patient until it's good? OK!
+* can also calculate: T1*(math.log(2)-math.log(1+math.exp(-TR/T1))) using http://www.mritoolbox.com/ParameterDatabase.html from http://mriquestions.com/ti-to-null-a-tissue.html
+=> DTI b700 is 30dir (not 64). Rename.
+* IMPORTANT: check if we have reverse-phase encoded b0 images: "the absence of reverse-phase encoded b = 0 images. DWI images are therefore not corrected for EPI distortion and not accurately aligned to T1." https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5543413/
+* IMPORTANT: use CNSF for DTI with 4 components instead of MSMT-CSD in order to segment lesions: see fig 9 and 10 of https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5543413/ - generalization of multi-tissue spherical deconvolution as a blind source separation problem, formulated as convex nonnegative factorization in the SH basis. Like CSD, our approach assumes non-negativity of the tissue ODFs and spatial invariance of their RFs, but jointly optimizes the RFs instead of assuming them as known.
+
+* MRI immobilization : check Pearltech distributor for Belgium is IMA-X.com http://www.pearl-technology.ch/de/radiologie/multipad
+

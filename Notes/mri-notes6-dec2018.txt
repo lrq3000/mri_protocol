@@ -1,0 +1,52 @@
+Iterative shortening of acquisition time
+
+AAhead_scout 14s
+BOLD 5min
+gre_field_mapping 57s
+FLAWS 5:02
+DTI 700+1000 = 2:07+5:35
+FLAIR 4:06
+SWI 3:57
+T2 1:21
+PCASL HIGHRES 2:55
+T2 hemo gobrain? 1:22
+tof (try to reduce with CAIPI or other?) 6:03
+without TOF: 1956s = 32:36
+with TOF: 38:39
+
+AAhead_scout 14s
+BOLD 4min
+gre_field_mapping 57s
+FLAWS 5:02
+DTI 700+1000 = 2:07+5:35
+FLAIR 4:06
+SWI 3:57
+T2 1:21
+T2 hemo gobrain? 1:22
+tof (try to reduce with CAIPI or other?) 6:03
+without TOF: 1721s = 28:41
+with TOF: 34:44
+
+NEW MRI ROUTINE PROTOCOL
+scout 14s
+BOLD 6min
+gre_field_mapping 57s (try to accelerate? then increase BOLD time acquisition up to 7min if possible)
+FLAWS 5:02
+DTI 700+1000 30DIR: 2:07+2:48=4:53 (try to increase b700 further? or use b2000 with more accel like caipi?)
+FLAIR 4:06
+SWI 3:57
+x T2 fast 40s
+x (bonus): PCASL HIGHRES 2:55 (try to raise in-plane acceleration?)
+1724s = 28:44
+without T2 nor PCASL: 1509s = 25:09
+
+DTI 700+1000+2000 30DIR: 2:07+2:48+2:52=7:45
+1943s = 32:23
+
+- SCOUT
+- EPIBOLD repos
+- Mpr T1 3D (FLAWS)
+- DTI 64 dir, 1 volume 
+- Flair 3D 
+- T2 Swi 
+1330s = 22:10

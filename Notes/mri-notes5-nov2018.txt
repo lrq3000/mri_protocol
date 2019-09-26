@@ -1,0 +1,15 @@
+http://mriquestions.com/susceptibility-artifact.html
+
+"The inversion times of both sequences were empirically optimized."
+
+TODO REF for clinical talk: Focal cortical dysplasia (a common cause of pharmacoresistant focal epilepsy) can be better detected using FLAWS: http://indexsmart.mirasmart.com/ISMRM2017/PDFfiles/2331.html
+
+BTW I highly advise to update your MATLAB and your CONN to 18a, you will get a huge time boost (with CONN 18a you can parallelize, so if you have 8 cores like most computers, analyses will be done 8x faster!). And MATLAB 2018A (on the petabyte) has speed optimizations
+
+BEST REF TOADD: comparison of FLAWS and DIR (to get grey matter mask): Also FLAWS generate a better grey matter map than DIR (an alternative, but which generates only grey matter map and nothing else contrary to FLAWS :wink: : http://indexsmart.mirasmart.com/ISMRM2017/PDFfiles/5214.html
+
+MRI-like technique to screen batteries: https://www.azom.com/news.aspx?newsID=49085
+
+TODO MRI: T2 add MPR reconstruction? Maybe will allow to see in better resolution after conversion?
+TODO MRI: use highres pcasl?
+TODO MRI: FLAWS put first before MP2RAGE? too high sar? bright artifacts! No in fact OK for control, but still put first (only ND has these artifacts for controls)

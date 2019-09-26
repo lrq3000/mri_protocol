@@ -1,0 +1,582 @@
+MRI TODO:
+* IMPORTANT BEFORE: phantom (voir aussi dossier classeur pour plus d'infos?) + 64 channels antenne
+* no design for rest
+* dummy scans? Yes, the machine calculates automatically the number of dummy scans necessary to stabilize the coil magnetic gradient and discards them before the real acquisition.
+* use 20 channels coils to avoid middle of brain being blank...
+* more optimal flip angle for bold?
+* slice timing, the private field does not exist
+* no repetition time saved in dicom?
+* BESTTOSEE: http://mriquestions.com/reducing-motion-artifacts.html
+* dti try 2 shells and higher bval
+Comparison of Parameter Threshold Combinations for Diffusion Tensor Tractography http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0098211
+This is due to the fact that it is only capable of resolving a single fiber orientation per voxel, causing incorrect fiber orientations, and hence pathways, to be estimated through these voxels. Given that the proportion of affected voxels has been recently estimated at 90%, this is a serious limitation. https://onlinelibrary.wiley.com/doi/abs/10.1002/ima.22005
+* try 0.5 mm T1 or 1mm with 32channel with partial fourier 6/8 and BW 140 and echo space 10.1 and TR 1950ms and TE 4.44ms and FA 12: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5349250/
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4039442/
+n order to compare the quality of images acquired with different imaging parameters, we used the same resolution (FOV 232×256 mm2, matrix 232×256, slice thickness 1 mm), phase partial Fourier 6/8, and parallel acquisition parameters (GRAPPA mode, reference line PE = 32, acceleration factor 2) for all the images. Our optimal imaging parameters are: TR/TE = 1950/4.06 ms, An external file that holds a picture, illustration, etc.
+Object name is pone.0096899.e022.jpg950 ms, flip angle 12°, echo spacing time 10.1 ms, bandwidth 140 Hz/pixel, total scan time 4 minute and 14 second. The default imaging parameters recommended by Siemens are: TR/TE = 2300/2.96 ms, An external file that holds a picture, illustration, etc.
+Object name is pone.0096899.e023.jpg 900 ms, echo spacing time 7.1 ms, bandwidth 240 Hz/pixel, total scan time 5 minute and 10 second.
+* BOLD: https://www.frontiersin.org/articles/10.3389/fphy.2014.00001/full
+It is known that resting state functional connectivity studies benefit from higher sampling rates to adequately sample undesirable respiration and cardiac effects Birn RM, Murphy K, Bandettini PA (2008) The effect of respiration variations on independent component analysis results of resting state functional connectivity. Hum Brain Mapp 29: 740–750. and http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0015710
+At 3T the MB SIR sequence acquiring 2 mm isotropic pixels had the following imaging parameters: 1680 Hz/pixel, matrix size 96×96. All sequences used 6/8 partial Fourier, RPE  = 2, minimum TE = 40 msec, and 60 slices. The TE varied by 2.5 ms between adjacent SIR images. Identical TEs can be obtained by adding blipped Gp pulses between excitation pulses to equally offset the k0 of respective SIR images into different readout periods. The M-EPI sequence was used to acquire resting state fMRI (R-fMRI) data, and compared to standard EPI at 3T. 3 mm isotropic resolution images were acquired with: 2604 Hz/pixel, matrix size 64×64, RPE  = 2, TE = 40 msec, and 36 slices. The minimum TRs for the different acquisitions are summarized in Table S1. Three sequences were employed for the comparison: standard EPI which is equivalent in our designation to M-EPI with mxn of 1×1 at TR 2.5 s, and M-EPI with mxn of 2×2 at TR 0.8 s, and 3×3 at TR 0.4 s respectively, corresponding to a maximal 18-fold m×n×R acceleration while using flip angles of 90°, and Ernst angles of 60° and 50°, respectively. The average echo spacing, corresponding to a single k-space line, was 0.47 ms, 1.05 ms, and 1.44 ms for SIR (m-factors) 1, 2, and 3, which sampled 1, 2 or 3 slices, respectively, during a single read period. Ramp sampling was used for the normal EPI acquisitions (m = 1), but not implemented for higher SIR/m factors, which would have resulted in reduced echo spacings and more optimized SIR acquisitions. Concomitant MB accelerations did not alter the timing of the readout. These three sequences were employed on each of 3 healthy subjects (at rest with eyes closed) resulting in 9 datasets. The total time for the R-fMRI time series (10 minutes), the spatial resolution (3 mm isotropic with 36 slices), and the TE (40 ms) were kept constant across all acquisitions. The relative estimated SNRs of the 2 mm and 3 mm isotropic images at 3T were estimated using an ROI measurement of mean signal in gray matter divided by mean of air.
+
+The twice-refocused diffusion encoding sequence, first described by Feinberg and Jacob [48], was incorporated into the M-EPI sequence by methods earlier reported using SIR alone [48], [49]. Imaging parameters for 3T diffusion imaging were as follows: DSI using b-maximum of 4500 s/mm2 and 256 samples in q-space, SIR2 × MB2, 3 mm resolution, total acquisition time 8.5 min, TR/2000 ms and signal bandwidth 2604 Hz/pixel. The TE was 124 ms, increased by 12 ms in comparison to an otherwise identical EPI based sequence. Images were reconstructed in the TrackVis program [50].
+
+They concluded that acceleration factors up to eight can be used when blipped CAIPI is employed for aliasing control. In the mean time, simultaneous multi-slice EPI has also been combined with further acceleration techniques such as parallel imaging [24] and simultaneous echo refocusing (SIR) 
+However, as the results of M2 indicate, it seems possible to detect all relevant RSN with almost equal sensitivity in only half the acquisition time. Even with M3, we detected all relevant RSNs (see Fig 4, right column) in full spatial extent, however with significantly decreased peak z-value. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4574400/
++ tsnr calculation
+
+We used a mb-EPI sequence [14] with blipped-controlled aliasing [21, 22]. In order to compare the performance of mb-EPI acquisitions with different slice acceleration, rs-fMRI data were acquired for 7 min using four protocols with different M-factors and number of volumes (n), where the volume repetition times (TR) were near minimum and flip angles (α) were adjusted to yield maximum signal (Ernst angle). The subjects were instructed to lie as still as possible during scans, keep their eyes closed and think of nothing in particular. With respect to the protocols with different multiband factors, the scan order was permuted between subjects to avoid order effects on the results.
+
+All investigated mb-EPI protocols used SENSE [9] with an acceleration factor 2 (S2) since this was shown to reduce susceptibility artifacts with minimal SNR degradation [35]. A matrix size of 64×64, a voxel size of 3×3×3 mm3 and 36 slices with 0.3 mm gap allowed whole brain coverage in the majority of subjects. The protocols with the different multiband factors are referred to as S2×M1, S2×M2, S2×M3 and S2×M4 in the following. We used M-factors of M = 1, 2, 3, 4, TR = 2000ms, 1000ms, 700ms, 520ms, α = 90°, 70°, 60°, 50°, resulting in a total of n = 210, 420, 610, 810 volumes. For these large multi-volume data sets with M ≥ 2, reconstruction took up to about 20 minutes depending on the data size. To avoid delays in the scan process, for M ≥ 2 raw data were saved on the scanner and the reconstruction was performed offline on a Windows PC using a dedicated reconstruction software based on the SENSE algorithm (developed with ReconFrame, GyroTools, Zürich, Switzerland). The reference experiment (S2×M1) was reconstructed at the scanner using standard software. Additionally, a T1w anatomical 3D-TFE data set with an isotropic spatial resolution of 0.7 mm and a FLAIR data set were acquired for each volunteer.
+multi echo epi : https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4739510/
+How is image contrast produced by BOLD fMRI?   http://mriquestions.com/bold-contrast.html
+http://mriquestions.com/bold-pulse-sequences.html
+
+Identical TEs can be obtained by adding
+blipped Gp pulses between excitation pulses to equally offset the k0
+of respective SIR images into different readout periods
+
+Best 7T BOLD optimization: https://onlinelibrary.wiley.com/doi/full/10.1002/mrm.26351 and dti 7T: https://www.researchgate.net/publication/262387713_k-Space_Q-Space_Combining_Ultra-High_Spatial_Angular_Resolution_in_Diffusion_Imaging_using_ZOOPPA_at_7T
+https://www.ncbi.nlm.nih.gov/pubmed/28286317
+* DTI: we had ADC before, so we had multishell?
+* asl https://onlinelibrary.wiley.com/doi/full/10.1002/mrm.26351
+* Simultaneous MultiSlice (SMS) EPI with Blipped-CAIPI ://www.nmr.mgh.harvard.edu/software/c2p/sms
+http://www.cmrr.umn.edu/multiband/
+* TE 15-25 ms (instead of 30-40 ms)
+* Optimized SMS for BOLD and ASL: https://onlinelibrary.wiley.com/doi/full/10.1002/mrm.26351
+
+
+Test done without slice time correction nor field map correction, to be on same foot
+
+conditioning associated with a person = trust? https://www.youtube.com/watch?v=mNApO77qg5w
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4206697/
+
+http://knowyourimages.blogspot.com/2013/02/simulation-mri-free-tools.html
+* BESTTUTO: https://www.frontiersin.org/articles/10.3389/fphy.2014.00001/full Figure 2  Illustrates relevant macroscopic components in BOLD-based fMRI of the brain.
+* BEST: to justify that we find only in one hemisphere and not bilaterally some results, might be because of limited resolution of our acquisition: Using High Spatial Resolution to Improve BOLD fMRI Detection at 3T http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0141358
+* fMRI measurements of amygdala activation are confounded by stimulus correlated signal fluctuation in nearby veins draining distant brain regions https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4440210/
+* Motion‐related artifacts in structural brain images revealed with independent estimates of in‐scanner head motion https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5217095/
+* BEST: ICA vs PCA (acompcor) denoising: Methods for cleaning the BOLD fMRI signal https://www.sciencedirect.com/science/article/pii/S1053811916307418
+* BEST: Myelin content is inversely correlated with intracortical circuit complexity—in general, more myelin content means simpler and perhaps less dynamic intracortical circuits. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3795824/
+* https://quizlet.com/20609338/image-parameters-effect-on-image-quality-scan-time-flash-cards/ and https://quizlet.com/class/559738/ and https://quizlet.com/20606731/imaging-parameters-flash-cards/
+* http://mriquestions.com and revisemri and https://www.mr-tip.com and https://radiopaedia.org/articles/mri-pulse-sequence-abbreviations
+* IR techniques: STIR and FLAIR advantages: can suppress any tissue based on T1 intensity range! Could we imagine T1 without grey matter but only white? http://mriquestions.com/why-use-ir.html
+* Diffusion best softwares: MRTRIX3 for DTI, DSI-Studio for Q-Space, Dipy for everything! (and MRTRIX3 works only on Linux and Mac whereas the other twos works on Windows too). Also MITK but did not work on enhanced dicoms.
+* dti q-space denoising : http://www.sci.utah.edu/~shireen/diffusion.html
+
+- dti 2 shells 1000 and 3000
+- dti try high b val + s3 if possible else s4 ok + 2 shells
+- bold subcortical (use arc ?) , 1 second fine
+- asl fast, a lot less noisy, or try to increase resolution a bit?
+- if bold black in the image's middle (subcortical) it's because of grappa/ipat (in-plane acceleration parallel acquisition) probably, because splits in 2 : http://mriquestions.com/grappaarc.html but good to reduce epi distortion
+AND/OR because prescan normalization is disabled!
+- 2d sense grappa https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5324691/
+- Grappa better for BOLD and motion, but combination hybrid (with mSense less susceptible to motion) can be even better: http://mriquestions.com/two-types-of-pi.html
+- dti slice not uniform
+* faut enlever iPAT (car facteur d'accéleration), 64 canaux, 2 nouvelles séquences créées par JM, mis dans protocole standard, apparemment améliore beaucoup, seul inconvénient séquence morpho pour T1 FLAIR etc vide au milieu, faut changer physiquement l'antenne, donc on choisit 64? garder un 20 canaux au cas ou, pompe patient ne change rien, voir si position patient pas trop grave
+GRAPPA = iPAT
+- 64 canaux antenne a changer manuellement, seuleument pour recherche pas pour clinique TODO ecrire dans nom sequence? ou en faire 2, une pour 64 l'autre pour 20?
+- IDEA formation sur 1 semaine à Berlin pour pouvoir modifier les paramètres.
+- http://community.mrtrix.org/t/good-b-value-sensitivity-parameter-for-2shell/1770
+- DTI keep iPAC? because anyway it's good enough. Can do multi-shell with different TE optimized for each b-value sensitivity, or multi-shell with single TE optimized for highest b-value sensitivity (but simpler to process after): https://cni.stanford.edu/wiki/MR_Protocols#BOLD_EPI.
+
+* Cortical myelination mapping:
+T1/T2: https://www.frontiersin.org/articles/10.3389/fnhum.2014.00671/full
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3167149/
+A 3D T2w Sampling Perfection with Application optimized Contrast using different angle Evolutions (SPACE: TR=3200ms, TE=449ms, variable flip angle, bandwidth=698 Hz/Pixel, echo spacing=3.26ms, Turbo Factor=139, FOV 256mm × 256mm × 176mm, matrix 256 × 256 × 176, 1mm isotropic resolution) sequence was acquired. A GRAPPA factor of 2 was used with no phase oversampling (acquisition time of 5min).
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3795824/
+* t1 (GRAPPA) factor of 2 in combination with 50% phase oversampling (acquisition time 8min) gave an SNR level intermediate to that with no parallel imaging and that with GRAPPA of 2 and no phase oversampling.
+* MP2RAGE: https://www.ncbi.nlm.nih.gov/pubmed/19819338
+* pd weighted image? to correct t1 http://lobi.nencki.gov.pl/research/27/ and https://cni.stanford.edu/wiki/MR_Protocols#T1_map_.2B_PD_map
+* quantitative t1: R1 = 1/T1 = quantitative relaxation rate and there is more: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3677134/
+* with multiband epi, should delete the first few scans because of reconstruction! https://cni.stanford.edu/wiki/MUX_EPI
+* BEST CRITICAL: activate blade? Great for moving patients! Will drastically reduce the sedation rate and discarding of acquisitions due to artifact or pulsation! Possible for T1, T2, dark fluid (FLAIR), STIR (and maybe DTI???) http://mriquestions.com/propellerblade.html https://www.healthcare.siemens.fi/magnetic-resonance-imaging/options-and-upgrades/clinical-applications/syngo-blade/features-benefits even with lower resolution, it's better! 
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2253717/
+also no cross-talk with BLADE (should use between 100% and 157% oversampling), so no need for gaps! http://mriquestions.com/cross-talk.html
+BEST: Blade/Propeller Better despite radial artifacts! http://www.ajnr.org/content/33/1/77
+https://www.sciencedirect.com/science/article/pii/S0730725X13000878
+* IMPORTANT: try IR(STIR/FLAIR) with TI=400msec (instead of 180/2500) with BLADE, to remove white matter (so can derive perfect white matter mask + almost perfect grey matter, only CSF and grey matter remain!). http://mriquestions.com/why-use-ir.html
+* quiet technique? http://www.ajnr.org/content/36/6/1124
+* ASL: see if pCASL and with background suppression enabled http://mriquestions.com/asl-methods-overview.html
+* HARDI (64-direction, b=3000 s/mm2) and DTI (30-direction, b=1000 s/mm2). https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3987782/
+* our old dti was 64-dir but b=1000s/mm2, we could do hardi at 3000s/mm2!
+* pat old ok grappa on dti but not on epi. t1 had grappa and partial fourier 7/8 and slice resolution 75%.
+Diff. weighted images On
+Trace weighted images On
+Average ADC maps On
+Individual ADC maps Off
+FA maps On
+Mosaic On
+Tensor On
+Noise level 40
+Diff. directions 64
+Base resolution 128
+Phase resolution 100 %
+Phase partial Fourier 7/8
+* DWI-BLADE try!!! https://www.ncbi.nlm.nih.gov/pubmed/19363447 and https://www.ncbi.nlm.nih.gov/pubmed/24755049
+* or try diffusion‐weighted readout‐segmented EPI (DW rs‐EPI) https://onlinelibrary.wiley.com/doi/abs/10.1002/ima.22179
+http://mriquestions.com/spiralradial-artifacts.html
+* BLADE + PACE (for free-breathing)
+* But BLADE maybe 2D only...
+* probably the original paper behind generalization of PROPELLER/BLADE to any modality: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5311996/
+* 3D-GRASE + BLADE instead of ASL? https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4023566/
+* faster blade: https://onlinelibrary.wiley.com/doi/abs/10.1002/jmri.23720 and http://hub.hku.hk/handle/10722/220310
+* TODO: DTI repartir de la séquence 1.8mm mais mettre 2mm, car les autres pas de bvecs/bvals avec dcm2niix, mais celle ci y a (et c'est meme en plus intégré dans le fichier nifti!), tester avec dcm2niix via MRIcroGL GUI + DSI Studio
+* HARDI (q-space) vs DTI: Tournier, J. D. High angular resolution diffusion-weighted imaging (HARDI): beyond the diffusion tensor model. and https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3987782/
+RETRY Q-SPACE with better parameters
+* TInull for white and grey matter at 3T: http://mriquestions.com/ti-to-null-a-tissue.html
+http://mriquestions.com/multi-echo-gre.html
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4369478/
+832*(ln(2)-ln(1+e^-(4000/832)))
+https://www.ncbi.nlm.nih.gov/pubmed/10232510
+http://mriquestions.com/relaxation-rate-vs-time.html
+* Artifacts: https://www.slideshare.net/SudilPaudyal/mri-artifacts
+* BEST: Enable pre-scan normalization? Yes, we had prescan normalization before! Alternative to bias field map correction! Should be done for multiband epi! Important to note in papers! Can have both normalized and raw images by enabling "unfiltered images" option in siemens: https://practicalfmri.blogspot.com/2016/02/starting-points-for-sms-epi-at-3-t.html?m=1
+https://neurostars.org/t/advice-for-optimizing-subcortical-signal-with-phased-array-head-coils/1504/4
+https://practicalfmri.blogspot.com/2012/04/common-persistent-epi-artifacts-receive.html
+https://practicalfmri.blogspot.com/2013/07/12-channel-versus-32-channel-head-coils.html
+https://practicalfmri.blogspot.com/2012/11/review-using-bias-field-map-to-improve.html
+* BEST: https://practicalfmri.blogspot.com/2010/12/beware-of-physicists-bearing-gifts.html
+* Extract Singleshell DTI out of Multishell DTI : https://plus.google.com/113988225220989173468/posts/6zRd9fq1HMK
+dwiextract data.nii.gz - -fslgrad bvecs bvals -shell 0,3000 | mrconvert - DWI.mif -datatype float32 -stride 0,0,0,1
+or
+dwiextract HCPdata.nii - -fslgrad   fsl_bvec bval shell 0,1000 | mrconvert - -Data.nii -datatype float32 -stride 0,0,0,1-export_grad_fsl bvecs bvals.
+or
+https://brainlife.io/app/592db717b3cd7c00211dc230
+* dti comparison b values for multishell: https://groups.google.com/forum/#!topic/e_dti/J4wvoZN2ZJI
+https://brainlife.io/apps
+multishell was there since 2014: https://github.com/MRtrix3/mrtrix3/issues/119
+* DTI 2shells from HCP!!! + neonat motion uniform acquisiton + interleaved to still be able to use it (but on philips scanner): https://onlinelibrary.wiley.com/doi/full/10.1002/mrm.26765
+* pi accel on single plane from multiple directions, multiband on multiple planes
+* We have one additional option, a quiet fMRI scan. This is enabled by the Acoustic Reduction Technology (ART) option in the SMS fMRI sequence. The ART scan is quieter, but the acquisition will be slower and the geometric distortion will be worse.
+* High-resolution fMRI BOLD: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4495253/
+* PSF distortion correction better than field maps correction: Image distortion correction in EPI: https://pdfs.semanticscholar.org/6320/6db4fdee92d3ebab6a6cfc1288d5e1ace619.pdf Image Distortion Correction in EPI: Comparison of Field Mapping With Point Spread Function Mapping, Huairen Zeng, and extension: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4338274/
+DiCo for Siemens: https://www.mrdac.uni-freiburg.de/pdfmanuals/Distortion_Correction.pdf
+
+Here are some hints how to achieve the best results at 7 Tesla and above.
+• Use sinusoidal readout to lower helium boil-off and acoustic noise
+• Lower Fat-Sat flip angle and bandwidth-time-product of the excitation pulse to
+save SAR
+• Use parallel imaging acceleration of 2 or 3 with EPI to reduce distortions and
+the echo time
+• PSF “images” are much more strongly T2-weighted, which complicates
+thresholding a lot. Optimize simple cut of threshold for your imaging
+parameters, then switch on BET and be prepared to optimize its parameters
+as well.
+• When using an array coil severe signal dropouts may be observed in the PSF
+“Reference” images. Use “Late combination” to work around this issue. 
+
+* http://support.brainvoyager.com/functional-analysis-preparation/27-pre-processing/459-epi-distortion-correction-echo-spacing.html
+* Siemens provide a phantom: MRI Geometric Distortion QA https://static.healthcare.siemens.com/siemens_hwem-hwem_ssxa_websites-context-root/wcm/idc/groups/public/@global/@imaging/@mri/documents/download/mda0/mtc1/~edisp/siemens_mri_radiation-therapy_manual_geometric-distortion-qa-brief-instruction-01800968.pdf
+* ASLtbx ASL toolbox for analysis and optimization: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2268990/
+http://s434060124.online.de/aslindementiacms/basic-principles-of-asl-2
+* GRASE as a faster, less noisy alternative to EPI for BOLD and ASL?
+http://mriquestions.com/grase.html
+https://onlinelibrary.wiley.com/doi/abs/10.1002/mrm.20580
+it's implemented in Siemens: 3D-GRASE with PASL-FAIR (Q2TIPS), it's called I think Perfusion Mode: FAIR QII https://www.healthcare.siemens.com/magnetic-resonance-imaging/options-and-upgrades/clinical-applications/asl
+BEST explanation of ASL-3D as implemented in Siemens: http://s434060124.online.de/aslindementiacms/basic-principles-of-asl-2
+* Observation: S8 multiband + 64ch limitation: works great for cortical activity, even if there is a lot of noise, the signal is above the noise, but for subcortical structures like hippothalamus it's dead... The signal is caught but the noise is as strong as the signal so we cannot differenciate...
+* Observation: because old MRI had distortion (horizontal stripes of heterogenous intensity), subcortical structures in the middle, when used as seeds such as right pallidium or right thalamus, appear to be connected horizontally all the way, giving the illusion of right-left connectivity. But with more precise and homogenous new MRI machine, activation is lateralized! (ie, left pallidium is significantly connected to left pallidium, but not to right!)
+AND this same effect reduced vertical correlations (eg: from PC to AC)
+AND we did not have any distortion correction! (and no field map)
+
+* Simulators and platform-independent scanner consoles:
+SequenceTree https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4561593/
+Gadgetron: https://www.ncbi.nlm.nih.gov/pubmed/22791598/
+MRiLab
+JEMRIS: http://www.jemris.org/ and http://www.fz-juelich.de/inm/inm-4/EN/Forschung/MR-Physik/TeamSeqDev/MRT-Simulationen/_node.html
+phone app: https://www.slunecnice.cz/sw/mri-simulator-ios/
+SeeMRI: http://www.csc.kth.se/~nillius/seemri.html
+The basis is the Block's equations
+https://phet.colorado.edu/en/simulation/mri
+http://knowyourimages.blogspot.com/2013/02/simulation-mri-free-tools.html
+
+* Don't use non-linear coregistration of BOLD and T1: http://pubman.mpdl.mpg.de/pubman/item/escidoc:2327525/component/escidoc:2327523/master_thesis_huntenburg_4686947.pdf Evaluating nonlinear coregistration of BOLD EPI and T1w images, Julia Huntenburg, Master Thesis, University of Berlin, 20 August 2014
+* https://sites.google.com/a/research.baycrest.org/fmri-lab/MRI-Scanning-at-the-Rotman/scan-types-and-information
+* Resting State BOLD Functional Connectivity at 3T: Spin Echo versus Gradient Echo EPI: http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0120398
+* BEST: how to report MRI hardware and parameters in studies: https://thewinnower.com/papers/977-a-checklist-for-fmri-acquisition-methods-reporting-in-the-literature
+* 3T fmri bold epi optimization of parameters: https://www.ncbi.nlm.nih.gov/pubmed/16959495 and https://www.researchgate.net/publication/267678857_Optimal_EPI_parameters_for_BOLD_sensitivity_dropout_reduction_a_whole_brain_map
+* radiopaedia
+* https://pubs.rsna.org/doi/pdf/10.1148/radiographics.7.3.3448645
+* BEST: slice order interleaved will take longer to recover T1 signal steady state after motion, so prefer sequential/contiguous!: https://practicalfmri.blogspot.com/2012/05/common-intermittent-epi-artifacts.html
+* a higher TE can be good for SNR but bad for motion:
+http://neurometrika.org/node/114
+http://mriquestions.com/bold-pulse-sequences.html
+* BEST difference between Parallel Imaging (PI) like GRAPPA/SENSE and multiband: PI impairs SNR whereas multiband does not (but can produce "ripple" artefacts if too fast):
+http://mriquestions.com/bold-pulse-sequences.html
+https://static.healthcare.siemens.com/siemens_hwem-hwem_ssxa_websites-context-root/wcm/idc/groups/public/@global/@imaging/@mri/documents/download/mdaw/mtix/~edisp/controlled_aliasing_in_parallel_imaging_results_caipirinha-00124408.pdf
+SNR reduced to the square root of the acceleration factor, simply because less data acquired! Hence CAIPI
+* BEST: lower flip angle than 90 degrees = partial flip angle, reduces the saturation! Try to use lowest flip angle than enrst angle then? YES!
+http://mriquestions.com/partial-flip-angles.html
+https://practicalfmri.blogspot.com/2016/02/starting-points-for-sms-epi-at-3-t.html?m=1
+BEST PAPERS: Lowest flip angles where TSNR starts to drop (irrespective of TR! This is for 3T b0, if 7T need to adapt lambda and SNR0 values): Gonzalez-Castillo, J., Roopchansingh, V., Bandettini, P. A., & Bodurka, J. (2011). Physiological noise effects on the flip angle selection in BOLD fMRI. Neuroimage, 54(4), 2764-2778. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3020268/ and Gonzalez-Castillo, J., Duthie, K. N., Saad, Z. S., Chu, C., Bandettini, P. A., & Luh, W. M. (2013). Effects of image contrast on functional MRI image registration. Neuroimage, 67, 163-174. http://dx.doi.org/10.1016/j.neuroimage.2012.10.076
+Code to calculate: thetas = math.asin(1/(lambdaa*snr0)) -> in radians, then convert to degrees
+* BEST: multiband epi siemens optimization https://practicalfmri.blogspot.com/2016/02/starting-points-for-sms-epi-at-3-t.html?m=1
+* BEST fmri sources of noise: https://practicalfmri.blogspot.com/2017/08/fluctuations-and-biases-in-fmri-data.html
+https://2.bp.blogspot.com/-cN3Gl3zmNy0/WZeDa3R9jMI/AAAAAAAABSs/9LQV2KlJYAoXdgIAp5v9xrfcH4-XUTKRQCLcBGAs/s1600/FMRI_signal.png
+https://practicalfmri.blogspot.com/2011/11/understanding-fmri-artifacts-good-axial.html
+https://practicalfmri.blogspot.com/2012/05/common-intermittent-epi-artifacts.html#more
+sms-epi not more susceptible to motion than single band epi! https://practicalfmri.blogspot.com/2016/10/motion-traces-for-respiratory.html
+high-res epi implies need head restraint because more motion sensitive: https://practicalfmri.blogspot.com/2016/10/respiratory-oscillations-in-epi-and-sms.html
+https://practicalfmri.blogspot.com/2017/04/power-plots-of-respiratory-effects-in.html
+https://practicalfmri.blogspot.com/2017/04/major-sources-of-apparent-head-motion.html
+https://practicalfmri.blogspot.com/2018/06/fmri-data-modulators-3-low-frequency.html#more
+https://practicalfmri.blogspot.com/2018/03/fmri-data-modulators-3-low-frequency.html#more
+https://practicalfmri.blogspot.com/2017/12/fmri-data-modulators-2-blood-pressure.html#more
+https://practicalfmri.blogspot.com/2017/10/fmri-data-modulators-1-heart-rate.html#more
+And finally there are statistical implications, as Caballero-Gaudes & Reynolds highlight: 
+"...similar to other approaches based on nuisance regression, adding more physiological noise regressors does not necessarily lead to improvement in BOLD sensitivity and higher statistical significance due to the loss in degrees of freedoms and possible correlations of the physiological regressors with the BOLD fluctuations generated by the experimental paradigm in task-based fMRI or the intrinsic neuronal fluctuations in the resting state. Hence, the optimal set of regressors will depend on the sequence and parameters of acquisition, as well as the regions of interest."
+https://www.ncbi.nlm.nih.gov/pubmed/28580597?dopt=Abstract&utm_source=dlvr.it&utm_medium=twitter
+https://twitter.com/practiCalfMRI/status/872202239208677377
+https://www.biorxiv.org/content/early/2018/06/07/337360
+* BESTTUTO: Physics for understanding fMRI artifacts: https://practicalfmri.blogspot.com/2012/02/physics-for-understanding-fmri.html
+* BEST: https://practicalfmri.blogspot.com/2010/12/beware-of-physicists-bearing-gifts.html
+* TOSEE: Norris DG, Koopmans PJ, Boyacioglu R, Barth M. Power independent of number of slices radiofrequency pulses for low-power simultaneous multislice excitation. Magn Reson Med. 2011 Nov;66(5):1234-40 and https://static.healthcare.siemens.com/siemens_hwem-hwem_ssxa_websites-context-root/wcm/idc/groups/public/@global/@imaging/@mri/documents/download/mda1/ntey/~edisp/caipirinha-revisited-02470160.pdf
+* Split Slice Grappa (or Leak Block): https://practicalfmri.blogspot.com/2016/12/use-of-split-slice-grappa-aka-leak.html
+* Observation: we can do fieldmap correction on old dataset, we have phase (pha) and magnitude (mag) files! It's just a mag/phase fieldmap, not a spin echo fieldmap! Also third type being an inversed EPI scan! See SPM tuto at: http://cbs.fas.harvard.edu/science/core-facilities/neuroimaging/information-investigators/MRphysicsfaq#PACE
+* Observation: old dataset EPI already had prescan normalization, to correct for inhomogeneity!
+* Observation: old dataset had MoCo/PACE, so we can also use that to fix issues that not even offline motion correction can fix (it's used for children!): http://cbs.fas.harvard.edu/science/core-facilities/neuroimaging/information-investigators/MRphysicsfaq#PACE
+* Observation: we had prescan normalization activated before, hence why we don't do fieldmap bias correction. But prescan normalization (based on the EPI BOLD) might reduce real signal! (particularly since we are doing resting-state!). https://practicalfmri.blogspot.com/2012/11/review-using-bias-field-map-to-improve.html
+* BESTTUTO: on PACE: http://cbs.fas.harvard.edu/science/core-facilities/neuroimaging/information-investigators/MRphysicsfaq#PACE
+Explains how PACE works: «PACE is a Siemens term for employing prospective motion correction to BOLD scans.  (PACE is an acronym meaning Prospective Acquisition CorrEction.)»
+Different from MOCO: MOCO is retrospective (like we do offline), PACE is recalibrating the machine, but it can take up to 2 TRs or even more! And this will probably mess up the offline motion correction, since there's no way to save "raw" data (since the machine is recalibrating). Can fix slow movements or scanner drift, but not sudden movements.
+MOCO can enable because can save also raw in dual stream, except if prescan normalization is enabled, then there is no raw data (only prescan norm alone or prescan norm + MOCO in dual stream).
+https://practicalfmri.blogspot.com/2012/11/review-using-bias-field-map-to-improve.html
+http://cbs.unix.fas.harvard.edu/sites/default/files/faq2_PACE_example.jpg
+* WHY GRAPPA is bad for BOLD (or any timeseries!): Another cause of fluctuating ghosts can be the combination of parallel imaging (iPAT) in your BOLD scan along with subject motion. Parallel imaging is explained in more detail below. However, at this point, its important to know that this method uses a map of coil sensitivity profiles in the image reconstruction process. This map is acquired before the scan really starts. Motion during those reference scans will corrupt all data in the series, while motion after the reference scans will result in corrupted data, and usually large ghosts, at the time the motion occurs. (The ghosts that occur in this instance are much large than the ghosts resulting from subject motion when parallel imaging is not used.)  http://cbs.fas.harvard.edu/science/core-facilities/neuroimaging/information-investigators/MRphysicsfaq
+* Avoid Z-shimming for moving patients, because it's done only at the beginning, and after moving the shimming will be incorrect, increasing/decreasing the dropout of wrong regions: https://www.ncbi.nlm.nih.gov/pubmed/16959495 and http://cbs.fas.harvard.edu/science/core-facilities/neuroimaging/information-investigators/MRphysicsfaq
+* BESTTUTO on Partial Fourier (vs iPAT GRAPPA/SENSE): 6/8 leads to a minimum dropout SNR of 15% but it can be even worse! But can get way faster TE (33% off! Eg from 45ms to 29ms!) http://cbs.fas.harvard.edu/science/core-facilities/neuroimaging/information-investigators/MRphysicsfaq
+* Single shell multi tissue CSD? http://community.mrtrix.org/t/problem-of-masks-in-mrtrix/1172/9
+* Enrico is doing multi-shell: https://arxiv.org/ftp/arxiv/papers/1710/1710.02199.pdf
+* prescan normalization and dwidenoise: http://community.mrtrix.org/t/use-of-prescan-normalize-siemens-and-dwidenoise/1666/2
+* Observation: we had raw data filter enabled for DTI to reduce truncation artifact/edge oscillation (ie, longitudinal stripes in the acquisition dimension)
+* BEST: MR Glossary - Siemens Medical: https://www.depts.ttu.edu/vpr/ttni/downloads/MRGlossary.pdf
+* BESTTUTO: to reduce TR and TE, can use fast transmitter bandwidth RF pulse type (but be careful not to attain the SAR limit!) - also reduces distortion susceptibility to metal etc + play with receiver bandwidth to also reduce susceptibility to artifacts and reduce time (but also need to reduce resolution, because will impact SNR/quality otherwise just like resolution, but will get a huge speedup! Check SNR calculation on the console - or do oversampling or increase averages NEX or increase FOV): https://mrimaster.com/technique%20andwidth.html and https://books.google.be/books?id=rSU3CwAAQBAJ&pg=PA103&lpg=PA103&dq=peripheral+nerve+stimulation+fast+rf&source=bl&ots=dh7Ti_ZzAI&sig=y9ZMIOBCH6dC9l8ykIat-MwMKOE&hl=fr&sa=X&ved=2ahUKEwjtsIDzwLbcAhXBLFAKHf3wC2AQ6AEwC3oECAcQAQ#v=onepage&q=peripheral%20nerve%20stimulation%20fast%20rf&f=false
+Bandwidth in MRI? by Joachim Graessner, Dipl.-Ing, http://dev.clinical-mri.com.s166757.gridserver.com/wp-content/uploads/software_hardware_updates/Flash_52_HIDI_Bandwidth_13_03_19.pdf
+* SNR and grappa and filters: https://onlinelibrary.wiley.com/doi/full/10.1002/jmri.20969
+* Hamming filter = low-pass filtering, don't do that because lose important components (and can always do later): https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2350228/
+* BEST: Correction strategy for diffusion-weighted images corrupted with motion: application to the DTI evaluation of infants' white matter, j.dubois et al, 2014,  http://www.unicog.org/publications/duboisPoupon_dwiCorMvt_mri14.pdf
+* Test-retest reliability of high spatial resolution diffusion tensor and diffusion kurtosis imaging (multishell): https://www.nature.com/articles/s41598-017-11747-3#Sec14
+* The Importance of Correcting for Signal Drift in Diffusion MRI https://onlinelibrary.wiley.com/doi/pdf/10.1002/mrm.26124
+* macroscopic motion is costly: https://my.vanderbilt.edu/mridesign/files/2015/11/Prototype-2-Progress-Report.pdf
+* http://thechart.blogs.cnn.com/2011/10/26/dont-get-hurt-by-an-mri/comment-page-3/
+https://www.radiologyinfo.org/en/info.cfm?pg=headmr
+* Simultaneous atDCS and fMRI: https://www.jove.com/video/51730/transcranial-direct-current-stimulation-simultaneous-functional
+* BEST: to robustly reduce dark-band artifacts, use reverse centric phase encoding of k-space, for T1 etc, even more important when parallel imaging is used: Characterization and Reduction of Saturation Banding in Multiplanar Coherent and Incoherent Steady-State Imaging, Jamal J. Derakhshan et al, 2010 https://onlinelibrary.wiley.com/doi/pdf/10.1002/mrm.22314
+* http://amos3.aapm.org/abstracts/pdf/99-27725-358478-110186-813905771.pdf
+* BEST: to get automatic AC-PC reorientation on all scans and inter-subjects, use AA_scout instead of localizer (AA = AutoAlign), but might not always work particularly in moving patients. Also can use AutoCoverage to make sure the patient's whole brain is covered: http://clinical-mri.com/wp-content/uploads/2016/07/How-I-do-it_Schraa_Autocoverage.pdf
+* dti distortion correction in motion prone populations: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5118068/
+* Siemens launched SMS MB EPI in end of 2016, along with GOBrain: https://www.news-medical.net/news/20160317/Siemens-Healthcare-launches-new-MR-applications-to-help-hospitals-reduce-scan-times-in-neurology.aspx
+Scotland: https://www.news-medical.net/news/20160921/SINAPSE-network-enhances-strengths-to-develop-world-class-future-in-medical-imaging-for-Scotland.aspx
+* BESTTOREAD: Lymphatic vessels in the brain are critical for cleaning and memory: https://www.news-medical.net/news/20180726/Research-findings-may-offer-new-path-to-treat-or-prevent-neurodegenerative-diseases.aspx
+* http://www.revisemri.com/questions/misc/mri_abbrev
+http://www.mrgschedule.com/schedule_static/MRI_Acronyms.pdf
+* BESTTUTO: how to compute TSNR images:
+(2) On a Siemens scanner (there are probably similar utilities on other vendors’ machines) you can produce stdev and mean images by selecting the time series of interest in the Viewing window (make the border solid blue), then use these menu items:
+Evaluation > Dynamic Analysis > Arithmetic Mean…
+                                                    > Standard Deviation…
+                                                    > Divide…
+To create a TSNR image (TSNR=mean/stdev) having already created mean and stdev images, you need to select (solid blue border) the mean and stdev images in the Viewing window first. It doesn’t matter which order you select these two images, the Divide function has a button to swap numerator for denominator.
+https://practicalfmri.blogspot.com/2010/11/towards-optimal-protocol-for-resting.html
+* PACE again and SPM: PACE and MOCO allow non isotropic voxels motion correction whereas SPM realignment is only for isotropic voxels, and there is a file that stores PACE and MOCO motion correction detection: Q:\Temp\MotionDetectionParameter.txt (but deleted at each new run)  https://www.jiscmail.ac.uk/cgi-bin/wa.exe?A3=ind04&L=SPM&E=quoted-printable&P=329675&B=------%3D_NextPart_000_00F3_01C3D904.17387B60&T=text%2Fhtml;%20charset=iso-8859-1
+https://medicine.uiowa.edu/mri/facility-resources/images/fmr-imaging
+* BESTTOREAD: PACE in rsfmri dataset and study (2018!): https://www.sciencedirect.com/science/article/pii/S2352340918300921#bib1
+An evaluation of the effectiveness of Prospective Acquisition CorrEction (PACE) for reducing motion-related artifacts in resting state fMRI data, Lanka et al, Front. Neurosci. (2018), NOT YET PUBLISHED!
+* Observation: Christophe Phillips probably uses PACE.
+* BEST: better to acquire multiple scans fast to correct for inter-scans motion than a single long scan because then we get intra-scan motion that we can't correct! And this also increases the contrast and SNR by removing noise (by averaging), even more if using different SNR/b-values for each scan.
+For T1: https://onlinelibrary.wiley.com/doi/full/10.1002/hbm.20235 - says that it's better than PACE or BLADE/PROPELLER! because Propeller cannot correct for out-of-plane motion - script here (but can do manually, simply coreg structural images and then average with imcalc): https://brainder.org/2012/05/17/retrospective-motion-correction-for-structural-mri/
+For DTI there is multi-shell (which also increases multi-tissue separation precision)
+For fmri: https://www.sciencedirect.com/science/article/pii/S1053811913002127 and https://www.sciencedirect.com/science/article/pii/S1053811912008609 and https://www.sciencedirect.com/science/article/pii/S1053811911011815 and https://www.sciencedirect.com/science/article/pii/S2352340918300921
+BEST: explains why scanning faster is better, because it's converting intra-scan motion into inter-scan motion: the article explains the difference between intra-scan motion (which is not correctable offline, can only redo the sequence or try to scan faster), and inter-scan motion (which is correctable by prospective or retrospective motion). BLADE/PROPELLER tries to fix intra-scan motion but in 2D for now and has limitations (cannot correct out-of-plane motion). So the best strategy is to reduce scan time and acquire multiple images that will be averaged, this way we convert intra-scan motion into inter-scan motion, which is correctable.
+* BEST: Negative connectivity (but not positive) might be an artefact of motion? Hence why we need to reject (and why if we are conservative parameters in ART we get less negative connectivity): https://www.sciencedirect.com/science/article/pii/S1053811913002127
+TODO: use more conservative parameters in ART, since motion might be causing negative connectivity.
+* Small animals MRI machine with same software as Siemens: https://www.bruker.com/fileadmin/user_upload/8-PDF-Docs/MagneticResonance/MRI/brochures/ClinScan_T11800.pdf
+* Incremental GLM for real-time fMRI: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3731777/
+* Siemens comparison of new technics speed (compressed sensing, sms, PAT, twist), with a chart of what accelerations are possible per technic: Setting the pace in
+MRI acceleration Whitepaper: https://static.healthcare.siemens.com/siemens_hwem-hwem_ssxa_websites-context-root/wcm/idc/groups/public/@global/@imaging/@mri/documents/download/mda3/nzix/~edisp/magnetom-world_whitepaper_setting-the-pace-in-mri-acceleration-04860435.pdf
+* BESTTUTO: ASL: http://fmri.research.umich.edu/research/main_topics/asl.php#bold
+https://www.hindawi.com/journals/ijbi/2012/818456/
+https://cfmriweb.ucsd.edu/ecwong/BE278W11Lec09.pdf
+20 averages enough, no need for 50: http://www.ajnr.org/content/30/5/968
+* The gradient magnetic field is the primary source of acoustic noise in MR procedures
+(4, 6). This noise occurs during the rapid alterations of currents within the gradient coils.
+These currents, in the presence of the strong static magnetic field of the MR system,
+produce significant (Lorentz) forces that act upon the gradient coils. Acoustic noise is
+produced when the forces cause motion or vibration of the gradient coils as they impact
+against their mountings, which, in turn, flex and vibrate (7, 8). The acoustic noise varies
+due to the alteration of the gradient output (rise time or amplitude) by modifying MR
+imaging parameters. Noise tends to be enhanced by decreases in section thickness, field
+of view, repetition time, echo time, and as field strentgh arises.
+Several investigators have described the development of "quiet" pulse sequences, which
+substantially decrease acoustic noise and are acceptable for MR imaging and functional
+MRI examinations. To date two methods have been used to reduce noise - dampen/
+isolate the gradient coil from the patient bore, or reduce switching rate. Both methods
+have drawbacks; the first resulting in reduction of bore space and the second reducing
+performance. Quieter techniques are feasible which minimize gradient switching over
+the TR period by utilizing a 3D projection reconstruction with no excitation, pre-winding,
+phase-encoding, refocus, or crusher gradients. This technique can reduce acoustic
+noise levels by more than 30dBA while generating an isotropic volumetric acquisition. In
+addition, the nearly zero-TE nature of the "Silent" protocol has the potential to provide
+superior rendering due to reduced dephasing related signal loss.
+"Quiet-Zero TE" ASL brain MR angiography Can Outperform 3D TOF at 1.5T
+
+asl similar to tof https://www.ncbi.nlm.nih.gov/pubmed/28738690
+https://onlinelibrary.wiley.com/doi/pdf/10.1002/mrm.25611
+http://www.ajnr.org/content/early/2018/03/15/ajnr.A5570
+http://adsabs.harvard.edu/abs/2017SPIE10134E..1BP
+* BESTTOREAD: https://radiopaedia.org/articles/mri-artifacts-1
+* BEST: lots of liquid/fat suppression methods, such as FLAIR (dark fluid STIR) or Dixon (can be combined with CAIPI):
+https://www.diva-portal.org/smash/get/diva2:437998/FULLTEXT01.pdf
+http://www.indiana.edu/~mri/seminars/slides/fat%20suppression%20by%20Chen%20Lin.pdf
+https://www.healthcare.siemens.com/magnetic-resonance-imaging/clinical-specialities/body-mri/applications
+http://mriquestions.com/dixon-method.html
+* Radial VIBE / Radial Sampling: generalization of BLADE and alternative to cartesian methods, less susceptible to motion and no time penalty for oversampling up to 512! And can be combined with CAIPI (eg StarVibe). And no aliasing, and can undersample with less aliasing, and motion corrected from center of image (since super over sampled). grasp = golden rule optimized angle
+http://cai2r.net/research/radial-vibe-sequence
+http://mriquestions.com/radial-sampling.html
+Improving the Robustness of Clinical T1-Weighted MRI Using Radial VIBE, https://static.healthcare.siemens.com/siemens_hwem-hwem_ssxa_websites-context-root/wcm/idc/groups/public/@global/@imaging/@mri/documents/download/mday/mjq2/~edisp/improving_robustness_using_radial_vibe-01176267.pdf
+used by many clinical centers already: https://appliedradiology.com/articles/radial-t1-weighted-magnetic-resonance-imaging-background-clinical-applications-and-future-directions
+Compressed sensing + GRASP-VIBE (but not for brain): https://www.healthcare.siemens.be/nl/magnetic-resonance-imaging/options-and-upgrades/clinical-applications/compressed-sensing-grasp-vibe
+* acronyms again: http://mriquestions.com/commercial-acronyms.html
+https://www.imaios.com/fr/e-Cours/e-MRI/Sequences-IRM/Sequences-acronymes
+* RESOLVE (readout segmentation of long variable echo-trains - rs-EPI): https://static.healthcare.siemens.com/siemens_hwem-hwem_ssxa_websites-context-root/wcm/idc/groups/public/@global/@imaging/@mri/documents/download/mdax/mzc0/~edisp/mr_app_resolve_final_121991554_1-00678917.pdf
+Useful for DTI and also T1 maybe? Reduces susceptibility to motion-induced phase errors and SAR.
+Can have SMS-RESOLVE-DTI
+BEST: Benefits of Accelerated MR Imaging in Daily Routine, https://static.healthcare.siemens.com/siemens_hwem-hwem_ssxa_websites-context-root/wcm/idc/groups/public/@global/@imaging/@mri/documents/download/mda3/mza0/~edisp/magnetom-flash-69_benefits-of-accelerated-mri_runge-04329134.pdf
+Data undersampling can also be combined with arterial spin labeling and 3D radial acquisition to improve the detection and characterization of intracranial arteriovenous shunts.
+Also this whitepaper confirms that SMS3 DWI is equivalent to conventional (non SMS) DWI in terms of image quality.
+BEST: RESOLVE vs PROPELLER DWI, RESOLVE is better in quality and faster: https://www.ncbi.nlm.nih.gov/pubmed/26807895
+* SEMAC to reduce metallic artifacts
+* SPACE?
+* https://www.imaios.com/fr/Anatomy-Ninja-Lower-Limb
+https://www.imaios.com/fr/e-Cases/Chaines/Radiologie/Urgence-Imadis/Encephale
+* BEST: for DTI multi-shells config (2-shells and 3-shells) http://community.mrtrix.org/t/good-b-value-sensitivity-parameter-for-2shell/1770
+Fig 10 of https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5543413/
+https://onlinelibrary.wiley.com/doi/pdf/10.1002/nbm.3017
+https://onlinelibrary.wiley.com/doi/abs/10.1002/mrm.26765
+* Merging/concatenating multiple single-shells acquisitions into one multi-shells to do multi-tissue CSD: this is disadvised as then normalization of b0 values must be done and anyway this is not well studied! So better acquire multi-shells directly: http://community.mrtrix.org/t/multi-tissue-csd-and-pooled-b0s-across-shells/1593 and http://mrtrix.readthedocs.io/en/latest/reference/commands/mrcat.html
+* BEST TOSEE: Synthetic MRI or SyMRI (via acquisition sequence QRAPMASTER): https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5596834/ and https://static.healthcare.siemens.com/siemens_hwem-hwem_ssxa_websites-context-root/wcm/idc/groups/public/@global/@imaging/@mri/documents/download/mda3/mza0/~edisp/magnetom-flash-69_benefits-of-accelerated-mri_runge-04329134.pdf
+«SyMRI now has regulatory approval in several countries and can be integrated into a PACS system and used on GE, Philips, and Siemens platforms.»
+Available as of 2017: https://www.itnonline.com/content/syntheticmr-and-siemens-healthineers-sign-cooperation-agreement-symri-software-package
+http://www.syntheticmr.com/
+http://www.syntheticmr.com/symri/remydi-quantification-of-myelin-volume/
+https://www.youtube.com/watch?v=X3JdFy9OM6s
+https://radiopaedia.org/articles/synthetic-mri
+https://en.wikipedia.org/wiki/Synthetic_MRI
+http://magic.gehealthcare.com/
+but perceived to be lower quality: https://www.ncbi.nlm.nih.gov/pubmed/23024181/ but contradictory with https://www.ncbi.nlm.nih.gov/pubmed/18666127/
+BEST: Siemens rapid continuous comprehensive imaging: https://static.healthcare.siemens.com/siemens_hwem-hwem_ssxa_websites-context-root/wcm/idc/groups/public/@global/@imaging/@mri/documents/download/mda2/mdky/~edisp/editorial_65-03045718.pdf
+MR Fingerprinting
+(MRF)1
+ technique, as championed
+by Griswold and colleagues at Case
+Western Reserve University.
+ In addition to enriching
+the information content of fingerprinting
+sequences at no cost in
+acquisition time, this new ‘multi-illumination’
+fingerprinting approach
+has been shown to enable robust
+imaging in the presence of strong
+RF field inhomogeneities. As a
+result, it promises to reduce the
+calibration-heavy and workflowintensive
+field of parallel RF transmission
+to a simple ‘plug and play’
+mode of operation .
+10 Ma, D., Gulani, V., Seiberlich, N. et al.,
+“Magnetic resonance fingerprinting,”
+Nature, 495(7440), 187-92 (2013).
+11 Ben-Eliezer, N., Sodickson, D. K., and
+Block, K. T., “Rapid and accurate T2
+mapping from multi-spin-echo data
+using Bloch-simulation-based reconstruction,”
+Magn Reson Med, 73(2),
+809-17 (2015).
+12 Cloos, M., Wiggins, C., Wiggins, G. et al.,
+“Plug and Play Parallel Transmission at 7
+and 9.4 Tesla based on Principles from
+MR Fingerprinting,” Proceedings of the
+Twenty Second Scientific Meeting of the
+International Society for Magnetic
+Resonance in Medicine, 542 (2014).
+MR fingerprinting is stochastically acquiring images and after recognizes what it is! https://www.healthcare.siemens.com/magnetic-resonance-imaging/magnetom-world/hot-topics/mr-fingerprinting
+and MRF is less motion sensitive!
+* BEST TOSEE: AUTOMAP AI enhancement of MRI: https://www.itnonline.com/content/artificial-intelligence-provides-faster-clearer-mri-scans
+https://www.nature.com/articles/nature25988
+Code availability. Source code is available from the corresponding author upon reasonable request.
+https://mrirecon.github.io/bart/
+* BEST TOSEE: t-SNE dimensionality reduction toolbox, was used by AUTOMAP, can be used for my phd?: https://lvdmaaten.github.io/tsne/
+* BEST TOSEE: ISMRM can download all workshops videos if loggued! Ask colleagues if someone has access: https://www.ismrm.org/workshops/2018/Machine/program.htm
+https://blog.ismrm.org/category/highlights/
+* Open source mri: https://hackaday.com/2015/05/04/hackaday-prize-entry-a-low-cost-open-source-mri/
+* Future of motion correction: synthetic MRI with ultrasound, from previously acquired MRI! Produces realtime MRI images!: http://www.opensourceimaging.org/project/hybrid-mri%E2%80%90ultrasound-scannerless-real%E2%80%90time-imaging/
+https://github.com/fpreiswerk/OCMDemo
+* BEST TOREAD: compressed sensing analogy: https://static.healthcare.siemens.com/siemens_hwem-hwem_ssxa_websites-context-root/wcm/idc/groups/public/@global/@imaging/@mri/documents/download/mda2/ndk1/~edisp/siemens_mri_magnetom-world_compressed-sensing_compressed-sensing-metaphor_blasche-03520146.pdf
+and real flowchart: https://static.healthcare.siemens.com/siemens_hwem-hwem_ssxa_websites-context-root/wcm/idc/groups/public/@global/@imaging/@mri/documents/download/mda2/ndk1/~edisp/siemens_mri_magnetom-world_compressed-sensing_compressed-sensing-flowchart_blasche-03520147.pdf
+more: https://static.healthcare.siemens.com/siemens_hwem-hwem_ssxa_websites-context-root/wcm/idc/groups/public/@global/@imaging/@mri/documents/download/mda2/ndk1/~edisp/siemens_mri_magnetom-world_compressed-sensing_compressed-sensing-paradigm-shift_forman-03520145.pdf
+* BEST: SPACE/FSE (fast spin echo = TSE turbo spin echo): very fast T1, T2 or FLAIR acquisition if isotropic voxels. http://mriquestions.com/spacecubevista.html
+3D SPACE DIR = 3D fast spin echo with double inversion: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3616610/
+* Fast method to measure T1 relaxation time: https://www.sciencedirect.com/science/article/pii/0730725X8790021X
+* BESTTUTO: http://mriquestions.com/what-is-the-b-value.html
+Vibration can be an issue with higher multiband or b-values...
+* Observation: since prescan normalization was enabled and raw filter too, our previous protocol was a bit experimental... it was not standard by any means.
+* from JM: distortion correction courants de foucault, c'est pure post-processing, on peut mettre 3D sans problème, perd pas de signal ni temps, d'hab c'est 2D car on fait des acquisitions 2D mais on peut faire correction en 3D. On peut meme afficher avec et sans correction les images.
+* pb signal au milieu pour pelvis, pareil que nous pour neuro.
+* Observation: DTI preprocessing was using ACT (T1) to derive WM mask, this greatly enhanced the results (useless otherwise with no ACT), but destroyed the cerebellum! Multishell without ACT now correctly show the cerebellum. Should we try a new more robust ACT approach? Because mask/segmentation was obviously bad! https://www.sciencedirect.com/science/article/pii/S1053811912005824?via%3Dihub
+
+
+------------
+
+
+
+TODO:
+* enable prescan normalization on EPI : YES we had prescan normalize before! So it was not because of GRAPPA! (but we also had no PAT before, for maximum SNR)
+old params to put also?
+Interpolation 3D-K-space
+Spatial filter On
+Filter setting 0.7
+* optimized T1: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4039442/
+* 3D distortion correction for EPI BOLD? (instead of 2D)
+* WM suppressed FIR, as mask for segmentation: https://www.ncbi.nlm.nih.gov/pubmed/10232510
+* test with higher pi and no multiband?
+* NO DON'T Enable Grappa again, S8 BOLD was better for J than A (less artefacts due to speed)
+* Confirmed: 64ch can almost acquire S8 BOLD! But still too noisy -> try 4mm voxel size + s6 acceleration around 450ms?
+* Summary BOLD: 2nd scan s4-s6 for 64ch, not for others, try to attain 500 msec + standard BOLD at s2 1250ms or s3 at 1s + 2nd scan 20 ch at s3 at min time? (because s4 has too much noise) + enable prescan normalization + maybe grappa? + maybe 3D distortion correction? + choose what to do for 20ch: s2 1250ms or s3 950ms? s2 probably for standard, and s4 fastest for 2nd.
+FINAL BOLD: USE S2 + S4! VALIDATED ON CONN RESULTS! (we lose negative connectivity, but it's not because of artefacts! The subcortical regions have adequate significance with positive connectivity!)
+-> try s5 and s6 speed on next control with 64ch
+* ASL3D multi-slice mode set to descending instead of ascending
+* Do we still need Pha_Images, Mag_Images and T2_tse_tra_FIL (we have t2_tse_tra_512 but does not look the same or was not acquired for C)
+* PB noise BOLD s3 for J was maybe not because of GRAPPA but because of too precise resolution (2x2x3). All after were 3 iso.
+
+SUMMARY:
+* EPI BOLD: prescan normalization AND unfiltered images + s2 and s4 (at fastest TR) + 3D distortion correction? + prepare s5 and s6 at voxel size 3.5mm for next 64ch acquisition + FLIP ANGLES + retry s2, s4, s8 and add s5 and s6 + slice order KEEP DESCENDING CONTIGUOUS + RAW DATA FILTER ENABLE!!!
+Note: below TR 1.5 is best to better estimate (and correct) HRF! And thus more statistical power (and less positives in regions influenced by physiological cardiac-induced noise = blood larger vessels, see Lund et al 2006 NeuroImage 29 54-66)
+http://mriquestions.com/bold-pulse-sequences.html
+http://www.sbirc.ed.ac.uk/cyril/download/DTP_fMRI-preprocessing.pdf
+Importance of BOLD consistent parameters in cross-sectional studies of DMN: https://www.researchgate.net/publication/312320316_Test-Retest_Reproducibility_of_the_Intrinsic_Default_Mode_Network_Influence_of_fMRI_Slice-Order_Acquisition_and_Head-Motion_Correction_Methods
+* BOLD, DTI, FLAIR: RAW FILTER + PRESCAN NORMALIZE ; all others have prescan normalize!
+* T1 oversampling 100% avant?
+* ASL3D multi-slice mode set to Descending.
+* DTI & BOLD in 64ch: Cerebellum is cut (and a bit of top of head), can we fix that?
+* optimized T1 and WM suppressed FIR organize meeting
+* Flip angle DTI and BOLD check, I think I did a mistake! Oui ils sont pas bons, faut recalculer!
+http://mriquestions.com/optimal-flip-angle.html#
+1331 T1 gray matter
+http://www.mritoolbox.com/ErnstAngle.html
+http://www.mritoolbox.com/ParameterDatabase.html
+Paper explaining the perfect angle to be 12 (not 8 but we have a lower TR): https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4039442/
+* T2-VIBE instead of FLAIR? can be better for moving patients?
+* MriLab
+* Flip Angle EPI BOLD:
+http://www.mritoolbox.com/ErnstAngle.html
+Params:
+1331
+1421
+1820
+Results:
+s2 1260 TR: 60-67 -> 35
+s3 950 TR: 54-61
+s4 641 TR: 45-52 -> 30
+s5?
+s6?
+s8 363 TR: 35-40.5 -> 20
+TODO: use the lowest flip angle to limit saturation! Limit: 14 deg
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3020268/
+https://www.sciencedirect.com/science/article/pii/S1053811912010804?via%3Dihub
+https://practicalfmri.blogspot.com/2016/02/starting-points-for-sms-epi-at-3-t.html?m=1
+* lower echo spacing at 65ms? so that longer te 33ms? NO TE MODIF else frontal and temporal dropout! https://practicalfmri.blogspot.com/2016/02/starting-points-for-sms-epi-at-3-t.html?m=1
+* try s2 with 2.5mm voxel size https://1.bp.blogspot.com/-DsTxbnlAvIg/VrmOqnNfYlI/AAAAAAAABCI/7CcopnQ2MQM/s1600/MB-EPI_key_pars.png
+* use early echo omission for shorter te https://practicalfmri.blogspot.com/2016/02/starting-points-for-sms-epi-at-3-t.html?m=1
+* disable grappa everywhere because motion? but will be sedated except bold: https://practicalfmri.blogspot.com/2016/02/starting-points-for-sms-epi-at-3-t.html?m=1 and  https://practicalfmri.blogspot.com/2012/03/grappa-another-warning-about-motion.html
+NO: but try to see if split slice grappa available for DWI and T1: https://practicalfmri.blogspot.com/2016/12/use-of-split-slice-grappa-aka-leak.html
+* Advanced shim enable for post-sedation EPI (check how long it takes, maybe faster with SMS). «It takes about 90 seconds but the benefits in frontal and temporal lobes should be worth the extra time.» Can do advanced shimming for first sequence and then standard shimming for all others: https://practicalfmri.blogspot.com/2016/02/starting-points-for-sms-epi-at-3-t.html
+«An advanced shim mode is available. In this mode, the scan does a first field map as in the standard mode and then acquires a second map to check the validity of the first. A small correction is made, if necessary, and a third field map is acquired to check that result. The total advanced shim takes approximately 90 seconds, whereas the standard shim takes 30 seconds (including computations).» http://cbs.fas.harvard.edu/science/core-facilities/neuroimaging/information-investigators/MRphysicsfaq
+* acquire Single band images (SBref) for coregistration later - or rather infinite TR image (ITV):
+A minimum of 45 s elapsed between the end of RF excitations in pre-scan and the beginning of the following EPI scans. This delay was enforced to ensure full recovery of longitudinal magnetization in the sample prior to the start of each functional scan so the first EPI volume in the fMRI time series was acquired equivalently as with infinite TR.
+* shorten RF pulse and increase bandwidth?
+* try s4 with 1000 TR? To see if better quality? that's what is done here, s4 1200ms: https://1.bp.blogspot.com/-DsTxbnlAvIg/VrmOqnNfYlI/AAAAAAAABCI/7CcopnQ2MQM/s1600/MB-EPI_key_pars.png
+* re-shim at each scan (because we expect subject's motion)? «Note, however, that if you are using a field map for offline distortion correction, or the inline distortion-unwarping sequence, you’ll need to acquire a new field map or distortion pre-scan each time you shim.» http://cbs.fas.harvard.edu/science/core-facilities/neuroimaging/information-investigators/MRphysicsfaq
+* If need to reduce time, try to use Partial Fourier (7/8 should be the max I try) - advantages are small impact on snr and also reduces excitation saturation along with te time
+* dti optimization option? what is it? in sequence 1
+* DTI TODO: use s3 + b-1000 and b-2000 (instead of b-3000) & maybe b-500? + phase partial fourier to 7/8 (not 6/8) + Strict en effet (position not isocenter but: L1.7 P0.8 H16.2) + raw filter (was enabled before) to reduce truncation artifact/edge oscillation (the stripes I saw) + rf pulse type up to Normal like before (will also reduce distortion susceptibility - because Low SAR no advantage it's only to reduce SAR)? But will be ok with SAR? (apply to T1 too?) + receiver bandwidth increase and reduce resolution for faster scan times? + dist factor 0% (not 30%, might explain the variable slice gap?)
+BEST: https://mrimaster.com/technique%20andwidth.html
+https://books.google.be/books?id=rSU3CwAAQBAJ&pg=PA103&lpg=PA103&dq=peripheral+nerve+stimulation+fast+rf&source=bl&ots=dh7Ti_ZzAI&sig=y9ZMIOBCH6dC9l8ykIat-MwMKOE&hl=fr&sa=X&ved=2ahUKEwjtsIDzwLbcAhXBLFAKHf3wC2AQ6AEwC3oECAcQAQ#v=onepage&q=peripheral%20nerve%20stimulation%20fast%20rf&f=false
+http://dev.clinical-mri.com.s166757.gridserver.com/wp-content/uploads/software_hardware_updates/Flash_52_HIDI_Bandwidth_13_03_19.pdf
+* TODO: acquire without multiband DTI & BOLD as reference!
+* T1 gradient mode Fast (as before, instead of Normal)?
+* TOTAL TIME BEFORE not to get above: 44:33.2
+* Suggestion by colleagues: T1 add more slices to get ears and full skull, good for TMS-EEG neuronavigation, helps a lot. Seems ok on 20 channels, only on 64 channels on MC was an issue (maybe she has a big head?), only missing a bit of the ear.
+Try AutoCoverage to make sure the patient's whole brain is covered? http://clinical-mri.com/wp-content/uploads/2016/07/How-I-do-it_Schraa_Autocoverage.pdf
+* Important: DTI, T1 and BOLD have no cut, whatever the antenna channels, everything looks fine FOV and resolution-wise!
+* To robustly reduce dark-band artifacts, use reverse centric phase encoding of k-space, for T1 etc, even more important when parallel imaging is used: Characterization and Reduction of Saturation Banding in Multiplanar Coherent and Incoherent Steady-State Imaging, Jamal J. Derakhshan et al, 2010 https://onlinelibrary.wiley.com/doi/pdf/10.1002/mrm.22314
+* Implement multiple fast T1 acquisitions and try to average (try to acquire 2/3) to reduce motion issues and increase SNR and contrast and precision: https://onlinelibrary.wiley.com/doi/full/10.1002/hbm.20235
+* NO PACE: because else we lose ability to do retrospective motion correction (although retrospective is flawed, but we can't do anything about motion otherwise). Talk about it with team? Or wait for this study: https://www.sciencedirect.com/science/article/pii/S2352340918300921#bib1
+* optional: 3D CS TOF? very fast, or from asl, to see veins https://www.researchgate.net/figure/Follow-up-MR-angiography-MRA-arterial-spin-labeling-ASL-and-susceptibility-weighted_fig2_316469932?_sg=oU0p51jIR84nwCR0r1zufq1c16KrPmfjB_0i2vt_x6a7_hbRlDUHM46gi9XNbVoSGKWsca0h0bMnriU-BVQ8Cw
+* try T1 radial VIBE (StarVIBE) in 3D? Better than BLADE! Improving the Robustness of Clinical T1-Weighted MRI Using Radial VIBE, https://static.healthcare.siemens.com/siemens_hwem-hwem_ssxa_websites-context-root/wcm/idc/groups/public/@global/@imaging/@mri/documents/download/mday/mjq2/~edisp/improving_robustness_using_radial_vibe-01176267.pdf
+* try DTI (and maybe T1) RESOLVE (readout segmentation of long variable echo-trains) - SMS-RESOLVE-DTI: https://static.healthcare.siemens.com/siemens_hwem-hwem_ssxa_websites-context-root/wcm/idc/groups/public/@global/@imaging/@mri/documents/download/mdax/mzc0/~edisp/mr_app_resolve_final_121991554_1-00678917.pdf
+* Try SPACE/FSE (fast spin echo) for T1, T2 and FLAIR?: very fast T1, T2 or FLAIR acquisition. http://mriquestions.com/spacecubevista.html
+* Tweak DWI acquisition to do 3-shells: http://community.mrtrix.org/t/good-b-value-sensitivity-parameter-for-2shell/1770
+«That will allow you to get >128 volumes, which you can split up in a relatively sensible ratio in the region of 10, 18, 32, 68 volumes for b=0, 700, 1200, 2500 s/mm² (or thereabouts, depending on what b-values you eventually decide to settle on).»
+* BESTTUTO: http://mriquestions.com/what-is-the-b-value.html
+Vibration can be an issue with higher multiband or b-values... Try lower b-value like 500, to have less vibration and better anatomical features?
+* IMPORTANT: 64ch do with same parameters as 20ch, increases the quality. Should be tried if we think the patient will be stable enough. Huge increase in quality (at 20ch, our protocol is at the limit of speed/quality, at 64ch we get the same quality as before but with a lot more speed and thus data like multishells!).
+* LAST CHANGES: DTI s3 (bef: s4) and 1000+2000 (bef:1000+3000). BOLD: raw filter, distortion correction 3D, 2x smaller flip angle and prescan normalization. BOLD is now losing signal (not contrast) in the middle of the brain (eg, PCC activation using MPFC seed). s4 loses ACC-PCC connectivity (only precuneus remains...) so s3 is the limit (with the new system, else can go higher with J's protocol!). Except with 64ch or J's parameters, s8 is almost OK but too much noise, try s5 or s6! Contrast way better now BUT SNR bad! A middle ground? Can we try to find what is causing better contrast and only activate that? J (with GRAPPA) was better at s8 in spurious correl!
+OBSERVATIONS: Huge increase of noise between J and A & C. C better than A because of 64ch. NM way better contrast than any other, for noise looks the same. s3 J less noise than s3 Aminata. But s2 A way better than s3 A. NM noise looks slightly decreased (better) than A s2 and s3. BUT J had a lot more measurements, except NM had the same for s3, might explain more noise in A and C. BUT s8 J signal predenoise was too flat (maybe contrast issue?), post grappa removal it's the opposite: more gaussian as multiband increases. But NM has asymmetric, not centered signal at s2, to confirm with another subject if maybe just subject variability (otherwise pre-denoise DF is of same proportion or even a bit better than A). Old MRI has highest DF & multiplication (90 for 300 volumes!), after that J has highest DF (around 80) but highest nb of measurements (3x s3, 2x s4 and 4x s8). NM s2 150 vols compared to A s2 200 vols, s3 500 vols vs 300. Ratio DF post-denoising/pre-denoising: s2 non grappa a 20%, s3 à 12-13% non grappa or 16% grappa or 64ch antenna, s1 old mri à 30%. If can get s2 with grappa at 25% would be great! J s3 has similar measurements (600) to NM s3 (500). s4 J is OK, others are too spurious. 200 volumes not enough for analysis, too noisy! With enough subjects still better than nothing, but better if more volumes (acquire faster then!) - except with NM, not ok in s4 500 vols, but s3 500 vols ok. The shifting and un-centering of signal curve was already here before in old mri, and present in nm, so either prescan normalize or raw data filter. Contrast way better in NM than AM, so try to find if we can keep better contrast but with advantages of before. Show BOLD montage to JM: old MRI and new MRI no frontal/occipital highlight (might be good or bad?), and J ventricles contrast lost but got back with AM and way better with NM. T1 was better before with AM and J! Before: no raw filter and distortion correction 2D (and all other sensitivity changes) -> try setting them back and see if changes CEREBELLUM branches precision, if does not change then it's bandwidth or TI changes which reduced SNR (but also sensitivity to metal artifacts, which we want...), else if cannot enhance go back to old one (prepare both sequences, old and new). ASL should have same nb slices as bold (44).
+TOFIX: stripe artifacts are everywhere, in any speed! try without multiband next time!
+TODO: see my notes about prescan normalize and raw data filter web links article on phone.
+TODO: bring on usb key sequence C (c'est la meme config que pour A, mais pas pour J!)
+BOLD WHAT I CHECK: 1st level correlation intensity of MPFC to PCC and Precuneus and Thalamus and Insular Cortex and Angular (this one is GREAT!) and temporal lobes, and if it's also in the middle of the brain (middle axial slice) or just the top (should be both), and if there's not too many spurious correlations around the ventricles. Autocorrelation (of the seed with itself) is not a factor.
+FINAL IDEA: make one test protocol without flair and all, just T1, BOLD, DTI. For each test 3 things: old sequence Puybasset, new one NM , AM and new one JI (grappa) with my changes NM and s2 and 3x3x3, and see which is best. For BOLD do them all (at s2 and small s3 just to see quality). T1 just old vs AM vs NM no dist corr 3D nor raw data filter vs NM. DTI just old vs new NM.
+* IMPORTANT: use 64ch particularly for single case studies! Enhance a LOT the signal, a lot less spurious correlations!
+* Unfiltered images: ask to put back ! + dicom field with slice timing (else impossible to do slice timing correction)
+* only grey matter = space double DIR, siemens sequence already natively
+* Try multiple sequences acquisition? http://community.mrtrix.org/t/good-b-value-sensitivity-parameter-for-2shell/1770/5 and http://community.mrtrix.org/t/multi-tissue-csd-and-pooled-b0s-across-shells/1593/10?u=jdtournier
+can either adjust TE or number of angles. OK to not readjust after changing TE? Then can use mrconcat to concatenate multiple single shell sequences into one multishell right?
++ make ACT multishell pipeline (with backtracking and iFOD2): https://www.sciencedirect.com/science/article/pii/S1053811912005824?via%3Dihub
+TODO DTI: try multiple sequences with reduced TE and angles. 5b-values for first, 1 for the others. No recalibration after the first (only calibrate first scan). Try b-val 700, 1200 and 2500, or 500, 1000 and 2000. Can replace other DTI sequence because I think it's ok (but better if we have both because we activated 3D distortion correction and a few other things in the new DTI).
+* IMPORTANT: Anesthesie: ecrire quoi comme anesthesiant (sevo, propofol, ketamin, etc)
+* SAR DTI at 89%, too much?
+* DTI slice distance 30%, before 0%, is it ok? maybe can reduce and have more slices? (box was too big anyway for the head)
+* DTI MTC?
+* DTI add in name: do not change slices nb! Repliement
+
+TODO AFTER:
+* Cushion for no motion patients non sedated (best), because with pads the most motion is anterior-posterior:
+https://practicalfmri.blogspot.com/2012/05/common-intermittent-epi-artifacts.html#more
+https://practicalfmri.blogspot.com/2016/10/respiratory-oscillations-in-epi-and-sms.html
+https://twitter.com/practiCalfMRI/status/786312325963714560
+* use 64ch particularly for single case studies! Enhance a LOT the signal, a lot less spurious correlations!
+
+FUTURE:
+* 3D blade for T1 and DTI!
+* Blipped Caiphirina SMS BOLD and DTI, will happen at some point at Siemens or via WIP/C2R: https://static.healthcare.siemens.com/siemens_hwem-hwem_ssxa_websites-context-root/wcm/idc/groups/public/@global/@imaging/@mri/documents/download/mdaw/mtix/~edisp/controlled_aliasing_in_parallel_imaging_results_caipirinha-00124408.pdf
+already described here : https://static.healthcare.siemens.com/siemens_hwem-hwem_ssxa_websites-context-root/wcm/idc/groups/public/@global/@imaging/@mri/documents/download/mda1/ntey/~edisp/advancing_diffusion_mri_using_sms_epi-02470165.pdf
+https://static.healthcare.siemens.com/siemens_hwem-hwem_ssxa_websites-context-root/wcm/idc/groups/public/@global/@imaging/@mri/documents/download/mda1/ntey/~edisp/magnetom_flash_issue_63_rsna_sms_supplement-02470117.pdf
+https://www.healthcare.siemens.no/magnetic-resonance-imaging/magnetom-world/hot-topics/simultaneous-multi-slice/sms-diffusion Simultaneous Multi-Slice Acquisition for Connectomic Applications and Beyond, Kawin Setsompop, Massachusetts General Hospital, Martinos Center for Biomedical Imaging, Charlestown, USA
+* GLUT
+* multi-echo
+* WIP and C2R? CMRR? Could get 2mm voxel size EPI BOLD with 0.72s acquisition rate. https://practicalfmri.blogspot.com/2016/02/starting-points-for-sms-epi-at-3-t.html?m=1
+* manually motion corrected T1: M.D. Tisdall, et al, Volumetric Navigators for Prospective Motion Correction and Selective Reacquisition in Neuroanatomical MRI. Magn. Reson. Med., 68, 389-399 (2012). http://cbs.fas.harvard.edu/science/core-facilities/neuroimaging/information-investigators/MRphysicsfaq
+* MEMPRAGE structural scan (with multiecho with different TEs and higher bandwidth, takes same time as conventional scan, but 4 different images are acquired, helps a lot segmentation): A. J. W. van der Kouwe, T. Benner, D. H. Salat, B. Fischl, Brain morphometry with multiecho MPRAGE, NeuroImage, 40, 559–569 (2008). http://cbs.fas.harvard.edu/science/core-facilities/neuroimaging/information-investigators/MRphysicsfaq
+* http://www.unicog.org/publications/duboisPoupon_dwiCorMvt_mri14.pdf
+* PROMO instead of PACE prospective motion correction at each scan, using full history (like AI localization?): http://cds.ismrm.org/ismrm-2007/files/01829.pdf PROSPECTIVE MOTION CORRECTION USING NONLINEAR PREDICTIVE FILTERING, N. S. White et al, 2007.
+* TOREAD: to know if we should do PACE (and lose ability to do retrospective motion correction): An evaluation of the effectiveness of Prospective Acquisition CorrEction (PACE) for reducing motion-related artifacts in resting state fMRI data, Lanka et al, Front. Neurosci. (2018), NOT YET PUBLISHED! https://www.sciencedirect.com/science/article/pii/S2352340918300921#bib1
+* Blind compressed sensing (BCS) for simultaneous T1 and T2 acquisition: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4598248/
+https://www.healthcare.siemens.com/magnetic-resonance-imaging/magnetom-world/hot-topics/compressed-sensing
+* Synthetic MRI (SyMRI) and/or MR Fingerprinting (MRF)
+* Implement DWI randomized temporal acquisition scheme more robust to motion advised by MRTRIX3 authors: http://community.mrtrix.org/t/good-b-value-sensitivity-parameter-for-2shell/1770
+* PCASL bientôt dans quelques mois
+* gre ref scan in next update reduce grappa + sms noise and shift factor + asymmetric sat + increase grappa kernel
+* MP2RAGE: https://www.ncbi.nlm.nih.gov/pubmed/19819338
+
+IMMOBILIZATION SYSTEMS:
+* http://www.allmri.com/product_info.php?language=en&info=p294_mrt-vakuum-immobilisationsmatte-fuer-den-kopf.html&
+* http://www.ferno.co.uk/~/media/UK%20Product%20Literature/Updated%20Product%20Cards%2010-2014/FERNO%20%20EasyFix%20Vacuum%20Mattress%20FPC003%201015.ashx
+(similar to what's used for neonates and kids): https://www.supertechx-ray.com/PatientPositioning/PatientPositioners/MedVacInfantandChild.php
+* http://www.klaritymedical.com/mask-types
+* https://www.universalmedicalinc.com/radiolucent-papoose-board-mri-safe-extra-large-teenager-adult.html with https://www.universalmedicalinc.com/head-immobilizer-for-papoose-board.html
+* https://www.indiamart.com/proddetail/universal-head-immobilizer-9131682488.html
+* http://www.rpdinc.com/D-Positioning_Immobilization_Products.pdf
+* used by Angelique on vestibular study: http://www.pearl-technology.ch/en/radiology/crania
+Only downside: the air inside can heat up during (long) acquisitions, so it can get more and more tight. Then subjects can normally reduce the air by themselves between scans, but in our case that probably won't happen. So it's something to be aware of. Not sure how much it would warm up in 45 minutes anyway
+TODO: first test on a control!

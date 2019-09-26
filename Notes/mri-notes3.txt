@@ -1,0 +1,17 @@
+TODO: restore old FLAIR! (t2_space_FLAIR_sag_p3_iso)
+TODO: try dti SMS Resolve?
+TODO: store all my notes on petabyte!
+
+* RESOLVE (readout segmentation of long variable echo-trains - rs-EPI): https://static.healthcare.siemens.com/siemens_hwem-hwem_ssxa_websites-context-root/wcm/idc/groups/public/@global/@imaging/@mri/documents/download/mdax/mzc0/~edisp/mr_app_resolve_final_121991554_1-00678917.pdf
+Useful for DTI and also T1 maybe? Reduces susceptibility to motion-induced phase errors and SAR.
+Can have SMS-RESOLVE-DTI
+BEST: Benefits of Accelerated MR Imaging in Daily Routine, https://static.healthcare.siemens.com/siemens_hwem-hwem_ssxa_websites-context-root/wcm/idc/groups/public/@global/@imaging/@mri/documents/download/mda3/mza0/~edisp/magnetom-flash-69_benefits-of-accelerated-mri_runge-04329134.pdf
+Data undersampling can also be combined with arterial spin labeling and 3D radial acquisition to improve the detection and characterization of intracranial arteriovenous shunts.
+Also this whitepaper confirms that SMS3 DWI is equivalent to conventional (non SMS) DWI in terms of image quality.
+BEST: RESOLVE vs PROPELLER DWI, RESOLVE is better in quality and faster: https://www.ncbi.nlm.nih.gov/pubmed/26807895
+* SEMAC to reduce metallic artifacts
+
+-> FLAIR: fast2-2 as good or better than before, but nofast is better than anything before!
+
+broeks stigx videos dicoms (et voir si on peut faire irm quand il vient à nouveau?)
+

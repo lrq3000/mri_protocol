@@ -1,7 +1,7 @@
 # GIGA-Consciousness MRI Protocol
 A clinical and research 3T MRI protocol under 30 minutes, as presented at [CME2019](https://cme2019.ifado.de) in Dortmund.
 
-Version: 1.0.3 - 2019-09-26
+Version: 1.0.4 - 2019-09-26
 
 ## Description
 
@@ -28,11 +28,11 @@ The main innovations of this protocol are:
 
 This protocol was designed over the span of 8 months and is now a standard protocol at the Hospital of Liège, Belgium. So far, 45 subjects (18 healthy volunteers, 17 disorders of consciousness patients, 10 subjects of other studies) have been acquired using this protocol.
 
-For more details, please consult the [CME2019 slides](https://github.com/lrq3000/mri_protocol/blob/master/ICME2019-stephen-karl-larroque.pdf). For detailed technical informations and bibliography, please consult [ComplementaryInfosBiblio.md](https://github.com/lrq3000/mri_protocol/blob/master/ComplementaryInfosBiblio.md). The protocol can be adapted to other machines by using the [pdf printout](https://github.com/lrq3000/mri_protocol/blob/master/SiemensVidaProtocol/Coma%20Science%20Group%2052.pdf) (see next section).
+For more details, please consult the [CME2019 slides](https://github.com/lrq3000/mri_protocol/blob/master/ICME2019-stephen-karl-larroque.pdf). For detailed technical informations and bibliography, please consult [ComplementaryInfosBiblio.md](https://github.com/lrq3000/mri_protocol/blob/master/ComplementaryInfosBiblio.md). The protocol can be adapted to other machines by using the [pdf printout](https://github.com/lrq3000/mri_protocol/blob/master/SiemensVidaProtocol/Coma%20Science%20Group%2052.pdf) (see next section). In an effort to promote transparent open research, the lab notes written along the construction of this protocol are available in the [Notes folder](https://github.com/lrq3000/mri_protocol/tree/master/Notes) (beware, it's very messy, but there's lot of additional infos and references).
 
 ## How to install
 
-If you own a Siemens Magnetom Vida, the full protocol can be directly imported into your machine by using the [exar1 file](https://github.com/lrq3000/mri_protocol/blob/master/SiemensVidaProtocol/Coma%20Science%20Group%2052.exar1).
+If you own a 3T Siemens Magnetom Vida, the full protocol can be directly imported into your machine by using the [exar1 file](https://github.com/lrq3000/mri_protocol/blob/master/SiemensVidaProtocol/Coma%20Science%20Group%2052.exar1).
 
 Otherwise, for another machine, the [pdf printout](https://github.com/lrq3000/mri_protocol/blob/master/SiemensVidaProtocol/Coma%20Science%20Group%2052.pdf) or [xml printout](https://github.com/lrq3000/mri_protocol/blob/master/SiemensVidaProtocol/Coma%20Science%20Group%2052.pdf) details most parameters (but unfortunately not all, but at least the most important ones) in a human readable format. By using these printouts as a reference, the protocol should be implementable on pretty much any machine, with only basic access to the standard parameters fields (ie, no need for experimental parameters access nor developer console, see the FAQ below for more details).
 
@@ -84,6 +84,8 @@ Technically, all sequences of our protocol stem from base sequences provided by 
 
 As such, all sequences should be reproducible on any machine since we modified only "standard" parameters such as inversion time, bandwidth, flip angle, etc. and not any experimental parameter or developer console commands that would be accessible only to trained specialists.
 
+For multiband, the various names used by the different MRI brands can be found on [mriquestions](http://mriquestions.com/simultaneous-slices.html).
+
 ### How can I implement T1 FLAWS from the printout?
 
 To implement T1 FLAWS, you should start from the Siemens native MP2RAGE sequence, and then modify its TI1 and TI2 parameters to the values in the printout. If the TI1 and TI2 parameters can't be lowered enough, play with slice fourier interpolation and plane fourier interpolation. In our case, 7/8 was enough to attain 450 TI1 and 1350 TI2 (with slice fourier 6/8 we can go much lower).
@@ -102,4 +104,11 @@ Here are some resources that can help you:
 
 * [syngo MR E11 Neuro operator manual](http://cbbi.udel.edu/wp-content/uploads/2017/01/Neuro.pdf)
 
-  
+
+### What coil should be used?
+
+The protocol was designed for the 20 channels coil provided with the Siemens Vida. We also attempted to use the 64 channels coil, but the headset was too small for our patients population with spastic behavior, thus needing more space to fit their head around their neck as they often do not lay their head straight.
+
+However, we initially maintained the protocol with both coils, so that this protocol can in fact rather easily be converted to a 64 channels coil. Most parameters can be set as exactly the same and just change the coil used from 20c to 64c in the Siemens syngo interface.
+
+Beware however that although 64 channels coils provide a significant boost in SNR in the cortical areas, the wavelength is actually smaller and thus has a harder time penetrating through to subcortical areas. So if you are also interested in subcortical areas, you might want to stick with the 20c coil.

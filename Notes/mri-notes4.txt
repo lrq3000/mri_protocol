@@ -1,0 +1,123 @@
+TODO LATEST: use flair gobrain + add gobrain t2 flash hemo + flair gobrain enable 3D distortion correction + try to enhance SNR of flair gobrain, that's why it's noisy! (or try to change acquisition phase to reduce number of slices and thus allow for longer TR/TE?) + ask JM how to avoid gibbs artifact (concatenations 2! How to increase the fov without? - but does not seem to be the issue, and actually an advantage because packets are interleaved)
+
+mri immobilizer photo
+bold procedure pour taches: prendre un des bold et mettre a 10 min (800 volumes)
+fr pour mri department
+blue folder with instructions
+advantages for clinical of FLAWS (like FGATIR = uni?)
+FLAWS INV1 = FGATIR
+TOADD ref (in slides and ref doc): MP2RAGE specific preprocessing methods with Freesurfer 6: https://www.ncbi.nlm.nih.gov/pubmed/22135168
+Add screenshot of protocol (instead of my list in text) + add where we can sedate (or avoid, or maybe) + add for BOLD: we prefer motion than sedation! We can correct for motion, but we can't correct sedation! and BOLD is now fast enough to be faster than movement!
+Toadd ref for clinical usefulness of FLAWS (FGATIR-like): epilectic foci & DBS https://www.sciencedirect.com/science/article/pii/S2213158218302511
+see with manon to show protocol and how to download data + ask how EEG and PPG were done before (noone knows at MRI department!)
+Ask mariachiara for ISMRM access? (Aurore told me)
+mri add in presentation that I tried to make life easier for everyone (acquisition, demographics management, analysis)
+IMPORTANT: dans dossier bleu (et présentation), bien spécifier qu'il faut changer "No/Yes" pour sédation dans le protocole selon ce qu'il se passe! (et réajuster le volume en faisant copy volume etc)
+Ask Manon: Is a CRS-R systematically done before or after MRI? If so, could write the CRS-R on day of MRI on the MRI sheet? (instead of the best diagnosis)
+TODO: coussin order!
+TODO: GM from FLAWS: i1 .* i2! instead of min(i1, i2)
+TODO: ask RESOLVE + slice order BOLD and DTI in dicoms + ECG how to save + order pillow pearltech! MULTIPAD KIT + why sms available only to dti and bold, why not for flair etc (3D acceleration)? It's always greyed!
+BEST REF TOADD: diff between old BOLD and new BOLD might be due to HRF better estimation / less influence: Wu, G. R., & Marinazzo, D. (2016). Sensitivity of the resting-state haemodynamic response function estimation to autonomic nervous system fluctuations. Phil. Trans. R. Soc. A, 374(2067), 20150190.
+TODO LAST SUMMARY: FLAIR adjust TI: 1750 maybe too low, 2950 too high (CSF still white), try to find middle ground until perfect!
+BEST REF TOADD: what is Prescan Normalize: http://mriquestions.com/surface-coil-flare.html
+BEST REF TOADD: SWI partial volume effect: http://mriquestions.com/partial-volume-effects.html
+REF: slides about spin echo, gradient echo, etc: https://www.aapm.org/meetings/05am/pdf/18-2827-1732-203.pdf
+TOSEE: Lesion segmentation (and GM, WM and CSF) on FLAIR, DIR and T2: http://adsabs.harvard.edu/abs/2016SPIE.9784E..2JH
+combining FLAIR and T2 for lesion segmentation: http://n.neurology.org/content/86/16_Supplement/P4.155
+BEST REF: how to optimize MRI for pediatric (children) scans:  http://clinical.netforum.healthcare.philips.com/us_en/Operate/Application-Tips/MRI/Optimizing-pediatric-brain-imaging
+MR fingerprinting and neural networks: https://www1.icsi.berkeley.edu/~stellayu/publication/doc/2018contrastSynISMRM.pdf
+
+TODO SUMMARY: try GoBrain (FLAIR, T2 FLASH, T2 FLASH HEMO, T1 FLASH) or old flair at least (mrmmf06 makes it clear) + mp2rage replace by FLAWS reparametrized TIs and p2 (not p3!) for better quality + flaws change TIs and TE (reduce) and TR (increase)
+TODO: MRI person should write down on paper if sedation happen at what sequence (just that, no need for the whole protocol!)
+TODO: talk about making a new simplified MRI database?
+TODO: enhance FLAWS INV1 contrast and FLAIR (but ok for now, FLAIR can try TI around 2000 + lower TE 119 + p2 not p3 if possible + try GoBrain version? but increase slice thickness to 1mm instead of 4mm or 1.5mm) https://www.i-mri.org/Synapse/Data/PDFData/0040JKSMRM/jksmrm-13-9.pdf -> use T1-FLAIR with low TR and TE! http://mriquestions.com/image-contrast-trte.html , don't change flip angle! 5 is good!
+TODO MAYBE: replace our SWI with Siemens one? Just check resolution 0.6x0.6x2.0, but ours looks good! https://www.healthcare.siemens.com/magnetic-resonance-imaging/magnetom-world/toolkit/clinical-images/spectra-head.html
+TODO: DWI TSE instead of SE? Turbo Spin Echo is way better for metal artifacts! https://ars.els-cdn.com/content/image/1-s2.0-S0899707116302005-fx1.jpg and https://www.sciencedirect.com/science/article/pii/S0899707116302005
+TODO: DWI RESOLVE?
+BESTTUTO: http://casemed.case.edu/clerkships/neurology/web%20neurorad/mri%20basics.htm
+T1-FLAIR BLADE can have a boost of 19 (compared to T1 with 3 usually)! http://mriquestions.com/forum/showthread.php?tid=172
+TODO: try GoBrain sequences: T2-TSE (takes 62s, might be better, acquire both and choose later) and Dark Fluid (FLAIR) and T2 FLASH* Hemo and T1 FLASH (replace MP2RAGE, 60s for a T1! We are almost guaranteed to always have a correct T1!)
+BESTTUTO: http://mriquestions.com/image-contrast-trte.html and http://mriquestions.com/meaning-of-weighting.html
+https://cai2r.net/research/publication/model-based-iterative-reconstruction-radial-fast-spin-echo-mri
+Gobrain reference: https://onlinelibrary.wiley.com/doi/full/10.1111/jon.12365
+TODO: WIP (or now standard?) T1-weighted turboFLASH BLADE in 1 min (4 min isotropic for us): https://journals.lww.com/investigativeradiology/fulltext/2009/03000/T1_Weighted_Brain_Imaging_With_a_32_Channel_Coil.8.aspx
+High resolution (0.8mm cubed) MPRAGE (in 6min!): https://www.researchgate.net/publication/326736402_Fast_gray_matter_acquisition_T1_inversion_recovery_MRI_to_delineate_the_mammillothalamic_tract_for_preoperative_direct_targeting_of_the_anterior_nucleus_of_the_thalamus_for_deep_brain_stimulation_in_e
+BESTTUTO: http://mriquestions.com/choice-of-ir-parameters.html
+BESTTUTO: http://mriquestions.com/hellipmr-artifacts.html
+TOADD: Scout is in fact HASTE (ultra-fast turbo spin echo!): http://mriquestions.com/hastess-fse.html
+http://mriquestions.com/reduced-flip-angle-fse.html
+TODO: MP2RAGE try p2 (instead of p3) and increase slice/slab PI x2? Or Caipirihna? http://mriquestions.com/noise-in-pi.html
+pi: http://mriquestions.com/why-and-when-to-use.html
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5969159/ As in the T1w/PDw approach using MPRAGE, the resulting image ideally is independent of B−1, PD, and T2* effects. free of proton density contrast, T(2) contrast, reception bias field, and, to first order, transmit field inhomogeneity. https://www.ncbi.nlm.nih.gov/pubmed/19819338
+future: sa2rage (20s acq to correct totally b1+ inhomogeneities in mp2rage: https://www.ncbi.nlm.nih.gov/pubmed/22135168)
+https://github.com/Washington-University/gradunwarp
+MP2RAGE NOTES: on our machine: TI1 700 = WM mask (CSF + GM KO), TI2 2500 too high! Try 2000 or even 1500 like in MP2RAGE paper! FLAWS: TI1 300 too low? TI2 1290
+=> TODO: can lower FLAWS TR so that 2nd TI can go lower (to be closer to 1st TI)?
+TODO IMPORTANT: use FLAWS to remake MP2RAGE: with p2 instead of p3, just input TI1 550-650 -> TI1 = 630? (NOT 800! 500 nullifies deep grey matter, 700 almost nullifies cortical grey matter, so between 500-700!) and TI2 1500-2000! 1460 is good! (can try lower just in case? at 1750 it's a tiny bit worse - yes at 700-800 it's like MPRAGE with very low CSF, try with ) Should then have high quality AND speed like FLAWS! (the noisy 3D should not be the case anymore!). Flip angle first TI 4 degrees, flip angle TI2 (ie, higher TI) at 5 degrees. -> Disable Fat Suppression? (Fat-Water is Standard, look doc to see what it means!)
+-> Try to save magnitude and phase images? Like for SWI?
+TODO IMPORTANT2: FLAWS TI1 tester <= 470 mais >= 370 (avant c'etait 409 - et pas bon, essayer 440! Avec J (mais en 10 min) c'etait super!), TI2 ideal: 800 (if not then lowest possible, up to 1290 OK). If necessary reduce TR and/or TE. --> TR 4000s (for CSF to recover) + TI1 470 (based on paper below) + TI2 800 ideally or closest possible (1290 OK, in FLAWS it's 1100) -> lower TE if necessary
+BESTPAPER fast FLAWS for 7T: http://indexsmart.mirasmart.com/ISMRM2017/PDFfiles/5214.html BUT in theory FLAWS TI1 should be 400 and TI2 1200 (for mprage), no influence of TR except that needs to be long enough for tissue to recover signal (4000?) http://mriquestions.com/choice-of-ir-parameters.html => IMPORTANT TOTRY: TE lower (2.2 or even 2.0) and TR at 3000, then TI1 at 430 (like FGATIR) file:///C:/Users/Stephen/Downloads/2018.4.focus18147.pdf or TI1 409 like here (with TR 3000 and TE 4.39ms - no for TE, optimized MPRAGE had 2.82ms): https://movementdisorders.ufhealth.org/research/fgatir-new-scan-for-surgical-targeting/
+TODO: look for SA2RAGE? (20s!) or see if can change MP2RAGE to saturation (instead of magnitude)
+TODO: Ask JM how to do a T1 map like: https://sci-hub.tw/https://www.sciencedirect.com/science/article/pii/S1053811909010738?via%3Dihub Fig4 on the far right, like myomaps but for brain, like here: http://www.ajnr.org/content/27/4/868
+FUTURE BEST: compressed sensing MP2RAGE: https://www.ncbi.nlm.nih.gov/pubmed/30198115
+TODO: ask anyone about ISMRM 2018 logins: http://archive.ismrm.org/2018/0384.html
+Tosee: https://mrcode.nl/mrcodetool/
+BESTTECHNIQUE: generate T1 mapping from MP2RAGE to know exactly what TI to use: http://iopscience.iop.org/article/10.1088/1742-6596/931/1/012038/pdf and http://www-mrsrl.stanford.edu/~jbarral/t1map.html and block simulator: http://mrsrl.stanford.edu/~brian/blochsim/
+Deep gray matter has faster T1 than cortical gray matter (see MP2RAGE paper T1 map for confirmation)
+PSIR alternative to FLAWS? https://onlinelibrary.wiley.com/doi/full/10.1002/mrm.26061
+BEST Toread: (with MP2RAGE and lots of other sequences parameters for 3T): Comparison of Routine Brain Imaging at 3 T and 7 T, Elisabeth Springer, https://pdfs.semanticscholar.org/0f21/6f9a355c8c7b814de9b6b26a117c54f5ddc4.pdf
+Toread: estimation of cortical thickness with MP2RAGE, comparable to MEMPRAGE (but not MEMP2RAGE): https://research.monash.edu/en/publications/partial-volume-model-for-brain-mri-scan-using-mp2rage
+SA2RAGE: https://infoscience.epfl.ch/record/207037/files/EPFL_TH6582.pdf
+For 7T: 3D-MP-FLAIR for fast FLAIR (10 min instead of 16min): https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3229693/
+Toread: https://neurostars.org/t/calculate-effective-echo-spacing-and-total-read-out-time-for-ge-machine/320/4
+https://www.mr-tip.com/serv1.php?type=db1&dbs=Ultrafast%20Gradient%20Echo%20Sequence
+BESTTUTO: Handbook of structural MRI analysis: http://jeromemallershandbookofstructuralbrainmrianalysis.yolasite.com/resources/Jeromes_Structural_MRI_analysis_handbook_March2015_Part1.pdf
+BESTTUTO: the format of almost all MRI pulse sequence: http://mriquestions.com/ir-prepped-sequences.html and http://mriquestions.com/choice-of-ir-parameters.html for TI and http://mriquestions.com/image-contrast-trte.html
+http://mriquestions.com/t2-flair.html
+http://mriquestions.com/t1-flair.html
+http://mriquestions.com/ti-to-null-a-tissue.html
+http://mriquestions.com/why-use-ir.html
+http://mriquestions.com/phase-sensitive-ir.html
+http://mriquestions.com/why-not-psir-always.html
+http://www.simplyphysics.com/MARS/data/level_3/3d_mprage.htm
+BESTTUTO: http://casemed.case.edu/clerkships/neurology/web%20neurorad/mri%20basics.htm
+Tosee: https://www.sciencedirect.com/science/article/pii/S0150986117300172
+BEST: Comparison of fast-flair, haste-flair and epi-flair: http://www.ajnr.org/content/20/10/1931.long
+BEST METHODS: FLAIR to detect lesions by postprocessing (coreg and subtraction): https://www.ajronline.org/doi/10.2214/ajr.179.3.1790777
+TODO ADD REF: single-shell multi-tissues segmentation using only DTI will be available in the future in MRTRIX3 (by dhollander), will allow to compare multi-shell multi-tissue dhollander algorithm of the new machine (should allow to compare somewhat OKish old data and new data!):  https://www.researchgate.net/publication/307863133_Unsupervised_3-tissue_response_function_estimation_from_single-shell_or_multi-shell_diffusion_MR_data_without_a_co-registered_T1_image and https://www.researchgate.net/publication/301766619_A_novel_iterative_approach_to_reap_the_benefits_of_multi-tissue_CSD_from_just_single-shell_b0_diffusion_MRI_data and http://community.mrtrix.org/t/does-mrtrix-have-water-compartment-modeling-similar-to-noddi/655
+TODO maybe: dti add mrdegibbs if we don't use partial fourier (or disable partial fourier?): https://mrtrix.readthedocs.io/en/latest/reference/commands/mrdegibbs.html and http://community.mrtrix.org/t/quality-of-our-multi-tissue-multi-shell-pipeline/1727
+TODO add ref: eddy repol: https://www.sciencedirect.com/science/article/pii/S1053811916303068
+TODO maybe: make a super fast protocol: AAHead scout/LS + GoBrain + our DTI b700 + angio + asl fast + bold short + our T1 optimized OR FLAWS! + our SWI
+BEST: BANDWIDTH reduces TE and allows smaller TI!
+
+
+== Quiet (auditory noise reduction) sequences:
+* Une explication et surtout des exemples de sons avec et sans "quiet": http://mriquestions.com/whats-that-noise.html
+* Un autre: http://www.mrisafety.com/SafetyInfov.asp?SafetyInfoID=252
+* Il y a aussi cette très intéressante étude: https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0206196&type=printable
+* Et un article qui explique plus techniquement: https://docplayer.net/27974604-Quiet-zero-te-asl-brain-mr-angiography-can-outperform-3d-tof-at-1-5t.html
+
+En particulier, j'ai trouvé cette explication du dernier lien très utile:
+« The gradient magnetic field is the primary source of acoustic noise in MR procedures
+(4, 6). This noise occurs during the rapid alterations of currents within the gradient coils.
+These currents, in the presence of the strong static magnetic field of the MR system,
+produce significant (Lorentz) forces that act upon the gradient coils. Acoustic noise is
+produced when the forces cause motion or vibration of the gradient coils as they impact
+against their mountings, which, in turn, flex and vibrate (7, 8). The acoustic noise varies
+due to the alteration of the gradient output (rise time or amplitude) by modifying MR
+imaging parameters. Noise tends to be enhanced by decreases in section thickness, field
+of view, repetition time, echo time, and as field strentgh arises.
+Several investigators have described the development of "quiet" pulse sequences, which
+substantially decrease acoustic noise and are acceptable for MR imaging and functional
+MRI examinations. To date two methods have been used to reduce noise - dampen/
+isolate the gradient coil from the patient bore, or reduce switching rate. Both methods
+have drawbacks; the first resulting in reduction of bore space and the second reducing
+performance. Quieter techniques are feasible which minimize gradient switching over
+the TR period by utilizing a 3D projection reconstruction with no excitation, pre-winding,
+phase-encoding, refocus, or crusher gradients. This technique can reduce acoustic
+noise levels by more than 30dBA while generating an isotropic volumetric acquisition. In
+addition, the nearly zero-TE nature of the "Silent" protocol has the potential to provide
+superior rendering due to reduced dephasing related signal loss.
+"Quiet-Zero TE" ASL brain MR angiography Can Outperform 3D TOF at 1.5T »
+
+Et en configurant la nouvelle machine VIDA, j'ai vu qu'il y avait des séquences "quiet" donc tu peux jeter un coup d'oeil avec les gens du département IRM.
