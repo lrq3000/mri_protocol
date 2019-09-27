@@ -116,3 +116,7 @@ However, we initially maintained the protocol with both coils, so that this prot
 Beware however that although 64 channels coils provide a significant boost in SNR in the cortical areas, the wavelength is actually smaller and thus has a harder time penetrating through to subcortical areas. So if you are also interested in subcortical areas, you might want to stick with the 20c coil.
 
 This paper might be of interest: Seidel, P., Levine, S. M., Tahedl, M., & Schwarzbach, J. V. (2019). Temporal signal-to-noise changes in combined multiband-and slice-accelerated echo-planar imaging with a 20-and 64-channel coil. *BioRxiv*, 641902.
+
+### I can't find the FLAIR sequence on my machine!
+
+If you are trying to reproduce the protocol from the printout, and thus search for native sequences from which to start tweaking to the same parameters of our printout, you will find that the FLAIR sequence is not available on Siemens machines. Instead, look for "dark fluid" sequences, which are exactly the same but have been renamed because of copyright issues on the name FLAIR. For more informations about the FLAIR/dark fluid sequence, please read the seminal paper: Hori, M., Okubo, T., Uozumi, K., Ishigame, K., Kumagai, H., & Araki, T. (2003). T1-weighted fluid-attenuated inversion recovery at low field strength: a viable alternative for T1-weighted intracranial imaging. *American journal of neuroradiology*, *24*(4), 648-651.
