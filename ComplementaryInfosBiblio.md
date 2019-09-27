@@ -101,6 +101,7 @@ Simultaneous Multi-Slice addon (SMS, aka multiband in other manufacturers) for B
 	    - Bhandari, R., Gazzola, V., & Keysers, C. (2019). Challenges in assessing voxel-wise single-subject level benefits of MB acceleration. bioRxiv, 756361.
 	    - Barth, M., Breuer, F., Koopmans, P. J., Norris, D. G., & Poser, B. A. (2016). Simultaneous multislice (SMS) imaging techniques. Magnetic resonance in medicine, 75(1), 63-81.
 	* Multband + Parallel Imaging (here Sense, in our case GRAPPA): http://clinical.netforum.healthcare.philips.com/global/Explore/White-Papers/MRI/MultiBand-SENSE-widens-possibilities-for-fMRI-and-dMRI-in-brain
+	* Another team achieved a 1-min ultra-fast MRI protocol using some of the same speedup techniques we used here for this protocol. Of course, their protocol being this fast means that there is a drop in quality, but the sequences are of enough quality for clinical practice (but not research purposes): Ryu, K. H., Choi, D. S., Baek, H. J., Cho, S. B., Ha, J. Y., Kim, T. B., & Hwang, M. J. (2019). Clinical feasibility of 1-min ultrafast brain MRI compared with routine brain MRI using synthetic MRI: a single center pilot study. Journal of neurology, 266(2), 431-439.
 
 ## FUTURE
     * Synthetic MRI as an extension of FLAWS: SyMRI software and QRAPMASTER sequence:
