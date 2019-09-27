@@ -99,6 +99,7 @@ Simultaneous Multi-Slice addon (SMS, aka multiband in other manufacturers) for B
 	    - Risk, B. B., Kociuba, M. C., & Rowe, D. B. (2018). Impacts of simultaneous multislice acquisition on sensitivity and specificity in fMRI. NeuroImage, 172, 538-553.
 	    - Demetriou, L., Kowalczyk, O. S., Tyson, G., Bello, T., Newbould, R. D., & Wall, M. B. (2016). A comprehensive evaluation of multiband-accelerated sequences and their effects on statistical outcome measures in fMRI. BioRxiv, 076307.
 	    - Bhandari, R., Gazzola, V., & Keysers, C. (2019). Challenges in assessing voxel-wise single-subject level benefits of MB acceleration. bioRxiv, 756361.
+	    - Barth, M., Breuer, F., Koopmans, P. J., Norris, D. G., & Poser, B. A. (2016). Simultaneous multislice (SMS) imaging techniques. Magnetic resonance in medicine, 75(1), 63-81.
 	* Multband + Parallel Imaging (here Sense, in our case GRAPPA): http://clinical.netforum.healthcare.philips.com/global/Explore/White-Papers/MRI/MultiBand-SENSE-widens-possibilities-for-fMRI-and-dMRI-in-brain
 
 ## FUTURE
