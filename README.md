@@ -1,7 +1,7 @@
 # GIGA-Consciousness MRI Protocol
 A clinical and research 3T MRI protocol under 30 minutes, as presented at [CME2019](https://cme2019.ifado.de) in Dortmund.
 
-Version: 1.0.5 - 2019-09-26
+Version: 1.0.5-a - 2019-11-19
 
 ## Description
 
@@ -120,3 +120,23 @@ This paper might be of interest: Seidel, P., Levine, S. M., Tahedl, M., & Schwar
 ### I can't find the FLAIR sequence on my machine!
 
 If you are trying to reproduce the protocol from the printout, and thus search for native sequences from which to start tweaking to the same parameters of our printout, you will find that the FLAIR sequence is not available on Siemens machines. Instead, look for "dark fluid" sequences, which are exactly the same but have been renamed because of copyright issues on the name FLAIR. For more informations about the FLAIR/dark fluid sequence, please read the seminal paper: Hori, M., Okubo, T., Uozumi, K., Ishigame, K., Kumagai, H., & Araki, T. (2003). T1-weighted fluid-attenuated inversion recovery at low field strength: a viable alternative for T1-weighted intracranial imaging. *American journal of neuroradiology*, *24*(4), 648-651.
+
+### Are the sequences useable for analysis?
+Theoretically, all sequences are usable for analysis, and are based mostly on already published protocols. We ourselves ran several subject-level and group-level analyses on the structural MP2RAGE FLAWS, diffusion weighted imaging, and the fMRI BOLD timeseries. Most of these work with standard processing pipelines out-of-the-box such as SPM12, although some parameters should be avoided or tweaked (eg, slice timing correction and motion correction should account for multiband in dMRI and fMRI). We have released our preprocessing and analysis pipelines for these 3 sequences as implemented in this protocol, at [https://github.com/lrq3000/csg_mri_pipelines](https://github.com/lrq3000/csg_mri_pipelines).
+
+Please note however that pcASL is experimental, it is still useful in any case as a clinical tool, but we did not run any analysis on it (see the next section for more details).
+
+### Update on pcASL
+We implemented the pcASL right away when it rolled out of Siemens beta phase. Before, we implemented the standard Siemens pASL (3D-GRASE with PASL-FAIR (Q2TIPS), Perfusion Mode: FAIR QII, more information [here](https://www.healthcare.siemens.com/magnetic-resonance-imaging/options-and-upgrades/clinical-applications/asl) and [here](http://s434060124.online.de/aslindementiacms/basic-principles-of-asl-2)). We thus did not have much time to test it out, and ran no analysis, except for visual assessments by neurologists of the clinical pertinence.
+
+Since then, it has come to our attention that tentative recommendations are available, although ASL is still a young modality and thus recommendations can change in the future. In particular, this one:
+
+Alsop DC, Detre JA, Golay X, et al. Recommended implementation of arterial spin-labeled perfusion MRI for clinical applications: A consensus of the ISMRM perfusion study group and the European consortium for ASL in dementia. Magn Reson Med. 2015;73(1):102–116. doi:10.1002/mrm.25197
+
+The authors there recommend that **pcASL should be acquired alongside a proton density map**, as to allow for the derivation of absolute values. No proton density map is currently acquired in this protocol, so feel free to add one to follow the current best practices. As the authors describe, a proton density map can reduce the noise, which we feel is akin to using fieldmaps for dMRI and fMRI.
+
+Also there exists a SPM12 toolbox for ASL analysis, including perfusion maps, named ASLtbx:
+
+Wang Z, Aguirre GK, Rao H, et al. Empirical optimization of ASL data analysis using an ASL data processing toolbox: ASLtbx. Magn Reson Imaging. 2008;26(2):261–269. doi:10.1016/j.mri.2007.07.003
+
+ASLtbx can be downloaded [here](https://cfn.upenn.edu/~zewang/ASLtbx.php).
