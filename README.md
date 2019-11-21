@@ -56,7 +56,7 @@ We are thankful to Jean-Marc Léonard from Siemens Healthineers and Gauthier Kem
 
 If you find this work useful, please cite it as follows:
 
-(citation to come here)
+  Larroque, S. K., Carrière, M., Martial, C., & Laureys, S. (2019). A clinical and research 3T MRI protocol under 30 minutes. 23 September 2019. 13th CME International Conference on Complex Medical Engineering. http://hdl.handle.net/2268/240633
 
 ## Frequently Asked Questions
 
