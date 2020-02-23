@@ -46,7 +46,7 @@ Meta-protocol wise, a screenshot of the protocol programming can be found in the
 2. the multi-shells of DTI acquisition are run using the same coil positioning parameters (on Siemens, use a Copy Reference from the first to the second and third shells).
 3. the sequences are renamed depending on the patient's state (ie, sedated or not), which allows an auto-documentation of how the acquisition went, directly stored inside the DICOMs.
 
-We also strongly advise the use of a 3D head immobilizer, as to further reduce motion and the need for sedation.
+We also strongly advise the use of a 3D head immobilizer (we use the [Pearltec Multipad](http://pearl-technology.ch/en/radiology/multipad) which allows for flexible positioning), as to further reduce motion and the need for sedation.
 
 ## Authors & citations
 
