@@ -1,7 +1,7 @@
 # GIGA-Consciousness MRI Protocol
 A clinical and research 3T MRI protocol under 30 minutes, as presented at [CME2019](https://cme2019.ifado.de) in Dortmund.
 
-Version: 1.0.5-a - 2019-11-19
+Version: 1.0.5-b - 2020-02-23
 
 ## Description
 
@@ -107,7 +107,7 @@ Here are some resources that can help you:
 * [syngo MR E11 Neuro operator manual](http://cbbi.udel.edu/wp-content/uploads/2017/01/Neuro.pdf)
 
 
-### What coil should be used?
+### Which coil should be used?
 
 The protocol was designed for the 20 channels coil provided with the Siemens Vida. We also attempted to use the 64 channels coil, but the headset was too small for our patients population with spastic behavior, thus needing more space to fit their head around their neck as they often do not lay their head straight.
 
@@ -116,6 +116,16 @@ However, we initially maintained the protocol with both coils, so that this prot
 Beware however that although 64 channels coils provide a significant boost in SNR in the cortical areas, the wavelength is actually smaller and thus has a harder time penetrating through to subcortical areas. So if you are also interested in subcortical areas, you might want to stick with the 20c coil.
 
 This paper might be of interest: Seidel, P., Levine, S. M., Tahedl, M., & Schwarzbach, J. V. (2019). Temporal signal-to-noise changes in combined multiband-and slice-accelerated echo-planar imaging with a 20-and 64-channel coil. *BioRxiv*, 641902.
+
+### What instructions do you give to the patient undergoing MRI scanning?
+
+As soon as the patient is set inside the machine (with the 3D inflatable pillows for immobilization and ear plugs plus headphones to protect their audition), we ask if they are feeling comfortable enough (else we may have to deflate a bit the pillows or adjust the back/knees pillows or add a blanket for the legs or adjust other things). We then instruct them to remain as still as possible for the whole acquisition, which lasts about 30 min, and to wait when the machine stops making noises, or when the operator starts to talk again between sequences, to move if they need to reposition themselves for comfort (do NOT underestimate this instruction, it is highly important for the patient to be able to reposition themselves for comfort, and if they are not properly instructed, they will move during the sequences, thus creating motion artifacts!). Of course, this means that between every few sequences, the operator should mark a pause, and ask the patient how they are feeling (talking with the patient regularly also reduces potential feelings of claustrophobia).
+
+Since the first sequence is BOLD (fMRI), we then instruct them to let their thoughts flow without stopping on any in particular, with their eyes closed and while staying awake, for the next 6-10 minutes (depending on how long you set your BOLD sequence). This lasts for less than 10 minutes, after which the protocol switches to structural sequences where the patient does not need to control their thoughts anymore.
+
+At this point, if the patient is conscious, we tell them that they can sleep if they want for the remainder of the acquisition, as sleep should not change structural images. Again, we remind them to wait when the machine stops making noises to reposition themselves if they need to, but otherwise to remain as still as possible as this accelerates the acquisition (ie, we don't need to reacquire the images twice because of motion artifacts).
+
+If they are not conscious, the patient can be sedated after the first BOLD in order to minimize motion if this is necessary. Sedation should not impact structural images, so for analysis, sedation from this stage of the protocol does not change anything technically, but of course sedation should be avoided as much as possible for the comfort (and risk reduction) of the patient.
 
 ### I can't find the FLAIR sequence on my machine!
 
