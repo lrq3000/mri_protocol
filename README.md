@@ -1,7 +1,7 @@
 # GIGA-Consciousness MRI Protocol
 A clinical and research 3T MRI protocol under 30 minutes, as presented at [CME2019](https://cme2019.ifado.de) in Dortmund.
 
-Version: 1.0.5-b - 2020-02-23
+Version: 1.0.5-c - 2020-02-26
 
 ## Description
 
@@ -150,3 +150,34 @@ Also there exists a SPM12 toolbox for ASL analysis, including perfusion maps, na
 Wang Z, Aguirre GK, Rao H, et al. Empirical optimization of ASL data analysis using an ASL data processing toolbox: ASLtbx. Magn Reson Imaging. 2008;26(2):261–269. doi:10.1016/j.mri.2007.07.003
 
 ASLtbx can be downloaded [here](https://cfn.upenn.edu/~zewang/ASLtbx.php).
+
+### I can't find the SWI-mIP images!
+If after an acquisition you get only two SWI sequences (t2_swi_tra_p2s2_ir_2mm) (instead of 4), then you ran into a known issue with the new Siemens VIDA machine. Indeed, after updates, it seems that modified SWI sequences see the generation of the SWI and SWI-mIP (minimum intensity projection) images disabled, even though the options are still enabled. What you are left with are the raw magnitude and phase images. There are two solutions to workaround this issue:
+
+* Either delete this sequence and remake one from scratch, from Siemens native library. Indeed, this sequence is simply a copy of the Siemens sequence of almost the same name, but with multiband (parallel) acceleration activated and set to a factor of 2. Additionally but optionally, interpolation and 3D distortion correction can be enabled as we did, without changing the acquisition time. By remaking the sequence, the SWI and SWI-mIP should be generated again (until the next Siemens update, except if they fix the bug).
+
+* Either reconstruct the SWI and SWI-mIP manually, from the raw magnitude and phase images. Note however that the reconstruction may differ from what your MRI machine vendor does (so the images may look a bit different - for better or worse). This solution is also interesting if you have already acquired several subjects without noticing the bug, as this allows you to recover the SWI without running another acquisition on the subject. This approach may also be more interesting to normalize the post-processing pipeline for computational analysis purposes (see below). Here is how to do that:
+  * You can use the excellent opensource [SWI.jl package](https://github.com/korbinian90/SWI.jl) in Julia, which does all the work for you.
+  * Or you can use [FSL PRELUDE](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FUGUE/Guide#PRELUDE_.28phase_unwrapping.29) which has [the best phase unwrapping method](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4059792/), to generate a filtered phase image, and from there it's straightforward to compute the SWI and SWI-mIP manually by applying the filtered phase image on the SWI and doing the mIP calculation. Here are some references that may help you in this process:
+    * [Making an SW image](http://mriquestions.com/making-an-sw-image.html), mriquestions.com
+    * Haacke, E. M., Mittal, S., Wu, Z., Neelavalli, J., & Cheng, Y. C. (2009). [Susceptibility-weighted imaging: technical aspects and clinical applications, part 1](http://www.ajnr.org/content/30/1/19). American Journal of Neuroradiology, 30(1), 19-30.
+    * Li, N., Wang, W. T., Sati, P., Pham, D. L., & Butman, J. A. (2014). [Quantitative assessment of susceptibility‐weighted imaging processing methods](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4059792/). Journal of Magnetic Resonance Imaging, 40(6), 1463-1473.
+    * Seminal paper: Wang, Y., Yu, Y., Li, D., Bae, K. T., Brown, J. J., Lin, W., & Haacke, E. M. (2000). [Artery and vein separation using susceptibility‐dependent phase in contrast‐enhanced MRA](https://onlinelibrary.wiley.com/doi/full/10.1002/1522-2586%28200011%2912%3A5%3C661%3A%3AAID-JMRI2%3E3.0.CO%3B2-L). Journal of Magnetic Resonance Imaging, 12(5), 661-670.
+
+Here are a few tutorials on how to clinically interpret SWI images:
+
+  * Sahin, Neslin & Solak, Aynur & Genç, Berhan & Bilgiç, Nalan. (2014). [Susceptibility-Weighted MR Imaging: Added value of susceptibility signals in diagnosis of hemorrhagic lesions of the brain](https://www.researchgate.net/publication/290504845_Susceptibility-Weighted_MR_Imaging_Added_value_of_susceptibility_signals_in_diagnosis_of_hemorrhagic_lesions_of_the_brain). Turkish Journal of Cerebrovascular Diseases. 20. 77-86. 10.5505/tbdhd.2014.66588.
+  * Haacke, E. M., Mittal, S., Wu, Z., Neelavalli, J., & Cheng, Y. C. (2009). [Susceptibility-weighted imaging: technical aspects and clinical applications, part 1](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3805391/#S8title). American Journal of Neuroradiology, 30(1), 19-30. Section: "Interpreting SWI Data".
+  * Robinson, R., & Bhuta, S. (2011). [Susceptibility‐Weighted Imaging: A Major Addition to the Neuroimaging Toolbox](https://www.ncbi.nlm.nih.gov/pubmed/20977532). Journal of Neuroimaging, 21(4), 309-309.
+
+Although computational analyses beyond clinical evaluation is a rare practice with SWI, there is a paper describing how to perform a whole-brain voxel-based analysis with SPM: Ferreira, H. A., Andrade, A., Manaças, R. M., & Gonçalves-Pereira, P. M. [Whole-brain voxel-based Susceptibility-Weighted Imaging (SWI) analysis: normal cortical and subcortical values, and preliminary results in post-traumatic epilepsy](https://www.researchgate.net/publication/303645354_Whole-Brain_Voxel-Based_Susceptibility-Weighted_Imaging_SWI_Analysis_Normal_Cortical_and_Subcortical_values_and_Preliminary_Results_in_Post-Traumatic_Epilepsy). Cerebellum, 14, 6-7.
+
+Note also it's possible to postprocess SWI images into new modalities, such as:
+
+  * QSM (Quantitative Susceptibility Mapping, see the [QSM toolbox](http://pre.weill.cornell.edu/mri/pages/qsm.html) and [Sepia](https://github.com/kschan0214/sepia)).
+  * Frangi Vesselnet applied on SWI:
+    * Good exemple: Winchell, A. M., Taylor, B. A., Song, R., Loeffler, R. B., Grundlehner, P., Hankins, J. S., ... & Helton, K. J. (2014). [Evaluation of SWI in children with sickle cell disease](https://www.researchgate.net/figure/SWI-mIP-SWI-and-segmented-vein-maps-for-a-representative-control-top-row-NVVV_fig1_258829140). American Journal of Neuroradiology, 35(5), 1016-1021. See Figure 1.
+    * Seminal paper: Frangi, A. F., Niessen, W. J., Vincken, K. L., & Viergever, M. A. (1998, October). [Multiscale vessel enhancement filtering](https://www.researchgate.net/publication/2388170_Multiscale_Vessel_Enhancement_Filtering). In International conference on medical image computing and computer-assisted intervention (pp. 130-137). Springer, Berlin, Heidelberg.
+    * Various implementations are available in opensource in [scikit-image](https://scikit-image.org/docs/0.14.x/auto_examples/filters/plot_frangi.html) in Python, [frangi3d](https://github.com/ellisdg/frangi3d) in Python, [lesiontools](https://rdrr.io/github/jdwor/lesiontools/man/frangi.html) in R, in [vesselr](https://github.com/jdwor/vesselr) in R, in [this hessian based filter script for MATLAB](https://www.mathworks.com/matlabcentral/fileexchange/24409-hessian-based-frangi-vesselness-filter), and even an artificial neural network approach in [Frangi-Net](https://arxiv.org/pdf/1711.03345.pdf).
+
+In the future, this sequence should be upgraded with [WAVE-CAIPI to achieve a high acceleration factor](http://www.martinos.org/~berkin/wave_caipi.html).
