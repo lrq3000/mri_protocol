@@ -168,6 +168,7 @@ If after an acquisition you get only two SWI sequences (t2_swi_tra_p2s2_ir_2mm) 
     * Haacke, E. M., Mittal, S., Wu, Z., Neelavalli, J., & Cheng, Y. C. (2009). [Susceptibility-weighted imaging: technical aspects and clinical applications, part 1](http://www.ajnr.org/content/30/1/19). American Journal of Neuroradiology, 30(1), 19-30.
     * Li, N., Wang, W. T., Sati, P., Pham, D. L., & Butman, J. A. (2014). [Quantitative assessment of susceptibility‐weighted imaging processing methods](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4059792/). Journal of Magnetic Resonance Imaging, 40(6), 1463-1473.
     * Seminal paper: Wang, Y., Yu, Y., Li, D., Bae, K. T., Brown, J. J., Lin, W., & Haacke, E. M. (2000). [Artery and vein separation using susceptibility‐dependent phase in contrast‐enhanced MRA](https://onlinelibrary.wiley.com/doi/full/10.1002/1522-2586%28200011%2912%3A5%3C661%3A%3AAID-JMRI2%3E3.0.CO%3B2-L). Journal of Magnetic Resonance Imaging, 12(5), 661-670.
+    * An example pipeline using FSL PRELUDE for pre-processing and freesurfer for the rest can be found here: https://github.com/ksubramz/SWI_Processing
 
 Here are a few tutorials on how to clinically interpret SWI images:
 
