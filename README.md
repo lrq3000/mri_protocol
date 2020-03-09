@@ -2,7 +2,7 @@
 
 A clinical and research 3T MRI protocol under 30 minutes, as presented at [CME2019](https://cme2019.ifado.de) in Dortmund.
 
-Version: 1.0.6 - 2020-02-26
+Version: 1.1.0 - 2020-03-09
 
 ## Description
 
@@ -19,7 +19,13 @@ This repository contains the protocol of a 30 minutes 3T MRI for the Siemens Ma
 - T1 FLAWS (automatically segmented MPRAGE, voxel-size: 1mm³ isotropic)
 - Sub-second EPI BOLD (TR: 758 ms, voxel-size: 3mm³ isotropic)
 - Multi-shell DWI/DTI (3-shells: b700, b1000, b2000)
-- Clinical sequences: FLAIR, SWI, SWI/mIP, PCASL, T2
+- Clinical sequences: FLAIR, SWI, SWI/mIP, PCASL & Proton Density map
+
+Screenshot of the protocol and total acquisition time without PC-ASL:
+![](SiemensVidaProtocol/timing_without_pcasl.jpg)
+
+Screenshot of the protocol and total acquisition time with PC-ASL and Proton Density map:
+![](SiemensVidaProtocol/timing_with_pcasl.jpg)
 
 The main innovations of this protocol are:
 
@@ -37,7 +43,7 @@ If you own a 3T Siemens Magnetom Vida, the full protocol can be directly importe
 
 Otherwise, for another machine, the [pdf printout](https://github.com/lrq3000/mri_protocol/blob/master/SiemensVidaProtocol/Coma%20Science%20Group%2052.pdf) or [xml printout](https://github.com/lrq3000/mri_protocol/blob/master/SiemensVidaProtocol/Coma%20Science%20Group%2052.pdf) details most parameters (but unfortunately not all, but at least the most important ones) in a human readable format. By using these printouts as a reference, the protocol should be implementable on pretty much any machine, with only basic access to the standard parameters fields (ie, no need for experimental parameters access nor developer console, see the FAQ below for more details).
 
-To use these printouts: only the first 12 sequences are part of the final protocol (up to pcasl included), the rest being test sequences that, for most, do work but were not kept in the final protocol (but feel free to try them out if you are interested). Note also that EPI BOLD and PCASL are duplicated with a different name depending on the patient state (sedated or not), but otherwise all the parameters are the same, so you can keep only one if you are not working with potentially sedated patients.
+To use these printouts: only the first 12 sequences are part of the final protocol (up to pcasl and proton density map included), the rest being test sequences that, for most, do work but were not kept in the final protocol (but feel free to try them out if you are interested). Note also that EPI BOLD and PCASL are duplicated with a different name depending on the patient state (sedated or not), but otherwise all the parameters are the same, so you can keep only one if you are not working with potentially sedated patients.
 
 In order for this protocol to run under 30 minutes, a multiband (Simultaneous Multi-Slices -- SMS for Siemens) license is necessary to activate this technology to reduce the acquisition time of EPI BOLD and Multi-shell DWI. For other sequences, the multiband is not necessary, as only parallel imaging (GRAPPA) and careful tweaking of the pulse parameters are used to accelerate the acquisition.
 
@@ -146,7 +152,7 @@ Since then, it has come to our attention that tentative recommendations are avai
 
 Alsop DC, Detre JA, Golay X, et al. Recommended implementation of arterial spin-labeled perfusion MRI for clinical applications: A consensus of the ISMRM perfusion study group and the European consortium for ASL in dementia. Magn Reson Med. 2015;73(1):102–116. doi:10.1002/mrm.25197
 
-The authors there recommend that **pcASL should be acquired alongside a proton density map**, as to allow for the derivation of absolute values. No proton density map was initially acquired in this protocol by default, but you can find a modified version of the protocol with the addition of a proton density map, for 2 minutes of additional acquisition time, in the `SiemensVidaProtocol\with-proton-density-map` subfolder. Apart from the proton density map acquisition, this protocol is exactly the same as the initial one, still available in the `SiemensVidaProtocol` folder and running under 30 minutes. As the authors describe, a proton density map can reduce the noise, which we feel is akin to using fieldmaps for dMRI and fMRI, so it's likely not necessary, but still strongly advised to conduct proper computational analyses with as little bias as possible.
+The authors there recommend that **pcASL should be acquired alongside a proton density map**, as to allow for the derivation of absolute values. No proton density map was initially acquired in this protocol by default, but the protocol is now updated since v1.1.0 to acquire a proton density map just after the PC-ASL. This extends the total acquisition time by 2 additional minutes, totalling 33min and 2 seconds. As the authors describe, a proton density map can reduce the noise, which we feel is akin to using fieldmaps for dMRI and fMRI, so it's likely not necessary, but this is still strongly advised to conduct proper computational analyses with as little bias as possible.
 
 Also there exists a SPM12 toolbox for ASL analysis, including perfusion maps, named ASLtbx:
 
@@ -156,9 +162,19 @@ ASLtbx can be downloaded [here](https://cfn.upenn.edu/~zewang/ASLtbx.php).
 
 ### I can't find the SWI-mIP images!
 
-If after an acquisition you get only two SWI sequences (t2_swi_tra_p2s2_ir_2mm) (instead of 4), then you ran into a known issue with the new Siemens VIDA machine. Indeed, after updates, it seems that modified SWI sequences see the generation of the SWI and SWI-mIP (minimum intensity projection) images disabled, even though the options are still enabled. What you are left with are the raw magnitude and phase images. There are two solutions to workaround this issue:
+Note: this section is deprecated, because we now use the t2_swi_tra_fast native sequence, which is both very fast (2 min only) and support 3D SWI and SWI-mIP reconstructions. If you run into any issue or want to try to reconstruct the SWI manually (or use new technics), you can still read the rest of this section.
 
-* Either delete this sequence and remake one from scratch, from Siemens native library. Indeed, this sequence is simply a copy of the Siemens sequence of almost the same name, but with multiband (parallel) acceleration activated and set to a factor of 2. Additionally but optionally, interpolation and 3D distortion correction can be enabled as we did, without changing the acquisition time. By remaking the sequence, the SWI and SWI-mIP should be generated again (until the next Siemens update, except if they fix the bug).
+If after an acquisition you get only two SWI sequences (t2_swi_tra_p2s2_ir_2mm Magnitude and Phase, instead of 4), then you ran into a known issue with the new Siemens VIDA machine. Indeed, after updates, it seems that modified SWI sequences see the generation of the SWI and SWI-mIP (minimum intensity projection) images disabled, even though the options are still enabled. What you are left with are the raw magnitude and phase images. There are two solutions to workaround this issue:
+
+* Either delete this sequence and remake one from scratch, from Siemens native library. Indeed, this sequence is simply a copy of the Siemens sequence of almost the same name, but with multiband (parallel) acceleration activated and set to a factor of 2. Additionally but optionally, interpolation and 3D distortion correction can be enabled as we did, without changing the acquisition time. By remaking the sequence, the SWI and SWI-mIP should be generated again (until the next Siemens update, except if they fix the bug). A few options need to be set to specific values to enable the SWI reconstruction:
+  
+  * set Acceleration Factor 3D to 1, not any higher value, as it seems the VIDA does not yet support reconstruction of multiband SWI (but you can reconstruct them using SWI.jl below).
+    ![](Notes/swi1.jpg)
+  
+  * Enable the SWI checkbox, and select Reconstruction: Magnitude (not Phase)
+    ![](Notes/swi1.jpg)
+  
+  * Note that without the phase, it will be difficult to use SWI.jl and other advanced reconstruction methods on computer, but maybe the gre field map can be used instead.
 
 * Either reconstruct the SWI and SWI-mIP manually, from the raw magnitude and phase images. Note however that the reconstruction may differ from what your MRI machine vendor does (so the images may look a bit different - for better or worse). This solution is also interesting if you have already acquired several subjects without noticing the bug, as this allows you to recover the SWI without running another acquisition on the subject. This approach may also be more interesting to normalize the post-processing pipeline for computational analysis purposes (see below). Here is how to do that:
   
