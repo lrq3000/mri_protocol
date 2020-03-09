@@ -2,7 +2,7 @@
 
 A clinical and research 3T MRI protocol under 30 minutes, as presented at [CME2019](https://cme2019.ifado.de) in Dortmund.
 
-Version: 1.1.1 - 2020-03-09
+Version: 1.1.2 - 2020-03-09
 
 ## Description
 
@@ -143,6 +143,28 @@ If you are trying to reproduce the protocol from the printout, and thus search f
 Theoretically, all sequences are usable for analysis, and are based mostly on already published protocols. We ourselves ran several subject-level and group-level analyses on the structural MP2RAGE FLAWS, diffusion weighted imaging, and the fMRI BOLD timeseries. Most of these work with standard processing pipelines out-of-the-box such as SPM12, although some parameters should be avoided or tweaked (eg, slice timing correction and motion correction should account for multiband in dMRI and fMRI). We have released our preprocessing and analysis pipelines for these 3 sequences as implemented in this protocol, at [https://github.com/lrq3000/csg_mri_pipelines](https://github.com/lrq3000/csg_mri_pipelines).
 
 Please note however that pcASL is experimental, it is still useful in any case as a clinical tool, but we did not run any analysis on it (see the next section for more details).
+
+### How to properly place the Pearltec MultiPad pillows to reduce motion?
+
+This is a question we often get asked, and depending on how the pads are placed, they can either be the best tool to reduce motion, or very inefficient. We have tested on a dozen of controls and as many patients, all with great results when pads were placed in a specific way. Here is a schema:
+
+MultiPad placement without MRI head coil:
+
+![](Notes/multipad-placement-without-mri-coil.png)
+
+MultiPad placement with MRI head coil:
+
+![](Notes/multipad-placement-with-mri-coil.png)
+
+The idea is to first place the 2 (deflated) lateral pads on the cheeks of the subject, not on the ears, because it's very uncomfortable to combine these pads with headphones, and also because we have found that their greatest effect on motion is when the are placed not entirely on the sides of the head but slightly on the face.
+
+Then, the forehead 3rd pad (named "bendy" by Pearltec) is placed **on top** of the lateral pads, so that both ends of the forehead pad overlaps and rests on the lateral pads. In other words, the forehead pad may not even touch the subject's forehead.
+
+All the pads can be modified to have their own inflation pump, but we chose to keep the 2 lateral pads with their own pump (because usually we want both pads to have the same inflation in a symmetrical fashion), and the forehead pad has its own separate pump.
+
+Finally, the MRI head coil is placed, and the pads are inflated: first, the lateral pads, then the forehead pad. During the inflation, we regularly ask the subject to try to move their head from side to side (as if they were nodding a "no") during the inflation of the 2 lateral pads, and then up and down (as if they were nodding a "yes") during the inflation of the forehead pad to fill up the remaining gap between the forehead and the head coil. When both of these motions are almost impossible for the subject to perform, usually when the pads are inflated enough so that they fill the gap between the subject's face and the MRI head coil's interior, and if the subject is also feeling comfortable enough (we ask if there is not too much pression, if yes we deflate and readjust by reinflating less but just as necessary), then the pillow placement is done and we can proceed with the acquisition.
+
+Note that **none of the pads should ever overlap with the eyes or the mouth**. If the subject cannot control themselves, or do not feel comfortable with the pads (eg, if they increase the subject's claustrophobia), then remove the pads and do not use them. The subject should always feel comfortable with the pad. One advantage in terms of comfort (despite the slight pression on the cheeks) for the subject is that they do not need to concentrate as much to stay still as when there is no pillow, because the pillows are restricting their movement, so they have a "guide" to stay still and we have several subjects reporting to us that it helped them feel more comfortable.
 
 ### Update on pcASL
 
