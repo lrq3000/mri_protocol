@@ -22,9 +22,11 @@ This repository contains the protocol of a 30 minutes 3T MRI for the Siemens Ma
 - Clinical sequences: FLAIR, SWI, SWI/mIP, PCASL & Proton Density map
 
 Screenshot of the protocol and total acquisition time without PC-ASL:
+
 ![](SiemensVidaProtocol/timing_without_pcasl.jpg)
 
 Screenshot of the protocol and total acquisition time with PC-ASL and Proton Density map:
+
 ![](SiemensVidaProtocol/timing_with_pcasl.jpg)
 
 The main innovations of this protocol are:
@@ -165,6 +167,8 @@ All the pads can be modified to have their own inflation pump, but we chose to k
 Finally, the MRI head coil is placed, and the pads are inflated: first, the lateral pads, then the forehead pad. During the inflation, we regularly ask the subject to try to move their head from side to side (as if they were nodding a "no") during the inflation of the 2 lateral pads, and then up and down (as if they were nodding a "yes") during the inflation of the forehead pad to fill up the remaining gap between the forehead and the head coil. When both of these motions are almost impossible for the subject to perform, usually when the pads are inflated enough so that they fill the gap between the subject's face and the MRI head coil's interior, and if the subject is also feeling comfortable enough (we ask if there is not too much pression, if yes we deflate and readjust by reinflating less but just as necessary), then the pillow placement is done and we can proceed with the acquisition.
 
 Note that **none of the pads should ever overlap with the eyes or the mouth**. If the subject cannot control themselves, or do not feel comfortable with the pads (eg, if they increase the subject's claustrophobia), then remove the pads and do not use them. The subject should always feel comfortable with the pad. One advantage in terms of comfort (despite the slight pression on the cheeks) for the subject is that they do not need to concentrate as much to stay still as when there is no pillow, because the pillows are restricting their movement, so they have a "guide" to stay still and we have several subjects reporting to us that it helped them feel more comfortable.
+
+(Original image credit: [OpenClipart-Vectors](https://pixabay.com/fr/vectors/l-homme-personne-avatar-visage-156584/))
 
 ### Update on pcASL
 
