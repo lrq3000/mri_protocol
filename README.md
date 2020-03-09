@@ -2,7 +2,7 @@
 
 A clinical and research 3T MRI protocol under 30 minutes, as presented at [CME2019](https://cme2019.ifado.de) in Dortmund.
 
-Version: 1.1.0 - 2020-03-09
+Version: 1.1.1 - 2020-03-09
 
 ## Description
 
@@ -162,7 +162,7 @@ ASLtbx can be downloaded [here](https://cfn.upenn.edu/~zewang/ASLtbx.php).
 
 ### I can't find the SWI-mIP images!
 
-Note: this section is deprecated, because we now use the t2_swi_tra_fast native sequence, which is both very fast (2 min only) and support 3D SWI and SWI-mIP reconstructions. If you run into any issue or want to try to reconstruct the SWI manually (or use new technics), you can still read the rest of this section.
+Note: this section is deprecated, because we now use the t2_swi_tra_fast native sequence, which is both very fast (2 min only) and support 3D SWI and SWI-mIP reconstructions. If you run into any issue or want to try to reconstruct the SWI manually (or use new technics), you can still read the rest of this section. But without the phase image, it's impossible to reconstruct manually using SWI.jl nor use more advanced methods like vesselnets. If you would like to use these methods, prefer to use the sequence t2_swi_tra_p2s2_ir_2mm or t2_swi_tra_p3_ir_2mm that also are available as optional sequences in this protocol.
 
 If after an acquisition you get only two SWI sequences (t2_swi_tra_p2s2_ir_2mm Magnitude and Phase, instead of 4), then you ran into a known issue with the new Siemens VIDA machine. Indeed, after updates, it seems that modified SWI sequences see the generation of the SWI and SWI-mIP (minimum intensity projection) images disabled, even though the options are still enabled. What you are left with are the raw magnitude and phase images. There are two solutions to workaround this issue:
 
@@ -174,7 +174,7 @@ If after an acquisition you get only two SWI sequences (t2_swi_tra_p2s2_ir_2mm M
   * Enable the SWI checkbox, and select Reconstruction: Magnitude (not Phase)
     ![](Notes/swi1.jpg)
   
-  * Note that without the phase, it will be difficult to use SWI.jl and other advanced reconstruction methods on computer, but maybe the gre field map can be used instead.
+  * Note that without the phase, it will be impossible to manually to use SWI.jl and other advanced reconstruction methods on computer to manually reconstruct SWI or vesselnets.
 
 * Either reconstruct the SWI and SWI-mIP manually, from the raw magnitude and phase images. Note however that the reconstruction may differ from what your MRI machine vendor does (so the images may look a bit different - for better or worse). This solution is also interesting if you have already acquired several subjects without noticing the bug, as this allows you to recover the SWI without running another acquisition on the subject. This approach may also be more interesting to normalize the post-processing pipeline for computational analysis purposes (see below). Here is how to do that:
   
