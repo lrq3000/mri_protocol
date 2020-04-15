@@ -158,7 +158,7 @@ MultiPad placement with MRI head coil:
 
 ![](Notes/multipad-placement-with-mri-coil.png)
 
-The idea is to first place the 2 (deflated) lateral pads on the cheeks of the subject, not on the ears, because it's very uncomfortable to combine these pads with headphones, and also because we have found that their greatest effect on motion is when the are placed not entirely on the sides of the head but slightly on the face.
+The idea is to first place the 2 (deflated) lateral pads on the cheeks of the subject, not on the ears, because it's very uncomfortable to combine these pads with headphones, and also because we have found that their greatest effect on motion is when the are placed not entirely on the sides of the head but on the sides of the face.
 
 Then, the forehead 3rd pad (named "bendy" by Pearltec) is placed **on top** of the lateral pads, so that both ends of the forehead pad overlaps and rests on the lateral pads. In other words, the forehead pad may not even touch the subject's forehead.
 
@@ -188,29 +188,41 @@ ASLtbx can be downloaded [here](https://cfn.upenn.edu/~zewang/ASLtbx.php).
 
 ### I can't find the SWI-mIP images!
 
-Note: this section is deprecated, because we now use the t2_swi_tra_fast native sequence, which is both very fast (2 min only) and support 3D SWI and SWI-mIP reconstructions. If you run into any issue or want to try to reconstruct the SWI manually (or use new technics), you can still read the rest of this section. But without the phase image, it's impossible to reconstruct manually using SWI.jl nor use more advanced methods like vesselnets. If you would like to use these methods, prefer to use the sequence t2_swi_tra_p2s2_ir_2mm or t2_swi_tra_p3_ir_2mm that also are available as optional sequences in this protocol.
+#### How to restore the SWI and SWI-mIP acquisition on the machine
 
-If after an acquisition you get only two SWI sequences (t2_swi_tra_p2s2_ir_2mm Magnitude and Phase, instead of 4), then you ran into a known issue with the new Siemens VIDA machine. Indeed, after updates, it seems that modified SWI sequences see the generation of the SWI and SWI-mIP (minimum intensity projection) images disabled, even though the options are still enabled. What you are left with are the raw magnitude and phase images. There are two solutions to workaround this issue:
+If after an acquisition you get only two SWI sequences (t2_swi_tra_p2s2_ir_2mm Magnitude and Phase, instead of 4), then you ran into a known issue with the new Siemens VIDA machine with 3D distortion. Indeed, it is currently not possible to enable 3D distortion correction along with acquiring Mag/Pha and SWI, this will only produce the Magnitude and Phase images, but not the SWI. To fix this, simply disable 3D distortion correction (by switching to 2D distortion correction), then both Mag/Pha reconstruction and SWI can be enabled and acquired. This will be fixed in the next version of this protocol after the coronavirus crisis.
 
-* Either delete this sequence and remake one from scratch, from Siemens native library. Indeed, this sequence is simply a copy of the Siemens sequence of almost the same name, but with multiband (parallel) acceleration activated and set to a factor of 2. Additionally but optionally, interpolation and 3D distortion correction can be enabled as we did, without changing the acquisition time. By remaking the sequence, the SWI and SWI-mIP should be generated again (until the next Siemens update, except if they fix the bug). A few options need to be set to specific values to enable the SWI reconstruction:
+For now, the protocol uses the t2_swi_tra_fast native sequence, which is both very fast (2 min only) and support 3D SWI and SWI-mIP reconstructions, but without the phase.
+
+If you run into other issues or want to try to reconstruct the SWI manually (or use new methods). But without the phase image, it's impossible to reconstruct manually using SWI.jl nor use more advanced methods like vesselnets. If you would like to use these methods, prefer to use the sequence t2_swi_tra_p2s2_ir_2mm or t2_swi_tra_p3_ir_2mm that also are available as optional sequences in this protocol, just make sure to disable 3D distortion correction (by switching back to 2D distortion correction).
+
+Additional notes on how to rebuild this sequence (if a future update breaks it):
+
+* This sequence is simply a copy of the Siemens sequence of almost the same name, but with multiband (parallel) acceleration activated and set to a factor of 2. Additionally but optionally, interpolation can be enabled to slightly increase the resolution, without changing the acquisition time. By remaking the sequence, the SWI and SWI-mIP should be generated again (until the next Siemens update, except if they fix the bug). A few options need to be set to specific values to enable the SWI reconstruction:
   
-  * set Acceleration Factor 3D to 1, not any higher value, as it seems the VIDA does not yet support reconstruction of multiband SWI (but you can reconstruct them using SWI.jl below).
+  * set Acceleration Factor 3D to 1, not any higher value, as the VIDA does not yet support reconstruction of multiband SWI (but note that the Mag/Pha images will still be acquired with acceleration and you can reconstruct them using SWI.jl below). This will be fixed in a future update of the VIDA according to our infos from Siemens Healthineers.
     ![](Notes/swi1.jpg)
   
   * Enable the SWI checkbox, and select Reconstruction: Magnitude (not Phase)
     ![](Notes/swi1.jpg)
   
-  * Note that without the phase, it will be impossible to manually to use SWI.jl and other advanced reconstruction methods on computer to manually reconstruct SWI or vesselnets.
-
-* Either reconstruct the SWI and SWI-mIP manually, from the raw magnitude and phase images. Note however that the reconstruction may differ from what your MRI machine vendor does (so the images may look a bit different - for better or worse). This solution is also interesting if you have already acquired several subjects without noticing the bug, as this allows you to recover the SWI without running another acquisition on the subject. This approach may also be more interesting to normalize the post-processing pipeline for computational analysis purposes (see below). Here is how to do that:
+  * Select Mag/Pha as the reconstruction method.
   
-  * You can use the excellent opensource [SWI.jl package](https://github.com/korbinian90/SWI.jl) in Julia, by Korbinian Eckstein, which does all the work for you. Note for future readers: the [main developer stated](https://github.com/korbinian90/SWI.jl/pull/3#issuecomment-591408758) the package will be renamed to CLEAR-SWI and be moved to MriResearchTools.jl . We also invite you to follow [Eckstein's other works](https://github.com/korbinian90), all around making MRI reconstruction better with opensource software implementations, such as an impressive [magnitude intensity correction for 7T MRI](https://github.com/korbinian90/Magnitude-Intensity-Correction), a [MRI library for Julia including NIfTI handling](https://github.com/korbinian90/MRI.jl), a [fast 3D phase unwrapping](https://github.com/korbinian90/ROMEO.jl) and a [bipolar distortion correction](https://github.com/korbinian90/Bipolar-Distortion-Correction).
-  * Or you can use [FSL PRELUDE](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FUGUE/Guide#PRELUDE_.28phase_unwrapping.29) which has [the best phase unwrapping method](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4059792/), to generate a filtered phase image, and from there it's straightforward to compute the SWI and SWI-mIP manually by applying the filtered phase image on the SWI and doing the mIP calculation. Here are some references that may help you in this process:
-    * [Making an SW image](http://mriquestions.com/making-an-sw-image.html), mriquestions.com
-    * Haacke, E. M., Mittal, S., Wu, Z., Neelavalli, J., & Cheng, Y. C. (2009). [Susceptibility-weighted imaging: technical aspects and clinical applications, part 1](http://www.ajnr.org/content/30/1/19). American Journal of Neuroradiology, 30(1), 19-30.
-    * Li, N., Wang, W. T., Sati, P., Pham, D. L., & Butman, J. A. (2014). [Quantitative assessment of susceptibility‐weighted imaging processing methods](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4059792/). Journal of Magnetic Resonance Imaging, 40(6), 1463-1473.
-    * Seminal paper: Wang, Y., Yu, Y., Li, D., Bae, K. T., Brown, J. J., Lin, W., & Haacke, E. M. (2000). [Artery and vein separation using susceptibility‐dependent phase in contrast‐enhanced MRA](https://onlinelibrary.wiley.com/doi/full/10.1002/1522-2586%28200011%2912%3A5%3C661%3A%3AAID-JMRI2%3E3.0.CO%3B2-L). Journal of Magnetic Resonance Imaging, 12(5), 661-670.
-    * An example pipeline using FSL PRELUDE for pre-processing and freesurfer for the rest can be found here: https://github.com/ksubramz/SWI_Processing
+  * Leave the distortion correction to 2D, do not select 3D, else the SWI will not be acquired (even if the SWI checkbox is still checked). If you want 3D distortion correction, you must select only Magnitude as the reconstruction method, without the Phase. But note that without the phase, it will be impossible to manually to use SWI.jl and other advanced reconstruction methods on computer to manually reconstruct SWI or vesselnets.
+
+#### How to reconstruct the SWI and SWI-mIP manually from the raw magnitude and phase images
+
+This solution is interesting if you have already acquired several subjects without noticing the bug, as this allows you to recover the SWI without running another acquisition on the subject. This approach may also be more interesting to normalize the post-processing pipeline for computational analysis purposes (see below). Note however that the reconstruction may differ from what your MRI machine vendor does (so the images may look a bit different - for better or worse).
+
+Here is how to do that:
+
+* You can use the excellent opensource [SWI.jl package](https://github.com/korbinian90/SWI.jl) in Julia, by Korbinian Eckstein, which does all the work for you. Note for future readers: the [main developer stated](https://github.com/korbinian90/SWI.jl/pull/3#issuecomment-591408758) the package will be renamed to CLEAR-SWI and be moved to [MriResearchTools.jl](https://github.com/korbinian90/MriResearchTools.jl). We also invite you to follow [Eckstein's other works](https://github.com/korbinian90), all around making MRI reconstruction better with opensource software implementations, such as an impressive [magnitude intensity correction for 7T MRI](https://github.com/korbinian90/Magnitude-Intensity-Correction), a [MRI library for Julia including NIfTI handling](https://github.com/korbinian90/MRI.jl), a [fast 3D phase unwrapping](https://github.com/korbinian90/ROMEO.jl) and a [bipolar distortion correction](https://github.com/korbinian90/Bipolar-Distortion-Correction).
+* Or you can use [FSL PRELUDE](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FUGUE/Guide#PRELUDE_.28phase_unwrapping.29) which has [the best phase unwrapping method](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4059792/), to generate a filtered phase image, and from there it's straightforward to compute the SWI and SWI-mIP manually by applying the filtered phase image on the SWI and doing the mIP calculation. Here are some references that may help you in this process:
+  * [Making an SW image](http://mriquestions.com/making-an-sw-image.html), mriquestions.com
+  * Haacke, E. M., Mittal, S., Wu, Z., Neelavalli, J., & Cheng, Y. C. (2009). [Susceptibility-weighted imaging: technical aspects and clinical applications, part 1](http://www.ajnr.org/content/30/1/19). American Journal of Neuroradiology, 30(1), 19-30.
+  * Li, N., Wang, W. T., Sati, P., Pham, D. L., & Butman, J. A. (2014). [Quantitative assessment of susceptibility‐weighted imaging processing methods](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4059792/). Journal of Magnetic Resonance Imaging, 40(6), 1463-1473.
+  * Seminal paper: Wang, Y., Yu, Y., Li, D., Bae, K. T., Brown, J. J., Lin, W., & Haacke, E. M. (2000). [Artery and vein separation using susceptibility‐dependent phase in contrast‐enhanced MRA](https://onlinelibrary.wiley.com/doi/full/10.1002/1522-2586%28200011%2912%3A5%3C661%3A%3AAID-JMRI2%3E3.0.CO%3B2-L). Journal of Magnetic Resonance Imaging, 12(5), 661-670.
+  * An example pipeline using FSL PRELUDE for pre-processing and freesurfer for the rest can be found here: https://github.com/ksubramz/SWI_Processing
 
 Here are a few tutorials on how to clinically interpret SWI images:
 
