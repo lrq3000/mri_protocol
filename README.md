@@ -21,12 +21,9 @@ This repository contains the protocol of a 30 minutes 3T MRI for the Siemens Ma
 - Multi-shell DWI/DTI (3-shells: b700, b1000, b2000)
 - Clinical sequences: FLAIR, SWI, SWI/mIP, PCASL & Proton Density map
 
-Screenshot of the protocol and total acquisition time without PC-ASL:
+Screenshot of the protocol and total acquisition time, on the left without PC-ASL nor Proton Density map, on the right with both enabled:
 
 ![](SiemensVidaProtocol/timing_without_pcasl.jpg)
-
-Screenshot of the protocol and total acquisition time with PC-ASL and Proton Density map:
-
 ![](SiemensVidaProtocol/timing_with_pcasl.jpg)
 
 The main innovations of this protocol are:
