@@ -39,6 +39,8 @@ This protocol was designed over the span of 8 months and is now a standard proto
 
 For more details, please consult the [CME2019 slides](https://github.com/lrq3000/mri_protocol/blob/master/ICME2019-stephen-karl-larroque.pdf). For detailed technical informations and bibliography, please consult [ComplementaryInfosBiblio.md](https://github.com/lrq3000/mri_protocol/blob/master/ComplementaryInfosBiblio.md). The protocol can be adapted to other machines by using the [pdf printout](https://github.com/lrq3000/mri_protocol/blob/master/SiemensVidaProtocol/Coma%20Science%20Group.pdf) (see next section). In an effort to promote transparent open research, the lab notes written along the construction of this protocol are available in the [Notes folder](https://github.com/lrq3000/mri_protocol/tree/master/Notes) (beware, it's very messy, but there's lot of additional infos and references).
 
+A sample MRI acquisition with this protocol can be [downloaded on FigShare](https://figshare.com/articles/dataset/non24-mri/14384843), which can be viewed with a Dicom viewer such as [RadiAnt Dicom Viewer](https://www.radiantviewer.com/) (tip: unzip the archive for the BOLD and DWI sequences to properly be displayed as 4D sequences instead of separate 3D sequences).
+
 ## How to install
 
 If you own a 3T Siemens Magnetom Vida, the full protocol can be directly imported into your machine by using the [exar1 file](https://github.com/lrq3000/mri_protocol/blob/master/SiemensVidaProtocol/Coma%20Science%20Group%2052.exar1).
