@@ -1,5 +1,7 @@
 # GIGA-Consciousness MRI Protocol
 
+[![DOI](https://doi.org/10.5281/zenodo.4885141)](https://doi.org/10.5281/zenodo.4885141)
+
 A clinical and research 3T MRI protocol under 30 minutes, as presented at [CME2019](https://cme2019.ifado.de) in Dortmund.
 
 Version: 1.1.3 - 2020-03-09
@@ -248,4 +250,4 @@ In the future, this sequence should be upgraded with [WAVE-CAIPI to achieve a hi
 
 If you found this software useful and use it for a publication, we would be very thankful if you could cite the software as follows, it's a free gesture for you but it tremendously help us in securing grants to further develop it:
 
-> Larroque, Stephen and Carrière, Manon and Martial, Charlotte and Laureys, Steven. (2021, June 1). lrq3000/mri_protocol: GIGA-Consciousness MRI Protocol 1.1.3 - 2020-03-09 (Version 1.1.3). Zenodo. http://doi.org/10.5281/zenodo.4885142
+> Larroque, Stephen Karl, Carrière, Manon, Martial, Charlotte, & Laureys, Steven. (2021, June 1). lrq3000/mri_protocol: GIGA-Consciousness MRI Protocol 1.1.3 - 2020-03-09 (Version 1.1.3). Zenodo. https://doi.org/10.5281/zenodo.4885141
