@@ -1,0 +1,44 @@
+{
+    "creators": [
+        {
+          "affiliation": "Coma Science Group (GIGA-Consciousness, ULg) & Centre du Cerveau² (CHU)",
+          "name": "Larroque, Stephen Karl",
+          "orcid": "0000-0002-6248-0957"
+        },
+        {
+          "affiliation": "Coma Science Group (GIGA-Consciousness, ULg) & Centre du Cerveau² (CHU)",
+          "name": "Carrière, Manon",
+          "orcid": "0000-0002-9651-0675"
+        },
+        {
+          "affiliation": "Coma Science Group (GIGA-Consciousness, ULg) & Centre du Cerveau² (CHU)",
+          "name": "Martial, Charlotte",
+          "orcid": "0000-0001-6291-3460"
+        },
+        {
+          "affiliation": "Coma Science Group (GIGA-Consciousness, ULg) & Centre du Cerveau² (CHU)",
+          "name": "Laureys, Steven",
+          "orcid": "0000-0002-3096-3807"
+        }
+    ],
+    "keywords": [
+        "Magnetic Resonance Imagery",
+        "MRI",
+        "protocol",
+        "acquisition",
+        "functional MRI",
+        "fMRI",
+        "diffusion MRI",
+        "dMRI",
+        "structural MRI",
+        "sMRI",
+        "neuroimaging",
+        "FLAWS",
+        "grey matter",
+        "white matter",
+        "automatic segmentation",
+        "accurate segmentation"
+    ],
+    "license": "MIT",
+    "upload_type": "software"
+}
