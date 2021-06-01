@@ -243,3 +243,9 @@ Note also it's possible to postprocess SWI images into new modalities, such as:
 * Lee, Y., Han, Y., & Park, H. (2014). A new susceptibility‐weighted image reconstruction method for the reduction of background phase artifacts. Magnetic resonance in medicine, 71(3), 1324-1335.
 
 In the future, this sequence should be upgraded with [WAVE-CAIPI to achieve a high acceleration factor](http://www.martinos.org/~berkin/wave_caipi.html).
+
+### How to cite this protocol?
+
+If you found this software useful and use it for a publication, we would be very thankful if you could cite the software as follows, it's a free gesture for you but it tremendously help us in securing grants to further develop it:
+
+> Larroque, Stephen and Carrière, Manon and Martial, Charlotte and Laureys, Steven. (2021, June 1). lrq3000/mri_protocol: GIGA-Consciousness MRI Protocol 1.1.3 - 2020-03-09 (Version 1.1.3). Zenodo. http://doi.org/10.5281/zenodo.4885142
