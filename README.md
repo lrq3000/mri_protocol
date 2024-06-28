@@ -19,7 +19,7 @@ Reducing the acquisition time is often thought as a limitation, but it can be an
 This repository contains the protocol of a 30 minutes 3T MRI for the Siemens Magnetom Vida machine, including the following sequences:
 
 - T1 FLAWS (automatically segmented MPRAGE, voxel-size: 1mm³ isotropic)
-- Sub-second EPI BOLD (TR: 758 ms, voxel-size: 3mm³ isotropic)
+- Sub-second EPI BOLD (TR: 728 ms, voxel-size: 3mm³ isotropic)
 - Multi-shell DWI/DTI (3-shells: b700, b1000, b2000)
 - Clinical sequences: FLAIR, SWI, SWI/mIP, PCASL & Proton Density map
 
