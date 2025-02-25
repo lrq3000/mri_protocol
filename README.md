@@ -14,7 +14,11 @@ A major issue is that MRI analytic studies often suffer from small sample size a
 
 Indeed, MRI is very expensive, particularly when the machine is not dedicated to research, such as hospitals' MRI machines. Often, the MRI protocol used on such machines is of subpar quality or technology, to stay in the time bounds of a clinical acquisition. Indeed, there are more patients than time allows, so that hospitals are perpetually looking for ways to reduce acquisition times. On top of that, for populations of patients prone to motion, usually about 2/3rd will not be processable by computational methods.
 
-Reducing the acquisition time is often thought as a limitation, but it can be an opportunity: this allows for more subjects to be acquired in the same timeframe thus increasing the sample size; for patients populations that are prone to motion, having faster sequences allows to reduce the impact of the motion artifacts and the need to sedate; and finally, a fast protocol is more reusable across studies, which is ideal to build cross-sectional datasets of different patients typologies.
+Reducing the acquisition time is often thought as a limitation, but it can be an opportunity:
+
+- this allows for more subjects to be acquired in the same timeframe thus increasing the sample size;
+- for patients populations that are prone to motion, having faster sequences also allows to reduce the impact of the motion artifacts and the need to sedate;
+- and finally, a fast protocol is more reusable across studies, which is ideal to build cross-sectional datasets of different patients typologies.
 
 This repository contains the protocol of a 30 minutes 3T MRI for the Siemens Magnetom Vida machine, including the following sequences:
 
@@ -34,11 +38,14 @@ The main innovations of this protocol are:
 * speed optimizations with a good quality balance. Most sequences here are the fastest of all current 3T MRI literature (Multi-shell DTI at 13min, T1 FLAWS in 5min, FLAIR in 3min, SWI in 3min, etc).
 * reduced susceptibility to motion and metal/chemical artefacts.
 
-This protocol was designed over the span of 8 months and is now a standard protocol at the Hospital of Liège, Belgium. So far, 45 subjects (18 healthy volunteers, 17 disorders of consciousness patients, 10 subjects of other studies) have been acquired using this protocol.
+This protocol was designed over the span of 8 extremely intensive months and then refined over several more months along with Siemens software and hardware updates, and is since 2019 a standard protocol at the Hospital of Liège, Belgium. By the end of 2019, 45 subjects (18 healthy volunteers, 17 disorders of consciousness patients, 10 subjects of other studies) were already acquired using this protocol.
 
 For more details, please consult the [CME2019 slides](https://github.com/lrq3000/mri_protocol/blob/master/ICME2019-stephen-karl-larroque.pdf). For detailed technical informations and bibliography, please consult [ComplementaryInfosBiblio.md](https://github.com/lrq3000/mri_protocol/blob/master/ComplementaryInfosBiblio.md). The protocol can be adapted to other machines by using the [pdf printout](https://github.com/lrq3000/mri_protocol/blob/master/SiemensVidaProtocol/Coma%20Science%20Group.pdf) (see next section). In an effort to promote transparent open research, the lab notes written along the construction of this protocol are available in the [Notes folder](https://github.com/lrq3000/mri_protocol/tree/master/Notes) (beware, it's very messy, but there's lot of additional infos and references).
 
 A sample MRI acquisition with this protocol can be [downloaded on FigShare](https://figshare.com/articles/dataset/non24-mri/14384843), which can be viewed with a Dicom viewer such as [RadiAnt Dicom Viewer](https://www.radiantviewer.com/) (tip: unzip the archive for the BOLD and DWI sequences to properly be displayed as 4D sequences instead of separate 3D sequences).
+
+At the time of its development, this 3 Tesla (3T) MRI protocol represented the forefront of imaging technology, featuring an fMRI BOLD sequence that surpassed the speed of the latest CMRR C2P sequences at the time (https://www.cmrr.umn.edu/multiband/), who co-developed BOLD multiband with Siemens (https://github.com/CMRR-C2P/MB).
+As of 2025, our MRI protocol continues to offer several innovations not yet adopted by CMRR nor any other published and in-use protocol, such as an accelerated structural Fluid and White Matter Suppression (FLAWS) sequence, which provides exceptional accuracy for brain segmentation in patients with neurological damage (https://pubmed.ncbi.nlm.nih.gov/22170818/), and multi-shell Diffusion Tensor Imaging (DTI), enhancing the characterization of white matter microstructure (https://pmc.ncbi.nlm.nih.gov/articles/PMC7188617/). Notably, our protocol is efficient enough, running under only 30 minutes, to be deployed on clinical MRIs and used routinely for clinical acquisitions, facilitating seamless integration into standard diagnostic procedures while simultaneously offering valuable data for research purposes, potentially allowing for large scale databases encompassing a wide variety of conditions at the scale of host institution (eg, Hospital).
 
 ## How to install
 
